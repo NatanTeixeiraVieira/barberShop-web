@@ -1,4 +1,4 @@
-import Home from "@/page/home/Home"
+import Home from "@/page/Home"
 import Login from "@/page/login/Login"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 
