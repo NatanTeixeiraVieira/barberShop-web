@@ -2,6 +2,7 @@ import { Star, Search, UserCircle2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function Home() {
   const { barberShop, currentPage } = useHome();
@@ -27,20 +28,12 @@ export default function Home() {
               key={barber.id}
               className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800"
             >
-              {barber.photoUrl && (
-                <img
-                  src={barber.photoUrl}
-                  alt="Imagem do perfil da barbearia"
-                  width={64}
-                  height={64}
-                  className="rounded-full size-16"
-                />
-              )}
-              {!barber.photoUrl && (
-                <div className="size-16 rounded-full flex items-center justify-center">
-                  <UserCircle2 className="size-14" />
-                </div>
-              )}
+              <Avatar className="size-16">
+                <AvatarImage src={barber.photoUrl} />
+                <AvatarFallback>
+                  <UserCircle2 className="size-12" />
+                </AvatarFallback>
+              </Avatar>
 
               <div className="flex-grow">
                 <h2 className="font-semibold">{barber.name}</h2>
