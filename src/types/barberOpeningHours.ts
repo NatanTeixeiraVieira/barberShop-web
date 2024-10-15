@@ -1,9 +1,10 @@
 type OpeningHourOutput = {
   start: string;
   end: string;
+  id: string;
 };
 
-type WeekdayOutput = {
+export type WeekdayOutput = {
   name: string;
   openingHours: OpeningHourOutput[];
 };

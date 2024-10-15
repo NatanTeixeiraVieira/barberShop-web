@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 export const useSchedule = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); // August 25, 2020
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<number | null>(null);
   const [currentWeekStart, setCurrentWeekStart] = useState<Date>(
     new Date(2024, 10, 6),
   ); // August 23, 2020 (Sunday)
@@ -21,8 +21,8 @@ export const useSchedule = () => {
     refetchOnWindowFocus: false,
   });
 
-  // const daysInWeek = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-  // const timeSlots = ['13:00', '14:00', '15:00', '16:00'];
+  const daysInWeek = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  const timeSlots = ['13:00', '14:00', '15:00', '16:00'];
 
   useEffect(() => {
     if (selectedDate) {
@@ -42,7 +42,7 @@ export const useSchedule = () => {
     setSelectedDate(new Date(date));
   };
 
-  const handleTimeSelect = (time: string) => {
+  const handleTimeSelect = (time: number) => {
     setSelectedTime(time);
   };
 
@@ -55,8 +55,8 @@ export const useSchedule = () => {
 
   return {
     isOpen,
-    // daysInWeek,
-    // timeSlots,
+    daysInWeek,
+    timeSlots,
     currentWeekStart,
     selectedDate,
     selectedTime,
