@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Schedule from '@/components/Schedule';
 
 export default function Home() {
   const { barberShop, currentPage } = useHome();
@@ -56,6 +57,8 @@ export default function Home() {
               <Button variant="outline" size="sm" className="whitespace-nowrap">
                 Ver Perfil
               </Button>
+
+              <Schedule />
             </div>
           ))}
       </div>
