@@ -152,13 +152,37 @@ export default function Schedule() {
     return Array.from({ length: 7 }, (_, i) => today.add(i, 'day'));
   };
 
+  const today = dayjs();
+
   const daysOfWeek = getDaysOfWeek();
-  const availableDays = schedule.barberOpeningHours?.weekdays.map((weekday) => {
-    const matchedDay = daysOfWeek.find(
-      (day) => day.format('ddd').toLowerCase() === weekday.name,
-    );
-    return { ...weekday, date: matchedDay };
-  });
+
+  const weekdaysMap: Record<string, number> = {
+    seg: 1,
+    ter: 2,
+    qua: 3,
+    qui: 4,
+    sex: 5,
+    sáb: 6,
+    dom: 0,
+  };
+
+  const todayDayOfWeek = today.day();
+
+  const availableDays = schedule.barberOpeningHours?.weekdays
+    .filter((weekday) => weekdaysMap[weekday.name] >= todayDayOfWeek) // Mostra apenas os dias a partir de hoje
+    .map((weekday) => {
+      const matchedDate = today.day(weekdaysMap[weekday.name]);
+      return { ...weekday, date: matchedDate };
+    });
+
+  // const availableDays = schedule.barberOpeningHours?.weekdays
+  //   .map((weekday) => {
+  //     const matchedDay = daysOfWeek.find(
+  //       (day) => day.format('ddd').toLowerCase() === weekday.name,
+  //     );
+  //     return { ...weekday, date: matchedDay };
+  //   })
+  //   .filter((day) => day.date && day.date.isAfter(today, 'day'));
 
   return (
     <Dialog open={schedule.isOpen} onOpenChange={schedule.setIsOpen}>
@@ -194,7 +218,7 @@ export default function Schedule() {
           </div>
           <div className="mb-4">
             <div className="flex gap-2 justify-center mb-2">
-              {schedule.barberOpeningHours?.weekdays.map((weekday) => (
+              {availableDays?.map((weekday) => (
                 <div
                   key={weekday.name}
                   className="text-center text-xs font-medium text-primary w-12"
@@ -239,30 +263,37 @@ export default function Schedule() {
                 {selectedDay.openingHours.map((hour) => {
                   const startHour = parseInt(hour.start.split(':')[0]);
                   const endHour = parseInt(hour.end.split(':')[0]);
+                  const isCurrentDay =
+                    weekdaysMap[selectedDay.name] === todayDayOfWeek;
+                  const currentHour = today.hour();
 
                   return Array.from(
                     { length: endHour - startHour },
                     (_, index) => (
-                      <Button
-                        key={index}
-                        variant={
-                          schedule.selectedTime === index + startHour
-                            ? 'default'
-                            : 'outline'
-                        }
-                        className={`h-8 w-12 p-0 text-sm ${
-                          schedule.selectedTime === index + startHour
-                            ? 'bg-primary text-white hover:bg-primary'
-                            : 'bg-white text-primary hover:bg-gray-100'
-                        }`}
-                        onClick={() => {
-                          schedule.handleTimeSelect(index + startHour);
-                          setSelectedHour(index + startHour);
-                          setSelectedMinute(null);
-                        }}
-                      >
-                        {index + startHour}
-                      </Button>
+                      <>
+                        {!(isCurrentDay && index + startHour < currentHour) && (
+                          <Button
+                            key={index}
+                            variant={
+                              schedule.selectedTime === index + startHour
+                                ? 'default'
+                                : 'outline'
+                            }
+                            className={`h-8 w-12 p-0 text-sm ${
+                              schedule.selectedTime === index + startHour
+                                ? 'bg-primary text-white hover:bg-primary'
+                                : 'bg-white text-primary hover:bg-gray-100'
+                            }`}
+                            onClick={() => {
+                              schedule.handleTimeSelect(index + startHour);
+                              setSelectedHour(index + startHour);
+                              setSelectedMinute(null);
+                            }}
+                          >
+                            {index + startHour}
+                          </Button>
+                        )}
+                      </>
                     ),
                   );
                 })}
@@ -271,9 +302,9 @@ export default function Schedule() {
           )}
 
           {selectedHour && selectedDay && (
-            <div className="w-fit mx-auto">
+            <div className="w-[21rem] mx-auto mb-8">
               <h2 className="mb-2 text-primary">Minutos</h2>
-              <div>
+              <div className="flex flex-wrap gap-2">
                 {selectedDay.openingHours
                   .filter(
                     (hour) =>
