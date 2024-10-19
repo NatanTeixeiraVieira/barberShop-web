@@ -13,9 +13,9 @@ export const getBarberShopList = async (paginationDto?: PaginationDto) => {
     searchParams.append('limit', pagination.limit.toString());
   }
 
-  console.log('🚀 ~ searchParams:', searchParams);
-
-  const barberShop = await api.get<ListBarberShop>('/barber-shop/v1');
+  const barberShop = await api.get<ListBarberShop>(
+    `/barber-shop/v1?${searchParams.toString()}`,
+  );
 
   return barberShop;
 };

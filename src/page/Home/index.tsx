@@ -24,7 +24,7 @@ export default function Home() {
 
       <div className="space-y-4">
         {barberShop &&
-          barberShop.data.map((barber) => (
+          barberShop.data?.map((barber) => (
             <div
               key={barber.id}
               className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800"
@@ -62,7 +62,7 @@ export default function Home() {
             </div>
           ))}
       </div>
-      {barberShop && barberShop.meta.totalPages > currentPage && (
+      {barberShop && barberShop.meta?.totalPages > currentPage && (
         <div className="w-full flex justify-center mt-4">
           <Button variant="secondary">Carregar mais</Button>
         </div>
