@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSchedule } from './useSchedule';
 import 'dayjs/locale/pt-br';
+import { capitalize } from '@/utils/formatter';
 
 export default function Schedule() {
   const schedule = useSchedule();
@@ -32,10 +33,7 @@ export default function Schedule() {
               onClick={schedule.handlePreviousWeek}
             />
             <span className="font-medium">
-              {schedule.currentWeekStart.toLocaleString('pt-BR', {
-                month: 'long',
-                year: 'numeric',
-              })}
+              {capitalize(schedule.currentWeek.format('MMMM [de] YYYY'))}
             </span>
             <ChevronRight
               className="h-5 w-5 cursor-pointer"
@@ -54,11 +52,12 @@ export default function Schedule() {
               ))}
             </div>
             <div className="flex gap-2 justify-center">
-              {schedule.availableDays?.map((day, i) => {
-                const date = new Date(schedule.currentWeekStart);
-                date.setDate(schedule.currentWeekStart.getDate() + i + 1); // +1 because we start from Monday
+              {schedule.availableDays?.map((day) => {
+                // const date = new Date(schedule.currentWeekStart);
+                // date.setDate(schedule.currentWeekStart.getDate() + i + 1); // +1 because we start from Monday
                 const isSelected =
-                  date.toDateString() === schedule.selectedDate?.toDateString();
+                  day.date.toDate().toDateString() ===
+                  schedule.selectedDate?.toDateString();
                 return (
                   <Button
                     key={day.name}
@@ -69,7 +68,7 @@ export default function Schedule() {
                         : 'bg-white text-primary hover:bg-gray-100'
                     }`}
                     onClick={() => {
-                      schedule.handleDateSelect(date);
+                      schedule.handleDateSelect(day.date.toDate());
                       schedule.setSelectedDay(day);
                       schedule.setSelectedHour(null); // Reseta a seleção de horas ao mudar de dia
                       schedule.setSelectedMinute(null);

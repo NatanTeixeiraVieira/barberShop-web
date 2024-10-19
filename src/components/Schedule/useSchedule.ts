@@ -1,18 +1,29 @@
 import { barberOpeningHoursCache } from '@/constants/requestCacheNames';
+import { createAppointment } from '@/services/appointment';
 import { getBarberOpeningHours } from '@/services/barberOpeningHours';
+import { CreateAppointmentDto } from '@/types/appointment';
 import { BarberOpeningHours, WeekdayOutput } from '@/types/barberOpeningHours';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import dayjs, { Dayjs } from 'dayjs';
 import { useState, useEffect } from 'react';
 
 export const useSchedule = () => {
   dayjs.locale('pt-br');
 
+  const { mutate: createAppointmentMutatate } = useMutation({
+    mutationFn: async (dto: CreateAppointmentDto) => {
+      await createAppointment(dto);
+      return dto;
+    },
+
+    onSuccess: () => {},
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); // August 25, 2020
   const [selectedTime, setSelectedTime] = useState<number | null>(null);
   const [currentWeekStart, setCurrentWeekStart] = useState<Date>(
-    new Date(2024, 10, 6),
+    new Date(2024, 10, 13),
   ); // August 23, 2020 (Sunday)
 
   const { data: barberOpeningHours } = useQuery<BarberOpeningHours>({
@@ -42,18 +53,12 @@ export const useSchedule = () => {
   };
 
   const handleDateSelect = (date: Date) => {
+    console.log('🚀 ~ handleDateSelect ~ date:', date);
     setSelectedDate(new Date(date));
   };
 
   const handleTimeSelect = (time: number) => {
     setSelectedTime(time);
-  };
-
-  const handleFinishScheduling = () => {
-    console.log(
-      `Agendamento finalizado para ${selectedDate?.toLocaleDateString()} às ${selectedTime}`,
-    );
-    setIsOpen(false);
   };
 
   const today = dayjs();
@@ -93,6 +98,22 @@ export const useSchedule = () => {
     setCurrentWeek(today.startOf('week'));
   };
 
+  const handleFinishScheduling = () => {
+    if (selectedDate && selectedHour && selectedMinute) {
+      selectedDate.setHours(selectedHour, selectedMinute);
+      createAppointmentMutatate({
+        date: selectedDate,
+        barberServiceId: '002ff1ff-6353-4e89-b90f-23ec5ecf9696',
+        barberShopId: '45a0f749-9f59-475f-80c9-91121b8073fb',
+      });
+
+      console.log(selectedDate);
+    } else {
+      alert('Por favor, selecione uma data antes de finalizar o agendamento.');
+    }
+    setIsOpen(false);
+  };
+
   const daysOfWeek = getDaysOfWeek();
 
   const weekdaysMap: Record<string, number> = {
@@ -126,7 +147,6 @@ export const useSchedule = () => {
   //     return { ...weekday, date: matchedDay };
   //   })
   //   .filter((day) => day.date && day.date.isAfter(today, 'day'));
-
   return {
     isOpen,
     daysInWeek,
@@ -144,6 +164,7 @@ export const useSchedule = () => {
     today,
     todayDayOfWeek,
     isCurrentWeek,
+    currentWeek,
     handleCloseModal,
     setSelectedDay,
     setSelectedHour,
