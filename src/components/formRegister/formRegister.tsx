@@ -3,10 +3,25 @@ import { Button } from "../ui/button";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { useState } from "react";
 
 export default function FormRegister() {
 
   const {showPassword, togglePasswordVisibility} = useAppContext();
+
+  const [registerForm, setRegisterForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (event:  React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target;
+    setRegisterForm({
+      ...registerForm,
+      [name]: value,
+    })
+  }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -22,6 +37,9 @@ export default function FormRegister() {
           <User className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             id="register-name"
+            name="name"
+            value={registerForm.name}
+            onChange={handleInputChange}
             placeholder="Seu nome"
             className="pl-8"
             required
@@ -35,6 +53,9 @@ export default function FormRegister() {
           <Input
             id="register-email"
             type="email"
+            name="email"
+            value={registerForm.email}
+            onChange={handleInputChange}
             placeholder="seu@email.com"
             className="pl-8"
             required
@@ -48,6 +69,9 @@ export default function FormRegister() {
           <Input
             id="register-password"
             type={showPassword ? 'text' : 'password'}
+            name="password"
+            value={registerForm.password}
+            onChange={handleInputChange}
             className="pl-8 pr-8"
             required
           />

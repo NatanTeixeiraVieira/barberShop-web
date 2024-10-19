@@ -3,14 +3,26 @@ import { Label } from "@radix-ui/react-label";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import React, { useState } from "react";
 
 export default function FormLogin() {
 
   const { showPassword, togglePasswordVisibility } = useAppContext();
+  const [authForm, setAuthForm] = useState({
+    email: '',
+    password: ''
+  })
+
+  const handleAuthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target;
+    setAuthForm({
+      ...authForm,
+      [name]: value
+    })
+  }
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Form submitted');
   };
 
   return (
@@ -23,6 +35,9 @@ export default function FormLogin() {
                       <Input
                         id="login-email"
                         type="email"
+                        name="email"
+                        value={authForm.email}
+                        onChange={handleAuthChange}
                         placeholder="seu@email.com"
                         className="pl-8"
                         required
@@ -36,6 +51,9 @@ export default function FormLogin() {
                       <Input
                         id="login-password"
                         type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        value={authForm.password}
+                        onChange={handleAuthChange}
                         className="pl-8 pr-8"
                         required
                       />
