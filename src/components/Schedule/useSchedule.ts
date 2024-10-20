@@ -1,4 +1,5 @@
 import { barberOpeningHoursCache } from '@/constants/requestCacheNames';
+import { useToast } from '@/hooks/use-toast';
 import { createAppointment } from '@/services/appointment';
 import { getBarberOpeningHours } from '@/services/barberOpeningHours';
 import { CreateAppointmentDto } from '@/types/appointment';
@@ -10,14 +11,35 @@ import { useState, useEffect } from 'react';
 export const useSchedule = () => {
   dayjs.locale('pt-br');
 
-  const { mutate: createAppointmentMutatate } = useMutation({
+  const {
+    mutate: createAppointmentMutatate,
+    isPending: isCreateAppointmentPending,
+  } = useMutation({
     mutationFn: async (dto: CreateAppointmentDto) => {
       await createAppointment(dto);
       return dto;
     },
 
-    onSuccess: () => {},
+    onSuccess: () => {
+      setIsOpen(false);
+      toast({
+        title: 'Agendamento realizado com sucesso',
+        className: 'h-20',
+        variant: 'success',
+      });
+    },
+
+    onError: () => {
+      setIsOpen(false);
+      toast({
+        title: 'Falha ao realizar agendamento',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
   });
+
+  const { toast } = useToast();
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null); // August 25, 2020
@@ -99,19 +121,18 @@ export const useSchedule = () => {
   };
 
   const handleFinishScheduling = () => {
-    if (selectedDate && selectedHour && selectedMinute) {
+    if (
+      selectedDate !== null &&
+      selectedHour !== null &&
+      selectedMinute !== null
+    ) {
       selectedDate.setHours(selectedHour, selectedMinute);
       createAppointmentMutatate({
         date: selectedDate,
         barberServiceId: '002ff1ff-6353-4e89-b90f-23ec5ecf9696',
         barberShopId: '45a0f749-9f59-475f-80c9-91121b8073fb',
       });
-
-      console.log(selectedDate);
-    } else {
-      alert('Por favor, selecione uma data antes de finalizar o agendamento.');
     }
-    setIsOpen(false);
   };
 
   const daysOfWeek = getDaysOfWeek();
@@ -165,6 +186,7 @@ export const useSchedule = () => {
     todayDayOfWeek,
     isCurrentWeek,
     currentWeek,
+    isCreateAppointmentPending,
     handleCloseModal,
     setSelectedDay,
     setSelectedHour,

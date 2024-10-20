@@ -9,6 +9,8 @@ export default {
         secondary: '#46A5C1',
         paper: '#efefef',
         star: '#FC980D',
+        success: '#28a745',
+        error: '#dc3545',
       },
     },
   },

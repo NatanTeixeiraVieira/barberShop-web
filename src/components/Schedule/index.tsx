@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSchedule } from './useSchedule';
 import 'dayjs/locale/pt-br';
 import { capitalize } from '@/utils/formatter';
+import { Toaster } from '../ui/toaster';
+import Spinner from '../Spinner';
 
 export default function Schedule() {
   const schedule = useSchedule();
@@ -187,15 +189,18 @@ export default function Schedule() {
             className="w-full bg-primary text-white hover:bg-secondary font-medium text-sm py-1"
             onClick={schedule.handleFinishScheduling}
             disabled={
-              !schedule.selectedTime ||
-              !schedule.selectedDate ||
-              !schedule.selectedMinute
+              schedule.selectedTime === null ||
+              schedule.selectedDate === null ||
+              schedule.selectedMinute === null ||
+              schedule.isCreateAppointmentPending
             }
           >
-            Finalizar Agendamento
+            {schedule.isCreateAppointmentPending && <Spinner size="sm" />}
+            {!schedule.isCreateAppointmentPending && 'Finalizar Agendamento'}
           </Button>
         </div>
       </DialogContent>
+      <Toaster />
     </Dialog>
   );
 }
