@@ -1,4 +1,4 @@
-import { ContextType } from "@/@types/contextType";
+import { ContextType } from "@/types/contextType";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 export const AppContext = createContext<ContextType | undefined>( undefined );

@@ -1,6 +1,41 @@
 import { Star, ChevronLeft, MoreHorizontal, Heart, ChevronRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+
+interface BarberShop {
+  id: string,
+  name: string
+}
+
+interface ApiBarberShop {
+  props: BarberShop,
+}
+
 
 export default function DetailBarberShop() {
+
+  const [ barberShop, setBarberShop ] = useState<BarberShop | null>(null);
+
+  const {barberShopId} = useParams<{barberShopId: string}>()
+
+  useEffect(() => {
+    const fetchBarberShop = async () => {
+      try {
+        const responseBarber = await fetch(`http://localhost:3333/api/client/v1/${barberShopId}`)
+
+        if (!responseBarber.ok) {
+          throw new Error(`Erro nao requisição`)
+        }
+        const jsonData: ApiBarberShop = await responseBarber.json();
+        setBarberShop(jsonData.props)
+        console.log("🚀 ~ fetchBarberShop ~ jsonData:", jsonData)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchBarberShop()
+  }, [barberShopId])
+
   return (
     <div className="bg-sky-400 min-h-screen p-4 md:p-8 lg:p-12">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
@@ -11,7 +46,7 @@ export default function DetailBarberShop() {
         <div className="px-6 py-4">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="text-2xl font-bold">Dyeison Felipe</h2>
+              <h2 className="text-2xl font-bold">{barberShop?.name}</h2>
               <div className="flex items-center mt-1">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className={`w-4 h-4 ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" />
