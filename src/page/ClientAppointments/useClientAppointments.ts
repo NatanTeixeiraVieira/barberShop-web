@@ -1,10 +1,13 @@
 import { clientAppointmentsListCache } from '@/constants/requestCacheNames';
 import { usePagination } from '@/hooks/usePagination';
+import { useTitle } from '@/hooks/useTitle';
 import { getClientAppointment } from '@/services/appointment';
 import { ListClientAppointments } from '@/types/appointment';
 import { useQuery } from '@tanstack/react-query';
 
 export const useClientAppoitments = () => {
+  useTitle('Agendamentos cliente');
+
   const { data: clientAppointments, refetch: refetchClientAppointments } =
     useQuery<ListClientAppointments>({
       queryKey: [clientAppointmentsListCache],
