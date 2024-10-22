@@ -11,9 +11,22 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import FormRegister from '@/components/formRegister/formRegister';
 import FormLogin from '@/components/formLogin/formLogin';
 import { useAppContext } from '@/context/appContext';
+import { useLocation } from 'react-router-dom';
+import React from 'react';
 
 export default function Auth() {
   const {activeTab, setActiveTab, setShowPassword} = useAppContext();
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.pathname === '/auth/register') {
+      setActiveTab('register')
+    } else if (location.pathname === '/auth/login') {
+      setActiveTab('login')
+    }
+    setShowPassword(false)
+  }, [location.pathname, setActiveTab, setShowPassword])
 
 
   const handleTabChange = (currentTab: string) => {
@@ -22,7 +35,7 @@ export default function Auth() {
   }
 
   return (
-    <section className='bg-primary h-full min-h-screen flex flex-col justify-center items-center'>
+    <section className='bg-primary h-full flex flex-col justify-center items-center'>
       <img src="/LogoBarbeiro.svg" alt="Logo" className='w-60'/>
       <Card className="w-[350px] bg-white">
         <CardHeader>

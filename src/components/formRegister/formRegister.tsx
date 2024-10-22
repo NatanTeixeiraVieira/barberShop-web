@@ -23,9 +23,27 @@ export default function FormRegister() {
     })
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async  (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Register form submitted');
+
+    try {
+      const response = await fetch('http://localhost:3333/api/client/v1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registerForm),
+      });
+
+      if(response.ok) {
+        const data = await response.json();
+        console.log('Cliente registrado com secesso: ', data)
+      } else {
+        console.log('Erro ao registrar cliente: ', response.statusText);
+      }
+    } catch (error) {
+      console.log('Erro de conexão com backend: ', error)
+    }
   };
 
   return (
