@@ -21,7 +21,7 @@ export const useSchedule = () => {
     },
 
     onSuccess: () => {
-      setIsOpen(false);
+      handleCloseModal();
       toast({
         title: 'Agendamento realizado com sucesso',
         className: 'h-20',
@@ -30,7 +30,7 @@ export const useSchedule = () => {
     },
 
     onError: () => {
-      setIsOpen(false);
+      handleCloseModal();
       toast({
         title: 'Falha ao realizar agendamento',
         className: 'h-20',
@@ -56,9 +56,6 @@ export const useSchedule = () => {
     retry: false,
     refetchOnWindowFocus: false,
   });
-
-  const daysInWeek = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-  const timeSlots = ['13:00', '14:00', '15:00', '16:00'];
 
   useEffect(() => {
     if (selectedDate) {
@@ -118,6 +115,7 @@ export const useSchedule = () => {
   const handleCloseModal = () => {
     clearSelecteds();
     setCurrentWeek(today.startOf('week'));
+    setIsOpen(false);
   };
 
   const handleFinishScheduling = () => {
@@ -160,18 +158,8 @@ export const useSchedule = () => {
       return { ...weekday, date: matchedDate };
     });
 
-  // const availableDays = schedule.barberOpeningHours?.weekdays
-  //   .map((weekday) => {
-  //     const matchedDay = daysOfWeek.find(
-  //       (day) => day.format('ddd').toLowerCase() === weekday.name,
-  //     );
-  //     return { ...weekday, date: matchedDay };
-  //   })
-  //   .filter((day) => day.date && day.date.isAfter(today, 'day'));
   return {
     isOpen,
-    daysInWeek,
-    timeSlots,
     currentWeekStart,
     selectedDate,
     selectedTime,

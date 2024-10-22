@@ -55,8 +55,6 @@ export default function Schedule() {
             </div>
             <div className="flex gap-2 justify-center">
               {schedule.availableDays?.map((day) => {
-                // const date = new Date(schedule.currentWeekStart);
-                // date.setDate(schedule.currentWeekStart.getDate() + i + 1); // +1 because we start from Monday
                 const isSelected =
                   day.date.toDate().toDateString() ===
                   schedule.selectedDate?.toDateString();
