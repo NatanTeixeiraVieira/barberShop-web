@@ -16,7 +16,11 @@ export type CreateAppointment = {
 
 export type GetClientAppointmentsDto = PaginationDto;
 
-export type ClientAppointment = {
+export type GetBarberShopAppointmentsDto = PaginationDto & {
+  barberShopId: string;
+};
+
+export type Appointment = {
   id: string;
   date: Date;
   service: {
@@ -24,6 +28,9 @@ export type ClientAppointment = {
     name: string;
     price: number;
   };
+};
+
+export type ClientAppointment = Appointment & {
   barber: {
     id: string;
     photoUrl: string;
@@ -31,4 +38,14 @@ export type ClientAppointment = {
   };
 };
 
+export type BarberShopAppointment = Appointment & {
+  client: {
+    id: string;
+    photoUrl: string;
+    name: string;
+  };
+};
+
 export type ListClientAppointments = Pagination<ClientAppointment>;
+
+export type ListBarberShopAppointments = Pagination<BarberShopAppointment>;
