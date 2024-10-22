@@ -1,6 +1,6 @@
 import { ListBarberShop } from '@/types/barberShop';
 import { api } from './api';
-import { PaginationDto } from './pagination';
+import { PaginationDto } from '../types/pagination';
 
 export const getBarberShopList = async (paginationDto?: PaginationDto) => {
   const pagination = paginationDto ?? { limit: 20, page: 1 };

@@ -1,5 +1,5 @@
 import { barberOpeningHoursCache } from '@/constants/requestCacheNames';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/useToast';
 import { createAppointment } from '@/services/appointment';
 import { getBarberOpeningHours } from '@/services/barberOpeningHours';
 import { CreateAppointmentDto } from '@/types/appointment';

@@ -1,4 +1,4 @@
-import { Pagination } from '@/services/pagination';
+import { Pagination } from '@/types/pagination';
 
 export type BarberShop = {
   id: string;

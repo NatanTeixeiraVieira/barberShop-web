@@ -1,4 +1,9 @@
-import { CreateAppointment, CreateAppointmentDto } from '@/types/appointment';
+import {
+  CreateAppointment,
+  CreateAppointmentDto,
+  GetClientAppointmentsDto,
+  ListClientAppointments,
+} from '@/types/appointment';
 import { api } from './api';
 
 export const createAppointment = async (dto: CreateAppointmentDto) => {
@@ -8,4 +13,22 @@ export const createAppointment = async (dto: CreateAppointmentDto) => {
   );
 
   return createAppointment;
+};
+
+export const getClientAppointment = async (dto: GetClientAppointmentsDto) => {
+  const pagination = dto ?? { limit: 20, page: 1 };
+  const searchParams = new URLSearchParams();
+  if (pagination.page) {
+    searchParams.append('page', pagination.page.toString());
+  }
+
+  if (pagination.limit) {
+    searchParams.append('limit', pagination.limit.toString());
+  }
+
+  const barberShop = await api.get<ListClientAppointments>(
+    `/appointment/v1/client-appointments`,
+  );
+
+  return barberShop;
 };
