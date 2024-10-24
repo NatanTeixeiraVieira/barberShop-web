@@ -24,7 +24,7 @@ export default function Auth() {
       setActiveTab('register')
     } else if (location.pathname === '/auth/login') {
       setActiveTab('login')
-    }
+    } 
     setShowPassword(false)
   }, [location.pathname, setActiveTab, setShowPassword])
 

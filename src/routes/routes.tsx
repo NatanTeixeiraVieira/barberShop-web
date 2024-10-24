@@ -5,6 +5,7 @@ import DetailBarberShop from '@/components/detailsBarberShop/detailsBarberShop';
 import Navbar from '@/components/navbar/navbar';
 import BarberAppointments from '@/page/BarberAppointments';
 import ClientAppointments from '@/page/ClientAppointments';
+import FormBarberShop from '@/components/formBarberShop/formBarberShop';
 
 const routes = () => {
   return (
@@ -14,6 +15,7 @@ const routes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/auth/register" element={<Auth />} />
         <Route path="/auth/login" element={<Auth />} />
+        <Route path="/auth/register-barber-shop" element={<FormBarberShop/>} />
         <Route path="/details-barber-shop" element={<DetailBarberShop />} />
         <Route path="/client-appointments" element={<ClientAppointments />} />
         <Route

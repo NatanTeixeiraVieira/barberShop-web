@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 export const AppContext = createContext<ContextType | undefined>( undefined );
 
 export const AppProvider = ({children}: {children: ReactNode}) => {
-  const [activeTab, setActiveTab] = useState('login');
+  const [activeTab, setActiveTab] = useState('barber');
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
