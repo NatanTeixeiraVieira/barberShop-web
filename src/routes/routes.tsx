@@ -5,6 +5,7 @@ import DetailBarberShop from '@/components/detailsBarberShop/detailsBarberShop';
 import Navbar from '@/components/navbar/navbar';
 import BarberAppointments from '@/page/BarberAppointments';
 import ClientAppointments from '@/page/ClientAppointments';
+import BarberShopProfile from '@/page/BarberShopProfile';
 
 const routes = () => {
   return (
@@ -19,6 +20,10 @@ const routes = () => {
         <Route
           path="/barber-shop-appointments/:barberShopId"
           element={<BarberAppointments />}
+        />
+        <Route
+          path="/barber-shop-profile/:barberShopId"
+          element={<BarberShopProfile />}
         />
       </Routes>
     </BrowserRouter>
