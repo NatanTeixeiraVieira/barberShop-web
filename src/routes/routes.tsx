@@ -5,8 +5,8 @@ import DetailBarberShop from '@/components/detailsBarberShop/detailsBarberShop';
 import Navbar from '@/components/navbar/navbar';
 import BarberAppointments from '@/page/BarberAppointments';
 import ClientAppointments from '@/page/ClientAppointments';
-import FormBarberShop from '@/components/formBarberShop/formBarberShop';
 import BarberShopProfile from '@/page/BarberShopProfile';
+import CadastroBarbearia from '@/page/FormBarber';
 import ClientProfile from '@/page/ClientProfile';
 
 const routes = () => {
@@ -17,7 +17,10 @@ const routes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/auth/register" element={<Auth />} />
         <Route path="/auth/login" element={<Auth />} />
-        <Route path="/auth/register-barber-shop" element={<FormBarberShop />} />
+        <Route
+          path="/auth/register-barber-shop"
+          element={<CadastroBarbearia />}
+        />
         <Route path="/details-barber-shop" element={<DetailBarberShop />} />
         <Route path="/client-appointments" element={<ClientAppointments />} />
         <Route

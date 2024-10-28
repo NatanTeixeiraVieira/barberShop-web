@@ -1,9 +1,9 @@
-import { ContextType } from "@/types/contextType";
+import { AppContextType } from "@/types/appContextType";
 import { createContext, ReactNode, useContext, useState } from "react";
 
-export const AppContext = createContext<ContextType | undefined>( undefined );
+export const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider = ({children}: {children: ReactNode}) => {
+export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState('barber');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -11,7 +11,7 @@ export const AppProvider = ({children}: {children: ReactNode}) => {
     setShowPassword((prevState) => !prevState);
   };
 
-  return(
+  return (
     <AppContext.Provider value={{ activeTab, setActiveTab, showPassword, setShowPassword, togglePasswordVisibility }}>
       {children}
     </AppContext.Provider>
