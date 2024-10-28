@@ -1,4 +1,4 @@
-export type ContextType = {
+export type AppContextType = {
   activeTab: string;
   setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   //React.Dispatch:  É um tipo que representa uma função que aceita um valor (ou uma função) como argumento e, em seguida, executa essa ação.
@@ -6,4 +6,4 @@ export type ContextType = {
   showPassword: boolean;
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
   togglePasswordVisibility: () => void;
-}
+};

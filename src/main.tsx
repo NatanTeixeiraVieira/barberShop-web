@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AppProvider>
-        <App />
+          <App />
       </AppProvider>
     </QueryClientProvider>
   </StrictMode>,
