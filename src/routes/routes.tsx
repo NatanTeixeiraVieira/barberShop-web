@@ -7,6 +7,7 @@ import BarberAppointments from '@/page/BarberAppointments';
 import ClientAppointments from '@/page/ClientAppointments';
 import FormBarberShop from '@/components/formBarberShop/formBarberShop';
 import BarberShopProfile from '@/page/BarberShopProfile';
+import ClientProfile from '@/page/ClientProfile';
 
 const routes = () => {
   return (
@@ -27,6 +28,7 @@ const routes = () => {
           path="/barber-shop-profile/:barberShopId"
           element={<BarberShopProfile />}
         />
+        <Route path="/client-profile/:clientId" element={<ClientProfile />} />
       </Routes>
     </BrowserRouter>
   );
