@@ -1,10 +1,9 @@
 'use client'
 
 import { Label } from "@/components/ui/label"
-import { Input } from "../ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select"
-import { useState } from 'react';
-import { SelectGroup, SelectLabel } from "../ui/select";
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from "@/components/ui/select"
+import { useState } from 'react'
 
 export default function FormBarberShop() {
   const brazilianStates = [
@@ -37,7 +36,7 @@ export default function FormBarberShop() {
     { value: "TO", label: "Tocantins" },
   ]
 
-  const [selectedEstado, setSelectedEstado] = useState("");
+  const [selectedEstado, setSelectedEstado] = useState("")
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -48,6 +47,24 @@ export default function FormBarberShop() {
       <div className="space-y-2">
         <Label htmlFor="cnpj">CNPJ</Label>
         <Input id="cnpj" required />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="estado">Estado</Label>
+        <Select onValueChange={setSelectedEstado} value={selectedEstado}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Selecione um estado" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel className="bg-white">Estados</SelectLabel>
+              {brazilianStates.map((state) => (
+                <SelectItem key={state.value} value={state.value} className="bg-white">
+                  {state.label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
       <div className="space-y-2">
         <Label htmlFor="cep">CEP</Label>
@@ -66,27 +83,9 @@ export default function FormBarberShop() {
         <Input id="cidade" required />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="estado">Estado</Label>
-        <Select onValueChange={(e) => setSelectedEstado(e)}>
-          <SelectTrigger className="w-[280px]">
-            <SelectValue placeholder="Selecione um estado" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Estados</SelectLabel>
-              {brazilianStates.map((state) => (
-                <SelectItem key={state.value} value={state.value}>
-                  {state.label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="space-y-2">
         <Label htmlFor="telefone">Telefone</Label>
         <Input id="telefone" type="tel" required />
       </div>
     </div>
-  );
+  )
 }
