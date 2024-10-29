@@ -1,15 +1,41 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import BarberShopHours from '@/components/barberShopHours/barberShopHours'
-import FormBarberShop from '@/components/formBarberShop/formBarberShop'
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BarberShopHours from '@/components/barberShopHours/barberShopHours';
+import FormBarberShop from '@/components/formBarberShop/formBarberShop';
+import { useBarberShopContext } from '@/context/formBarberShopContext';
 
 export default function CadastroBarbearia() {
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // lógica do submit
-  }
+  const { formBarberShop } = useBarberShopContext();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Combina os dados dos formulários em um único objeto para envio
+    const BarberShopData = {
+      ...formBarberShop,
+    };
+
+
+    try {
+      const response = await fetch('http://localhost:3333/api/barber-shop/v1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(BarberShopData),
+      });
+
+      if (response.ok) {
+        console.log("Barbearia cadastrada com sucesso!");
+      } else {
+        console.error("Erro ao cadastrar barbearia");
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
+  };
 
   return (
     <Card className="w-full max-w-4xl mx-auto bg-white min-h-screen flex flex-col justify-between">
@@ -20,11 +46,11 @@ export default function CadastroBarbearia() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormBarberShop />
           <BarberShopHours />
+        <div className="p-4">
+          <Button type="submit" className="w-full">Cadastrar Barbearia</Button>
+        </div>
         </form>
       </CardContent>
-      <div className="p-4">
-        <Button type="submit" className="w-full">Cadastrar Barbearia</Button>
-      </div>
     </Card>
-  )
+  );
 }

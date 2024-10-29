@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { useBarberShopContext } from '@/context/formBarberShopContext';
 
 export default function BarberShopHours() {
-  const [horarios, setHorarios] = useState<{ [key: string]: { abertura: string; fechamento: string } }>({});
+  const { hoursBarberShop, setBarberShopHours } = useBarberShopContext();
 
   const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
-  const handleHorarioChange = (dia: string, tipo: 'abertura' | 'fechamento', valor: string) => {
-    setHorarios((prev) => ({
+  const handleHorarioChange = (dia: string, tipo: 'start' | 'end', valor: string) => {
+    setBarberShopHours((prev) => ({
       ...prev,
       [dia]: { ...prev[dia], [tipo]: valor },
     }));
   };
 
-  // Função para gerar horários de 5 em 5 minutos
   const generateTimeOptions = () => {
     const times = [];
     for (let hour = 0; hour < 24; hour++) {
@@ -33,8 +32,8 @@ export default function BarberShopHours() {
         <div key={dia} className="flex items-center space-x-4">
           <span className="w-24">{dia}</span>
           <select
-            value={horarios[dia]?.abertura || ''}
-            onChange={(e) => handleHorarioChange(dia, 'abertura', e.target.value)}
+            value={hoursBarberShop[dia]?.start || ''}
+            onChange={(e) => handleHorarioChange(dia, 'start', e.target.value)}
             className="w-32"
           >
             <option value="">Selecione</option>
@@ -46,8 +45,8 @@ export default function BarberShopHours() {
           </select>
           <span>até</span>
           <select
-            value={horarios[dia]?.fechamento || ''}
-            onChange={(e) => handleHorarioChange(dia, 'fechamento', e.target.value)}
+            value={hoursBarberShop[dia]?.end || ''}
+            onChange={(e) => handleHorarioChange(dia, 'end', e.target.value)}
             className="w-32"
           >
             <option value="">Selecione</option>
