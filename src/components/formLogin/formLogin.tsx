@@ -45,7 +45,7 @@ export default function FormLogin() {
       console.log("autenticação realizada com sucesso:", loginOutput);
 
       // Salve o token e redirecione o usuário
-      localStorage.setItem("authToken", loginOutput.token);
+      localStorage.setItem("isAuthenticate", 'true');
       navigate("/details-barber-shop"); // Redirecione para a página desejada
 
     } catch (error) {
