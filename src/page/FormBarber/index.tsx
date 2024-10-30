@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import BarberShopHours from '@/components/barberShopHours/barberShopHours';
 import FormBarberShop from '@/components/formBarberShop/formBarberShop';
 import { useBarberShopContext } from '@/context/formBarberShopContext';
 
@@ -12,7 +11,6 @@ export default function CadastroBarbearia() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Combina os dados dos formulários em um único objeto para envio
     const BarberShopData = {
       ...formBarberShop,
     };
@@ -38,17 +36,16 @@ export default function CadastroBarbearia() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-white min-h-screen flex flex-col justify-between">
+    <Card className="my-6 w-full max-w-3xl mx-auto bg-white min-h-screen flex flex-col justify-between">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Cadastro de Barbearia</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow">
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormBarberShop />
-          <BarberShopHours />
-        <div className="p-4">
-          <Button type="submit" className="w-full">Cadastrar Barbearia</Button>
-        </div>
+          <div className="p-4">
+            <Button type="submit" className="w-full">Cadastrar Barbearia</Button>
+          </div>
         </form>
       </CardContent>
     </Card>

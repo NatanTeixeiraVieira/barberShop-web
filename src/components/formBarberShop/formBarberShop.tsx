@@ -47,7 +47,7 @@ export default function FormBarberShop() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
       <div className="space-y-2">
         <Label htmlFor="nomeBarbearia">Nome da Barbearia</Label>
         <Input id="nomeBarbearia" value={formBarberShop.name} onChange={(e) => handleChange('name', e.target.value)} required />
@@ -63,7 +63,7 @@ export default function FormBarberShop() {
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Selecione um estado" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             <SelectGroup>
               <SelectLabel className="bg-white">Estados</SelectLabel>
               {brazilianStates.map((state) => (
