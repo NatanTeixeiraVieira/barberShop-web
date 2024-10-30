@@ -4,6 +4,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function FormLogin() {
 
@@ -13,6 +14,9 @@ export default function FormLogin() {
     password: ''
   })
 
+  const navigate = useNavigate();
+
+
   const handleAuthChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
     setAuthForm({
@@ -21,8 +25,32 @@ export default function FormLogin() {
     })
   }
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3333/api/auth/v1/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(authForm),
+      });
+
+      if (!response.ok) {
+        throw new Error("Email ou senha inválidos");
+      }
+
+      const loginOutput = await response.json();
+      console.log("autenticação realizada com sucesso:", loginOutput);
+
+      // Salve o token e redirecione o usuário
+      localStorage.setItem("authToken", loginOutput.token);
+      navigate("/details-barber-shop"); // Redirecione para a página desejada
+
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+    }
   };
 
   return (
