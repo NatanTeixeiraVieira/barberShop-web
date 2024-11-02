@@ -6,3 +6,4 @@ export const barberShopAppointmentsListCache =
 export const barberShopProfileCache = 'barberShopProfileCache';
 export const addressByCepCache = 'addressByCepCache';
 export const clientByIdCache = 'clientByIdCache';
+export const barberShopServiceCache = 'barberShopServiceCache';
