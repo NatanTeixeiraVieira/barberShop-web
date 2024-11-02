@@ -1,93 +1,79 @@
-import { Star, ChevronLeft, MoreHorizontal, Heart, ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
-interface BarberShop {
-  id: string,
-  name: string
+interface Service {
+  id: string;
+  name: string;
+  price: number;
+  duration: number;
+  barberShopId: string;
 }
 
-interface ApiBarberShop {
-  props: BarberShop,
-}
+const BarberShopDetails: React.FC = () => {
+  const [barberShopServices, setBarberShopServices] = useState<Service[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
-export default function DetailBarberShop() {
-
-  const [ barberShop, setBarberShop ] = useState<BarberShop | null>(null);
-
-  const {barberShopId} = useParams<{barberShopId: string}>()
+  const barberShopId = 'b4bbeff7-77db-4284-97e3-7faddec81b9b'
 
   useEffect(() => {
-    const fetchBarberShop = async () => {
+    async function fetchBarberShop() {
       try {
-        const responseBarber = await fetch(`http://localhost:3333/api/client/v1/${barberShopId}`)
-
-        if (!responseBarber.ok) {
-          throw new Error(`Erro nao requisição`)
-        }
-        const jsonData: ApiBarberShop = await responseBarber.json();
-        setBarberShop(jsonData.props)
-        console.log("🚀 ~ fetchBarberShop ~ jsonData:", jsonData)
+        // Simulação de fetch
+        const response = await fetch(`http://localhost:3333/api/barber-service/v1/barber-shop/${barberShopId}`);
+        const data = await response.json();
+        setBarberShopServices(data);
       } catch (error) {
-        console.error(error)
+        console.error('Erro ao buscar os serviços do barbeiro:', error);
+        setBarberShopServices([]); // Define um array vazio no caso de erro
+      } finally {
+        setIsLoading(false); // Indica que o carregamento terminou
       }
     }
-    fetchBarberShop()
-  }, [barberShopId])
+
+    fetchBarberShop();
+  }, []);
+
+  // Verificação adicional para garantir que o array não seja undefined
+  const hasServices = Array.isArray(barberShopServices) && barberShopServices.length > 0;
 
   return (
-    <div className="bg-sky-400 min-h-screen p-4 md:p-8 lg:p-12">
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="p-4 flex justify-between items-center">
-          <ChevronLeft className="text-gray-600" />
-          <MoreHorizontal className="text-gray-600" />
+    <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md mt-8">
+      <div className="flex justify-between items-center mb-4">
+        <button className="text-gray-500 hover:text-gray-700">
+          {/* Voltar para a lista de barbeiros */}
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h1 className="text-2xl font-bold">Nome do Barbeiro</h1>
+
+        <div className="flex items-center mb-4">
+          <span className="text-yellow-500 text-lg">★★★★☆</span>
         </div>
-        <div className="px-6 py-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <h2 className="text-2xl font-bold">{barberShop?.name}</h2>
-              <div className="flex items-center mt-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-4 h-4 ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" />
-                ))}
-                <span className="ml-2 text-gray-600">4.7</span>
-              </div>
-            </div>
-            <Heart className="text-gray-400" />
-          </div>
-          <h3 className="mt-6 mb-4 text-lg font-semibold">Lista de serviços</h3>
-          <div className="space-y-4">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">Corte masculino</p>
-                  <p className="text-sm text-gray-600">R$ 29,90</p>
-                </div>
-                <button className="bg-sky-500 text-white px-4 py-2 rounded-md hover:bg-sky-600 transition-colors">
-                  Agendar
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 bg-gray-100 p-4 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold">Natãn</p>
-                <div className="flex mt-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" />
-                  ))}
-                </div>
-              </div>
-              <ChevronRight className="text-gray-600" />
-            </div>
-            <p className="mt-2 text-sm text-gray-600">
-              Muito bom este cortador, muito educado e atencioso. Recomendo demais!
-            </p>
-          </div>
-        </div>
+
       </div>
+
+      <h2 className="text-xl font-semibold mb-2">Lista de serviços</h2>
+
+      {isLoading ? (
+        <p className="text-gray-600">Carregando serviços...</p>
+      ) : hasServices ? (
+        barberShopServices.map((service) => (
+          <div key={service.id} className="flex justify-between items-center mb-4">
+            <div>
+              <p className="font-medium">{service.name}</p>
+              <p className="text-sm text-gray-600">R$ {service.price}</p>
+              <p className="text-sm text-gray-600">Duração: {service.duration} min</p>
+            </div>
+            <button className="bg-sky-500 text-white px-4 py-2 rounded-md hover:bg-sky-600 transition-colors">
+              Agendar
+            </button>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-600">Nenhum serviço encontrado.</p>
+      )}
     </div>
-  )
-}
+  );
+};
+
+export default BarberShopDetails;
