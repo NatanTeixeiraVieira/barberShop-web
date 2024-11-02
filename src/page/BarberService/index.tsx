@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,6 +17,7 @@ import { barberShopServiceCache } from '@/constants/requestCacheNames';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createBarberShopService,
+  deleteBarberShopService,
   getBarberShopServicesByBarberShopId,
   updateBarberShopService,
 } from '@/services/barberService';
@@ -97,6 +98,33 @@ export default function BarberShopService() {
     },
   });
 
+  const {
+    mutate: deleteBarberShopServiceMutatate,
+    isPending: isDeleteBarberShopServicePending,
+  } = useMutation({
+    mutationFn: async (barberServiceId: string) => {
+      await deleteBarberShopService(barberServiceId);
+    },
+
+    onSuccess: () => {
+      setServices(
+        services.filter(
+          (service) => service.id !== currentServiceUpdate.current?.id,
+        ),
+      );
+      setIsDeleteDialogOpen(false);
+      currentServiceUpdate.current = null;
+    },
+
+    onError: () => {
+      toast({
+        title: 'Falha ao deletar serviço',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
+  });
+
   useEffect(() => {
     if (barberShopService) {
       setServices(barberShopService);
@@ -107,8 +135,12 @@ export default function BarberShopService() {
     'update' | 'create' | null
   >(null);
 
-  const [deletingService, setDeletingService] =
-    useState<BarberShopServicesListOptionalId | null>(null);
+  const currentServiceUpdate = useRef<BarberShopServicesListOptionalId | null>(
+    null,
+  );
+
+  // const [deletingService, setDeletingService] =
+  //   useState<BarberShopServicesListOptionalId | null>(null);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -118,6 +150,21 @@ export default function BarberShopService() {
 
   const handleCloseUpsertDialog = () => {
     setUpsertingService(null);
+    currentServiceUpdate.current = null;
+  };
+
+  const handleOpenUpdateDialog = (
+    service: BarberShopServicesListOptionalId,
+  ) => {
+    currentServiceUpdate.current = service;
+    setUpsertingService('update');
+  };
+
+  const handleOpenDeleteDialog = (
+    service: BarberShopServicesListOptionalId,
+  ) => {
+    currentServiceUpdate.current = service;
+    setIsDeleteDialogOpen(true);
   };
 
   const handleUpdateService = (updatedService: UpdateBarberShopService) => {
@@ -125,12 +172,8 @@ export default function BarberShopService() {
   };
 
   const handleDeleteService = () => {
-    if (deletingService) {
-      setServices(
-        services.filter((service) => service.id !== deletingService?.id),
-      );
-      setDeletingService(null);
-      setIsDeleteDialogOpen(false);
+    if (currentServiceUpdate.current?.id) {
+      deleteBarberShopServiceMutatate(currentServiceUpdate.current.id);
     }
   };
 
@@ -154,80 +197,21 @@ export default function BarberShopService() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Dialog open={upsertingService === 'update'}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setUpsertingService('update')}
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent
-                      className="bg-paper"
-                      onClose={handleCloseUpsertDialog}
-                    >
-                      <DialogHeader>
-                        <DialogTitle className="text-primary">
-                          Editar Serviço
-                        </DialogTitle>
-                      </DialogHeader>
-                      <ServiceForm
-                        initialService={service}
-                        onSubmit={
-                          handleUpdateService as (
-                            service: UpsertBarberShopService,
-                          ) => void
-                        }
-                        barberShopId={barberShopId!}
-                        isPenging={isUpdateBarberShopServicePending}
-                      />
-                    </DialogContent>
-                  </Dialog>
-                  <Dialog
-                    open={isDeleteDialogOpen}
-                    onOpenChange={setIsDeleteDialogOpen}
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleOpenUpdateDialog(service)}
                   >
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="bg-error text-paper"
-                        onClick={() => {
-                          setDeletingService(service);
-                          setIsDeleteDialogOpen(true);
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-paper">
-                      <DialogHeader>
-                        <DialogTitle className="text-primary">
-                          Confirmar Exclusão
-                        </DialogTitle>
-                        <DialogDescription>
-                          Tem certeza que deseja excluir o serviço "
-                          {deletingService?.name}"?
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter>
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsDeleteDialogOpen(false)}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          className="bg-sky-400 hover:bg-sky-500 text-paper"
-                          onClick={handleDeleteService}
-                        >
-                          Confirmar Exclusão
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="bg-error text-paper"
+                    onClick={() => handleOpenDeleteDialog(service)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -258,6 +242,64 @@ export default function BarberShopService() {
               />
             </DialogContent>
           </Dialog>
+
+          <Dialog open={upsertingService === 'update'}>
+            <DialogContent
+              className="bg-paper"
+              onClose={handleCloseUpsertDialog}
+            >
+              <DialogHeader>
+                <DialogTitle className="text-primary">
+                  Editar Serviço
+                </DialogTitle>
+              </DialogHeader>
+              <ServiceForm
+                initialService={currentServiceUpdate.current}
+                onSubmit={
+                  handleUpdateService as (
+                    service: UpsertBarberShopService,
+                  ) => void
+                }
+                barberShopId={barberShopId!}
+                isPenging={isUpdateBarberShopServicePending}
+              />
+            </DialogContent>
+          </Dialog>
+
+          <Dialog
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+          >
+            <DialogContent className="bg-paper">
+              <DialogHeader>
+                <DialogTitle className="text-primary">
+                  Confirmar Exclusão
+                </DialogTitle>
+                <DialogDescription>
+                  Tem certeza que deseja excluir o serviço "
+                  {currentServiceUpdate.current?.name}"?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  className="bg-sky-400 hover:bg-sky-500 text-paper"
+                  onClick={handleDeleteService}
+                >
+                  {isDeleteBarberShopServicePending ? (
+                    <Spinner size="sm" />
+                  ) : (
+                    'Confirmar'
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
     </div>
@@ -265,7 +307,7 @@ export default function BarberShopService() {
 }
 
 interface ServiceFormProps {
-  initialService?: BarberShopServicesListOptionalId;
+  initialService?: BarberShopServicesListOptionalId | null;
   onSubmit: (
     service: CreateBarberShopService | UpdateBarberShopService,
   ) => void;
