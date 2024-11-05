@@ -1,14 +1,14 @@
-import Home from '@/page/Home';
+import Home from '@/page/home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Auth from '@/page/Auth/auth';
-import DetailBarberShop from '@/components/detailsBarberShop/detailsBarberShop';
-import Navbar from '@/components/navbar/navbar';
-import BarberAppointments from '@/page/BarberAppointments';
-import ClientAppointments from '@/page/ClientAppointments';
-import BarberShopProfile from '@/page/BarberShopProfile';
-import CadastroBarbearia from '@/page/FormBarber';
-import ClientProfile from '@/page/ClientProfile';
-import BarberShopService from '@/page/BarberService';
+import Auth from '@/page/auth';
+import DetailBarberShop from '@/components/details-barber-shop';
+import Navbar from '@/components/navbar';
+import BarberAppointments from '@/page/barber-appointments';
+import ClientAppointments from '@/page/client-appointments';
+import BarberShopProfile from '@/page/barber-shop-profile';
+import CadastroBarbearia from '@/page/form-barber';
+import ClientProfile from '@/page/client-profile';
+import BarberShopService from '@/page/barber-service';
 
 const routes = () => {
   return (

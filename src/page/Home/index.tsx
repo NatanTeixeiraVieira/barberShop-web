@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Schedule from '@/components/Schedule';
+import Schedule from '@/components/schedule';
 import Spinner from '@/components/Spinner';
 
 export default function Home() {

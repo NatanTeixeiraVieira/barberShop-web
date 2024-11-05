@@ -8,8 +8,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import FormRegister from '@/components/formRegister/formRegister';
-import FormLogin from '@/components/formLogin/formLogin';
+import FormRegister from '@/components/form-register';
+import FormLogin from '@/components/form-login';
 import { useAppContext } from '@/context/appContext';
 import { useLocation } from 'react-router-dom';
 import React from 'react';
@@ -24,7 +24,7 @@ export default function Auth() {
       setActiveTab('register')
     } else if (location.pathname === '/auth/login') {
       setActiveTab('login')
-    } 
+    }
     setShowPassword(false)
   }, [location.pathname, setActiveTab, setShowPassword])
 

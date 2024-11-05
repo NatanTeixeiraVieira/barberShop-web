@@ -5,7 +5,7 @@ import { useSchedule } from './useSchedule';
 import 'dayjs/locale/pt-br';
 import { capitalize } from '@/utils/formatter';
 import { Toaster } from '../ui/toaster';
-import Spinner from '../Spinner';
+import Spinner from '../spinner';
 
 export default function Schedule() {
   const schedule = useSchedule();

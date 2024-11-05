@@ -30,7 +30,7 @@ import {
   UpsertBarberShopService,
 } from '@/types/barberService';
 import { toast } from '@/hooks/useToast';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 
 type BarberShopServicesListOptionalId = Omit<BarberShopServiceType, 'id'> & {
   id?: string;
