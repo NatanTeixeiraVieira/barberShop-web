@@ -9,6 +9,20 @@ export type BarberShop = {
   rating: number;
 };
 
+export type CreateBarberShop = {
+  name: string;
+  cnpj: string;
+  state: string;
+  cep: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  phone: string;
+}
+
+export type UpdateBarberShop = CreateBarberShop & {photoUrl: string;}
+
 export type ListBarberShop = Pagination<BarberShop>;
 
 export type BarberShopProfile = {
