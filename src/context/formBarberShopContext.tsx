@@ -3,9 +3,8 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 const AppBarberShopContext = createContext<FormBarberSHopContext | undefined>(undefined);
 
-export const FormBarberShopProvider = ({ children }: { children: ReactNode }) => {
-  const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>({
-    name: "",
+export const valuesBarberShop = {
+  name: "",
     cnpj: "",
     cep: "",
     number: "",
@@ -14,7 +13,12 @@ export const FormBarberShopProvider = ({ children }: { children: ReactNode }) =>
     state: "",
     phone: "",
     street: ""
-  });
+}
+
+export const FormBarberShopProvider = ({ children }: { children: ReactNode }) => {
+
+
+  const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarberShop);
 
   const [hoursBarberShop, setBarberShopHours] = useState<FormHoursBarberShop>({});
 
@@ -23,7 +27,7 @@ export const FormBarberShopProvider = ({ children }: { children: ReactNode }) =>
       formBarberShop,
       setFormBarberShop,
       hoursBarberShop,
-      setBarberShopHours
+      setBarberShopHours,
     }}>
       {children}
     </AppBarberShopContext.Provider>

@@ -1,5 +1,7 @@
 import {
+  BarberShop,
   BarberShopProfile,
+  CreateBarberShop,
   ListBarberShop,
   UpdateBarberShopProfileDto,
 } from '@/types/barberShop';
@@ -38,6 +40,15 @@ export const getBarberShopProfile = async ({ id }: Record<'id', string>) => {
 
   return barberShop;
 };
+
+export const createBarberShop = async (dto: CreateBarberShop) => {
+  const createdBarberShop = await api.post<BarberShop>(
+    '/barber-shop/v1',
+    dto,
+  );
+
+  return createdBarberShop;
+}
 
 export const updateBarberShopProfile = async ({
   barberShopId,
