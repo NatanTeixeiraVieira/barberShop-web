@@ -6,7 +6,10 @@ import {
 import { api } from './api';
 import { PaginationDto } from '../types/pagination';
 
-export const getBarberShopList = async (paginationDto?: PaginationDto) => {
+export const getBarberShopList = async (
+  paginationDto?: PaginationDto,
+  search?: string,
+) => {
   const pagination = paginationDto ?? { limit: 20, page: 1 };
   const searchParams = new URLSearchParams();
   if (pagination.page) {
@@ -15,6 +18,10 @@ export const getBarberShopList = async (paginationDto?: PaginationDto) => {
 
   if (pagination.limit) {
     searchParams.append('limit', pagination.limit.toString());
+  }
+
+  if (search) {
+    searchParams.append('search', search);
   }
 
   const barberShop = await api.get<ListBarberShop>(

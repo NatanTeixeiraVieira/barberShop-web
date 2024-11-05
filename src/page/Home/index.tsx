@@ -4,9 +4,17 @@ import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Schedule from '@/components/Schedule';
+import Spinner from '@/components/Spinner';
 
 export default function Home() {
-  const { barberShop, currentPage } = useHome();
+  const {
+    barberShop,
+    currentPage,
+    searchInputRef,
+    isFetching,
+    handleSearchBarber,
+    handleLoadMore,
+  } = useHome();
 
   return (
     <div className="p-4 text-zinc-100 mx-auto md:w-[40rem]">
@@ -18,12 +26,22 @@ export default function Home() {
         <Input
           type="text"
           className="w-full pl-10 pr-4 text-base py-2 rounded-full bg-secondary text-zinc-100 placeholder-teal-200 border-none focus:ring-2 focus:ring-white"
+          ref={searchInputRef}
         />
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-200" />
+        <Search
+          onClick={handleSearchBarber}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-200"
+        />
       </div>
 
       <div className="space-y-4">
-        {barberShop &&
+        {isFetching && (
+          <div className="w-full text-center">
+            <Spinner size="lg" />
+          </div>
+        )}
+        {!isFetching &&
+          barberShop &&
           barberShop.data?.map((barber) => (
             <div
               key={barber.id}
@@ -64,7 +82,9 @@ export default function Home() {
       </div>
       {barberShop && barberShop.meta?.totalPages > currentPage && (
         <div className="w-full flex justify-center mt-4">
-          <Button variant="secondary">Carregar mais</Button>
+          <Button variant="secondary" onClick={handleLoadMore}>
+            Carregar mais
+          </Button>
         </div>
       )}
     </div>
