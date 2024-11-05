@@ -13,7 +13,6 @@ import { Label } from '@/components/ui/label';
 import { useBarberShopProfile } from './useBarberShopProfile';
 import { phoneMask } from '@/utils/mask';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { register } from 'module';
 
 export default function BarberShopProfile() {
   const profile = useBarberShopProfile();

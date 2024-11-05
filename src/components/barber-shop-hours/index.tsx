@@ -3,12 +3,12 @@ import { useBarberShopContext } from '@/context/formBarberShopContext';
 export default function BarberShopHours() {
   const { hoursBarberShop, setBarberShopHours } = useBarberShopContext();
 
-  const diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+  const daysWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
-  const handleHorarioChange = (dia: string, tipo: 'start' | 'end', valor: string) => {
+  const handleTimeChange = (day: string, type: 'start' | 'end', value: string) => {
     setBarberShopHours((prev) => ({
       ...prev,
-      [dia]: { ...prev[dia], [tipo]: valor },
+      [day]: { ...prev[day], [type]: value },
     }));
   };
 
@@ -28,12 +28,12 @@ export default function BarberShopHours() {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Horários de Funcionamento</h3>
-      {diasSemana.map((dia) => (
-        <div key={dia} className="flex items-center space-x-4">
-          <span className="w-24">{dia}</span>
+      {daysWeek.map((day) => (
+        <div key={day} className="flex items-center space-x-4">
+          <span className="w-24">{day}</span>
           <select
-            value={hoursBarberShop[dia]?.start || ''}
-            onChange={(e) => handleHorarioChange(dia, 'start', e.target.value)}
+            value={hoursBarberShop[day]?.start || ''}
+            onChange={(e) => handleTimeChange(day, 'start', e.target.value)}
             className="w-32"
           >
             <option value="">Selecione</option>
@@ -45,8 +45,8 @@ export default function BarberShopHours() {
           </select>
           <span>até</span>
           <select
-            value={hoursBarberShop[dia]?.end || ''}
-            onChange={(e) => handleHorarioChange(dia, 'end', e.target.value)}
+            value={hoursBarberShop[day]?.end || ''}
+            onChange={(e) => handleTimeChange(day, 'end', e.target.value)}
             className="w-32"
           >
             <option value="">Selecione</option>
