@@ -22,7 +22,7 @@ const routes = () => {
           path="/auth/register-barber-shop"
           element={<RegisterBarberShop />}
         />
-        <Route path="/details-barber-shop" element={<DetailBarberShop />} />
+        <Route path="/details-barber-shop/:barberShopId" element={<DetailBarberShop />} />
         <Route path="/client-appointments" element={<ClientAppointments />} />
         <Route
           path="/barber-shop-appointments/:barberShopId"

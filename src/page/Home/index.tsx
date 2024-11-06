@@ -3,8 +3,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Schedule from '@/components/schedule';
+import { Link } from 'react-router-dom';
 import Spinner from '@/components/Spinner';
+import Schedule from '@/components/Schedule';
 
 export default function Home() {
   const {
@@ -43,40 +44,43 @@ export default function Home() {
         {!isFetching &&
           barberShop &&
           barberShop.data?.map((barber) => (
+
+
             <div
               key={barber.id}
-              className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800"
             >
-              <Avatar className="size-16">
-                <AvatarImage src={barber.photoUrl} />
-                <AvatarFallback>
-                  <UserCircle2 className="size-12" />
-                </AvatarFallback>
-              </Avatar>
+              <Link to={`/details-barber-shop/${barber.id}`} className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800">
+                <Avatar className="size-16">
 
-              <div className="flex-grow">
-                <h2 className="font-semibold">{barber.name}</h2>
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={`${barber.id}${i}`}
-                      className={`w-4 h-4 ${
-                        i < Math.floor(barber.rating)
+                  <AvatarImage src={barber.photoUrl} />
+                  <AvatarFallback>
+                    <UserCircle2 className="size-12" />
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex-grow">
+                  <h2 className="font-semibold">{barber.name}</h2>
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={`${barber.id}${i}`}
+                        className={`w-4 h-4 ${i < Math.floor(barber.rating)
                           ? 'text-yellow-400 fill-yellow-400'
                           : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                  <span className="ml-1 text-sm text-gray-600">
-                    {barber.rating}
-                  </span>
+                          }`}
+                      />
+                    ))}
+                    <span className="ml-1 text-sm text-gray-600">
+                      {barber.rating}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <Button variant="outline" size="sm" className="whitespace-nowrap">
-                Ver Perfil
-              </Button>
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
+                  Ver Perfil
+                </Button>
 
-              <Schedule />
+                <Schedule />
+              </Link>
             </div>
           ))}
       </div>

@@ -3,7 +3,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useLogin } from "./useLogin";
-import Spinner from "../spinner";
+import Spinner from "../Spinner";
 
 export default function FormLogin() {
 
