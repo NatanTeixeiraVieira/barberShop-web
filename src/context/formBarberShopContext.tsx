@@ -4,7 +4,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 const AppBarberShopContext = createContext<FormBarberSHopContext | undefined>(undefined);
 
 export const valuesBarberShop = {
-  name: "",
+    name: "",
     cnpj: "",
     cep: "",
     number: "",

@@ -1,7 +1,16 @@
 import {
   useBarberShopContext,
-  valuesBarberShop,
 } from '@/context/formBarberShopContext';
+import { toast } from '@/hooks/useToast';
+import { createBarberShop } from '@/services/barberShop';
+import {
+  CreateBarberShopDto,
+  CreateBarberShopFormData,
+} from '@/types/barberShop';
+import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 export const brazilianStates = [
   { value: 'AC', label: 'Acre' },
@@ -32,8 +41,29 @@ export const brazilianStates = [
   { value: 'SE', label: 'Sergipe' },
   { value: 'TO', label: 'Tocantins' },
 ];
+
 export const useFormBarberShop = () => {
   const { formBarberShop, setFormBarberShop } = useBarberShopContext();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CreateBarberShopFormData>({
+    resolver: zodResolver(formBarberShopSchema),
+    defaultValues: {
+      name: '',
+      cnpj: '',
+      cep: '',
+      number: '',
+      neighborhood: '',
+      city: '',
+      state: '',
+      phone: '',
+      street: '',
+    },
+  });
 
   const handleChange = (field: string, value: string) => {
     setFormBarberShop((prev) => ({
@@ -42,40 +72,44 @@ export const useFormBarberShop = () => {
     }));
   };
 
-  const barberShopData = {
-    ...formBarberShop,
-  }
+  const {
+    mutate: createBarberShopMutatate,
+    isPending: isCreateBarberShopPending,
+  } = useMutation({
+    mutationFn: async (dto: CreateBarberShopDto) => {
+      await createBarberShop(dto);
+      return dto;
+    },
 
-
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://localhost:3333/api/barber-shop/v1', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(barberShopData),
+    onSuccess: () => {
+      toast({
+        title: 'Barbeiro criado com sucesso',
+        className: 'h-20',
+        variant: 'success',
       });
+    },
 
-      if (response.ok) {
-        console.log('Barbearia cadastrada com sucesso!');
-      } else {
-        console.error('Erro ao cadastrar barbearia');
-      }
+    onError: () => {
+      toast({
+        title: 'Falha ao cadastrar barbearia',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
+  });
 
-      setFormBarberShop(valuesBarberShop);
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-    }
-  };
+  const submit = handleSubmit((data: CreateBarberShopFormData) => {
+    createBarberShopMutatate(data);
+  });
 
   return {
+    isCreateBarberShopPending,
     formBarberShop,
     handleChange,
-    handleSubmit,
+    submit,
     brazilianStates,
+    register,
+    errors,
+    setValue,
   };
 };

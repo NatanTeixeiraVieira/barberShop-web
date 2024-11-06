@@ -19,7 +19,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        <p className="text-xs text-error">{helperText}</p>
+        <span className="text-xs text-error">{helperText}</span>
       </div>
     );
   },

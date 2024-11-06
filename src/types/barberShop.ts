@@ -1,5 +1,6 @@
 import { Pagination } from '@/types/pagination';
 import { barberShopProfileSchema } from '@/validations/schemas/barberShopProfile';
+import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { z } from 'zod';
 
 export type BarberShop = {
@@ -9,7 +10,9 @@ export type BarberShop = {
   rating: number;
 };
 
-export type CreateBarberShop = {
+export type CreateBarberShopFormData = z.infer<typeof formBarberShopSchema>
+
+export type CreateBarberShopDto = {
   name: string;
   cnpj: string;
   state: string;
@@ -19,9 +22,9 @@ export type CreateBarberShop = {
   neighborhood: string;
   city: string;
   phone: string;
-}
+};
 
-export type UpdateBarberShop = CreateBarberShop & {photoUrl: string;}
+export type UpdateBarberShopDto = CreateBarberShopDto & { photoUrl: string };
 
 export type ListBarberShop = Pagination<BarberShop>;
 
