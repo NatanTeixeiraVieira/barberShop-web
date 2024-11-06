@@ -37,7 +37,7 @@ export default function Auth() {
   return (
     <section className='bg-primary h-full flex flex-col justify-center items-center'>
       <img src="/LogoBarbeiro.svg" alt="Logo" className='w-60'/>
-      <Card className="w-[350px] bg-white">
+      <Card className="w-[350px] bg-white mb-8">
         <CardHeader>
           <CardTitle>Autenticação</CardTitle>
           <CardDescription>Faça login ou crie uma nova conta.</CardDescription>
