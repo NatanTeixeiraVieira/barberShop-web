@@ -49,6 +49,7 @@ export const useFormBarberShop = () => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<CreateBarberShopFormData>({
     resolver: zodResolver(formBarberShopSchema),
@@ -87,6 +88,7 @@ export const useFormBarberShop = () => {
         className: 'h-20',
         variant: 'success',
       });
+      reset();
     },
 
     onError: () => {

@@ -1,4 +1,4 @@
-import { Client, UpdateClientProfileDto } from '@/types/client';
+import { Client, CreateClientDto, UpdateClientProfileDto } from '@/types/client';
 import { api } from './api';
 
 export const getClientById = async (clientId: string) => {
@@ -6,6 +6,13 @@ export const getClientById = async (clientId: string) => {
 
   return address;
 };
+
+export const createClient = async(dto: CreateClientDto) => {
+  const client = await api.post<Client>('/client/v1', dto)
+
+  return client
+}
+
 
 export const updateClientProfile = async ({
   id,
