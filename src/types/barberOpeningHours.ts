@@ -1,5 +1,5 @@
-import { createBarberShopSchema } from "@/validations/schemas/createBarberShopHours";
-import { z } from "zod";
+import { createBarberShopSchema } from '@/validations/schemas/createBarberShopHours';
+import { z } from 'zod';
 
 export type OpeningHourOutput = {
   start: string;
@@ -12,7 +12,7 @@ export type CreateOpeningHoursDto = {
   start: string;
   end: string;
   barberShopId: string;
-}
+};
 
 export interface CreateOpeningHoursDtoArray {
   weekdays: {

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { PlusCircle, Trash2 } from "lucide-react"
+import { CreateOpeningHoursDto, CreateOpeningHoursDtoArray } from "@/types/barberOpeningHours"
 
 const daysOfWeek = [
   { name: "Domingo", shortName: "Dom" },
@@ -32,13 +33,40 @@ const timeSlots = generateTimeSlots()
 
 type TimeRange = { from: string; to: string }
 
+function convertToOpeningHoursDtoArray(
+  openingHours: { [key: string]: TimeRange[] },
+  barberShopId: string
+) {
+  const weekdays: CreateOpeningHoursDto[] = [];
+
+  // Itera sobre cada dia da semana no objeto openingHours
+  for (const [weekday, timeRanges] of Object.entries(openingHours)) {
+    // Para cada faixa de horário no array de TimeRange
+    timeRanges.forEach(timeRange => {
+      const dto = {
+        weekday: weekday,
+        start: timeRange.from,
+        end: timeRange.to,
+        barberShopId: barberShopId
+      }
+
+      weekdays.push(dto);
+    });
+  }
+
+  return { weekdays };
+}
+
 export default function Component() {
   const [workDays, setWorkDays] = useState<{ [key: string]: boolean }>(
     Object.fromEntries(daysOfWeek.map(day => [day.name, false]))
   )
   const [schedule, setSchedule] = useState<{ [key: string]: TimeRange[] }>(
-    Object.fromEntries(daysOfWeek.map(day => [day.name, [{ from: "09:00", to: "17:00" }]]))
+    Object.fromEntries(daysOfWeek.map(day => [day.name, [{ from: "", to: "" }]]))
   )
+  console.log("🚀 ~ Component ~ schedule:", convertToOpeningHoursDtoArray(schedule, '07d439d9-58b6-4f82-92a2-bc491abbf035'))
+
+  console.log(schedule)
 
   const toggleWorkDay = (day: string, checked: boolean) => {
     setWorkDays(prev => ({ ...prev, [day]: checked }))
@@ -66,6 +94,7 @@ export default function Component() {
       [day]: prev[day].filter((_, i) => i !== index)
     }))
   }
+
 
   return (
     <div className="container mx-auto p-4">
