@@ -9,6 +9,7 @@ import BarberShopProfile from '@/page/barber-shop-profile';
 import RegisterBarberShop from '@/page/form-barber';
 import ClientProfile from '@/page/client-profile';
 import BarberShopService from '@/page/barber-service';
+import BarberShopHours from '@/components/barber-shop-hours';
 
 const routes = () => {
   return (
@@ -28,6 +29,8 @@ const routes = () => {
           path="/barber-shop-appointments/:barberShopId"
           element={<BarberAppointments />}
         />
+
+        <Route path='/barber-hours' element={<BarberShopHours />} />
         <Route
           path="/barber-shop-service/:barberShopId"
           element={<BarberShopService />}
