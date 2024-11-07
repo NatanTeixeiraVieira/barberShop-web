@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useSchedule } from './useSchedule';
 import 'dayjs/locale/pt-br';
 import { capitalize } from '@/utils/formatter';
 import { Toaster } from '../ui/toaster';
 import Spinner from '../Spinner';
+import { useSchedule } from './useSchedule';
 
 export default function Schedule() {
   const schedule = useSchedule();

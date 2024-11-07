@@ -1,14 +1,14 @@
-import Home from '@/page/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Auth from '@/page/Auth/auth';
-import DetailBarberShop from '@/components/detailsBarberShop/detailsBarberShop';
-import Navbar from '@/components/navbar/navbar';
-import BarberAppointments from '@/page/BarberAppointments';
-import ClientAppointments from '@/page/ClientAppointments';
-import BarberShopProfile from '@/page/BarberShopProfile';
-import CadastroBarbearia from '@/page/FormBarber';
-import ClientProfile from '@/page/ClientProfile';
-import BarberShopService from '@/page/BarberService';
+import Auth from '@/page/auth';
+import DetailBarberShop from '@/components/details-barber-shop';
+import Navbar from '@/components/navbar';
+import BarberAppointments from '@/page/barber-appointments';
+import ClientAppointments from '@/page/client-appointments';
+import BarberShopProfile from '@/page/barber-shop-profile';
+import RegisterBarberShop from '@/page/form-barber';
+import ClientProfile from '@/page/client-profile';
+import BarberShopService from '@/page/barber-service';
+import Home from '@/page/Home';
 
 const routes = () => {
   return (
@@ -20,7 +20,7 @@ const routes = () => {
         <Route path="/auth/login" element={<Auth />} />
         <Route
           path="/auth/register-barber-shop"
-          element={<CadastroBarbearia />}
+          element={<RegisterBarberShop />}
         />
         <Route
           path="/details-barber-shop/:barberShopId"

@@ -1,5 +1,6 @@
 import { Pagination } from '@/types/pagination';
 import { barberShopProfileSchema } from '@/validations/schemas/barberShopProfile';
+import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { z } from 'zod';
 
 export type BarberShop = {
@@ -8,6 +9,22 @@ export type BarberShop = {
   photoUrl: string;
   rating: number;
 };
+
+export type CreateBarberShopFormData = z.infer<typeof formBarberShopSchema>
+
+export type CreateBarberShopDto = {
+  name: string;
+  cnpj: string;
+  state: string;
+  cep: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  phone: string;
+};
+
+export type UpdateBarberShopDto = CreateBarberShopDto & { photoUrl: string };
 
 export type ListBarberShop = Pagination<BarberShop>;
 
