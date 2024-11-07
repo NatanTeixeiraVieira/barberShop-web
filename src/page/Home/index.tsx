@@ -5,6 +5,7 @@ import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Schedule from '@/components/Schedule';
 import Spinner from '@/components/Spinner';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const {
@@ -72,9 +73,15 @@ export default function Home() {
                   </span>
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="whitespace-nowrap">
-                Ver Perfil
-              </Button>
+              <Link to={`/details-barber-shop/${barber.id}`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="whitespace-nowrap"
+                >
+                  Ver Perfil
+                </Button>
+              </Link>
 
               <Schedule />
             </div>
