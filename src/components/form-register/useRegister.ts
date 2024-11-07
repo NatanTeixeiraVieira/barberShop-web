@@ -1,5 +1,5 @@
 import { useAppContext } from '@/context/appContext';
-import { toast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/useToast';
 import { createClient } from '@/services/client';
 import { ClientRegisterData, CreateClientDto } from '@/types/client';
 import { formClientSchema } from '@/validations/schemas/form-client';
@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 
 export const useRegister = () => {
   const { showPassword, togglePasswordVisibility } = useAppContext();
+  const { toast } = useToast();
 
   const [registerForm, setRegisterForm] = useState({
     name: '',
@@ -48,12 +49,12 @@ export const useRegister = () => {
       },
 
       onSuccess: () => {
+        reset();
         toast({
-          title: 'cadastro realizado com sucesso',
+          title: 'Cadastro realizado com sucesso',
           className: 'h-20',
           variant: 'success',
         });
-        reset();
       },
 
       onError: () => {
@@ -68,6 +69,7 @@ export const useRegister = () => {
   const submit = handleSubmit((data: ClientRegisterData) => {
     createClientMutatate(data);
   });
+
   return {
     showPassword,
     isCreateClientPending,

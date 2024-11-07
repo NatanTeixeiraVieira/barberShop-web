@@ -1,7 +1,7 @@
 import {
   useBarberShopContext,
 } from '@/context/formBarberShopContext';
-import { toast } from '@/hooks/useToast';
+import { useToast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
 import {
   CreateBarberShopDto,
@@ -44,6 +44,7 @@ export const brazilianStates = [
 
 export const useFormBarberShop = () => {
   const { formBarberShop, setFormBarberShop } = useBarberShopContext();
+  const { toast } = useToast();
 
   const {
     register,

@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
 import Spinner from '@/components/Spinner';
 import Schedule from '@/components/Schedule';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function Home() {
   const {
@@ -49,7 +50,8 @@ export default function Home() {
             <div
               key={barber.id}
             >
-              <Link to={`/details-barber-shop/${barber.id}`} className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800">
+               <div className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800">
+
                 <Avatar className="size-16">
 
                   <AvatarImage src={barber.photoUrl} />
@@ -76,14 +78,15 @@ export default function Home() {
                   </div>
                 </div>
                 <Button variant="outline" size="sm" className="whitespace-nowrap">
-                  Ver Perfil
+                  <Link to={`/details-barber-shop/${barber.id}`} >
+                    Ver Perfil
+                  </Link>
                 </Button>
-
-                <Schedule />
-              </Link>
+              </div>
             </div>
           ))}
       </div>
+      <Toaster />
       {barberShop && barberShop.meta?.totalPages > currentPage && (
         <div className="w-full flex justify-center mt-4">
           <Button variant="secondary" onClick={handleLoadMore}>

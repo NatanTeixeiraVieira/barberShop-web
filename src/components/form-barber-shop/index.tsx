@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Toaster } from "../ui/toaster";
 import { useFormBarberShop } from "./useFormBarberShop";
 
 export default function FormBarberShop() {
@@ -92,6 +93,7 @@ export default function FormBarberShop() {
           </Button>
         </div>
       </div>
+      <Toaster/>
     </form>
   );
 }

@@ -11,8 +11,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setShowPassword((prevState) => !prevState);
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+
   return (
-    <AppContext.Provider value={{ activeTab, setActiveTab, showPassword, setShowPassword, togglePasswordVisibility }}>
+    <AppContext.Provider value={{ activeTab, setActiveTab, showPassword, setShowPassword, togglePasswordVisibility, isAuthenticated, setIsAuthenticated }}>
       {children}
     </AppContext.Provider>
   )

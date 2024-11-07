@@ -1,15 +1,20 @@
 import { useAppContext } from "@/context/appContext";
-import { toast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/useToast";
 import { verifyLogin } from "@/services/login";
 import { VerifiLoginData, VerifyLogin } from "@/types/login";
 import { verifyLoginSchema } from "@/validations/schemas/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
 
-  const { showPassword, togglePasswordVisibility } = useAppContext();
+  const { showPassword, togglePasswordVisibility, setIsAuthenticated } = useAppContext();
+
+  const navigate = useNavigate();
+
+  const { toast } = useToast();
 
   const {
     register,
@@ -41,7 +46,8 @@ export const useLogin = () => {
         className: 'h-20',
         variant: 'success',
       });
-      console.log('Login realizado com sucesso!');
+      navigate('/')
+      setIsAuthenticated(true)
     },
 
     onError: () => {
