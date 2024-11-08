@@ -41,6 +41,16 @@ export const getBarberShopProfile = async ({ id }: Record<'id', string>) => {
   return barberShop;
 };
 
+export const getBarberShopClientById = async () => {
+  const barberShop = await api.get<BarberShop>(
+    `/barber-shop/v1/barber-shop-client-id/`,
+  );
+
+  console.log(barberShop)
+
+  return barberShop;
+}
+
 export const createBarberShop = async (dto: CreateBarberShopDto) => {
   const createdBarberShop = await api.post<BarberShop>('/barber-shop/v1', dto);
 

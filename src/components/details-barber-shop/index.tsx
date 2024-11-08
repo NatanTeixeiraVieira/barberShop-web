@@ -2,7 +2,8 @@ import React from "react";
 import useDetailsBarberShop from "./useDetailsBarberShop";
 import { Link } from "react-router-dom";
 import Schedule from "../Schedule";
-import { StarIcon } from "lucide-react";
+import { Star } from "lucide-react";
+import RequireAuth from "../required-auth";
 
 const BarberShopDetails: React.FC = () => {
 
@@ -34,12 +35,12 @@ const BarberShopDetails: React.FC = () => {
         {barberShop && (
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
-              <StarIcon
-                key={`${barberShop.id}-${i}`}
+              <Star
+                key={`${barberShop.id}${i}`}
                 className={`w-4 h-4 ${i < Math.floor(barberShop.rating)
-                  ? 'text-yellow-400'
+                  ? 'text-yellow-400 fill-yellow-400'
                   : 'text-gray-300'
-                }`}
+                  }`}
               />
             ))}
             <span className="ml-1 text-sm text-gray-600">
@@ -61,9 +62,7 @@ const BarberShopDetails: React.FC = () => {
               <p className="text-sm text-gray-600">R$ {service.price}</p>
               <p className="text-sm text-gray-600">Duração: {service.duration} min</p>
             </div>
-            <button className="bg-sky-500 text-white">
               <Schedule />
-            </button>
           </div>
         ))
       ) : (

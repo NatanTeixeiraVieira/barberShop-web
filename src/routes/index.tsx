@@ -8,7 +8,7 @@ import BarberShopProfile from '@/page/barber-shop-profile';
 import RegisterBarberShop from '@/page/form-barber';
 import ClientProfile from '@/page/client-profile';
 import BarberShopService from '@/page/barber-service';
-import Home from '@/page/Home';
+import Home from '@/page/home';
 
 const routes = () => {
   return (

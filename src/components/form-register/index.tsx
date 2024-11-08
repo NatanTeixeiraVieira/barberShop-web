@@ -46,6 +46,7 @@ export default function FormRegister() {
         <div className="relative ">
           <Lock className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
+            type={`${showPassword === false ? 'password' : 'text'}`}
             {...register('password')} helperText={errors.password?.message}
             className="pl-8 pr-8"
           />

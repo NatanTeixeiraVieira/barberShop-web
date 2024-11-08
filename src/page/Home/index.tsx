@@ -82,7 +82,6 @@ export default function Home() {
                   Ver Perfil
                 </Button>
 
-                <Schedule />
               </Link>
             </div>
           ))}

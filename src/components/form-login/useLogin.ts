@@ -6,10 +6,11 @@ import { verifyLoginSchema } from "@/validations/schemas/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 export const useLogin = () => {
-
-  const { showPassword, togglePasswordVisibility } = useAppContext();
+  const { showPassword, togglePasswordVisibility, setIsAuthenticate } = useAppContext();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,24 +25,27 @@ export const useLogin = () => {
     },
   });
 
-
-
   const {
-    mutate: verifyLoginMutatate,
+    mutate: verifyLoginMutate,
     isPending: isVerifyLoginPending,
   } = useMutation({
     mutationFn: async (dto: VerifyLogin) => {
-      await verifyLogin(dto);
-      return dto;
+      const data = await verifyLogin(dto);
+      console.log(data)
+      return data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      const token = data.data.token;
+      localStorage.setItem('token', token);
+
       toast({
         title: 'Login realizado com sucesso',
         className: 'h-20',
         variant: 'success',
       });
-      console.log('Login realizado com sucesso!');
+      setIsAuthenticate(true);
+      navigate('/')
     },
 
     onError: () => {
@@ -51,16 +55,14 @@ export const useLogin = () => {
         variant: 'error',
       });
       console.log('Erro ao realizar login');
-
     },
   });
 
   const submit = handleSubmit((data: VerifiLoginData) => {
-    verifyLoginMutatate(data);
+    verifyLoginMutate(data);
   });
 
-
-   return {
+  return {
     showPassword,
     isVerifyLoginPending,
     errors,
@@ -68,6 +70,5 @@ export const useLogin = () => {
     submit,
     register,
     togglePasswordVisibility,
-   }
- }
-
+  }
+};

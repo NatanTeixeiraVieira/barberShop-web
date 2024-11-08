@@ -6,4 +6,6 @@ export type AppContextType = {
   showPassword: boolean;
   setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
   togglePasswordVisibility: () => void;
+  isAuthenticate: boolean;
+  setIsAuthenticate: React.Dispatch<React.SetStateAction<boolean>>;
 };

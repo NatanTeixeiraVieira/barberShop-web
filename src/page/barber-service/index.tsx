@@ -13,7 +13,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { barberShopServiceCache } from '@/constants/requestCacheNames';
+import { barberShopClient } from '@/constants/requestCacheNames';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createBarberShopService,
@@ -44,7 +44,7 @@ export default function BarberShopService() {
   const { barberShopId } = useParams();
 
   const { data: barberShopService } = useQuery<BarberShopServicesList>({
-    queryKey: [barberShopServiceCache],
+    queryKey: [barberShopClient],
     queryFn: async () =>
       (await getBarberShopServicesByBarberShopId(barberShopId!)).data,
 

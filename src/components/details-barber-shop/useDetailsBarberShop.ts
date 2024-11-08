@@ -1,14 +1,16 @@
 import { barberShopProfileCache } from '@/constants/requestCacheNames';
+import { useAppContext } from '@/context/appContext';
 import { getBarberShopProfile } from '@/services/barberShop';
 import { getBarberShopDetails } from '@/services/serviceBarberShop';
 import { BarberShopProfile } from '@/types/barberShop';
 import { BarberShopDetails } from '@/types/barberShopDetails';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const useDetailsBarberShop = () => {
   const { barberShopId } = useParams<{ barberShopId: string }>();
-
+  const {isAuthenticate } = useAppContext();
+  const navigate = useNavigate();
   if (!barberShopId) {
     throw new Error('BarberShop ID não encontrado na URL.');
   }
