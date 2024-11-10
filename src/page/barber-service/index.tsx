@@ -53,7 +53,7 @@ export default function BarberShopService() {
   });
 
   const {
-    mutate: createBarberShopServiceMutatate,
+    mutate: createBarberShopServiceMutate,
     isPending: isCreateBarberShopServicePending,
   } = useMutation({
     mutationFn: async (dto: CreateBarberShopService) => {
@@ -75,7 +75,7 @@ export default function BarberShopService() {
   });
 
   const {
-    mutate: updateBarberShopServiceMutatate,
+    mutate: updateBarberShopServiceMutate,
     isPending: isUpdateBarberShopServicePending,
   } = useMutation({
     mutationFn: async (dto: UpdateBarberShopService) => {
@@ -99,7 +99,7 @@ export default function BarberShopService() {
   });
 
   const {
-    mutate: deleteBarberShopServiceMutatate,
+    mutate: deleteBarberShopServiceMutate,
     isPending: isDeleteBarberShopServicePending,
   } = useMutation({
     mutationFn: async (barberServiceId: string) => {
@@ -145,7 +145,7 @@ export default function BarberShopService() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleAddService = (newService: CreateBarberShopService) => {
-    createBarberShopServiceMutatate(newService);
+    createBarberShopServiceMutate(newService);
   };
 
   const handleCloseUpsertDialog = () => {
@@ -168,12 +168,12 @@ export default function BarberShopService() {
   };
 
   const handleUpdateService = (updatedService: UpdateBarberShopService) => {
-    updateBarberShopServiceMutatate(updatedService);
+    updateBarberShopServiceMutate(updatedService);
   };
 
   const handleDeleteService = () => {
     if (currentServiceUpdate.current?.id) {
-      deleteBarberShopServiceMutatate(currentServiceUpdate.current.id);
+      deleteBarberShopServiceMutate(currentServiceUpdate.current.id);
     }
   };
 
@@ -236,7 +236,7 @@ export default function BarberShopService() {
                 </DialogTitle>
               </DialogHeader>
               <ServiceForm
-                isPenging={isCreateBarberShopServicePending}
+                isPending={isCreateBarberShopServicePending}
                 onSubmit={handleAddService}
                 barberShopId={barberShopId!}
               />
@@ -261,7 +261,7 @@ export default function BarberShopService() {
                   ) => void
                 }
                 barberShopId={barberShopId!}
-                isPenging={isUpdateBarberShopServicePending}
+                isPending={isUpdateBarberShopServicePending}
               />
             </DialogContent>
           </Dialog>
@@ -312,14 +312,14 @@ interface ServiceFormProps {
     service: CreateBarberShopService | UpdateBarberShopService,
   ) => void;
   barberShopId: string;
-  isPenging: boolean;
+  isPending: boolean;
 }
 
 function ServiceForm({
   initialService,
   onSubmit,
   barberShopId,
-  isPenging,
+  isPending,
 }: ServiceFormProps) {
   const [name, setName] = useState(initialService?.name || '');
   const [price, setPrice] = useState(initialService?.price.toString() || '');
@@ -380,8 +380,8 @@ function ServiceForm({
         type="submit"
         className="w-full bg-sky-400 hover:bg-sky-500 text-paper"
       >
-        {isPenging && <Spinner size="sm" />}
-        {!isPenging && (
+        {isPending && <Spinner size="sm" />}
+        {!isPending && (
           <>{initialService ? 'Atualizar' : 'Adicionar'} Serviço</>
         )}
       </Button>

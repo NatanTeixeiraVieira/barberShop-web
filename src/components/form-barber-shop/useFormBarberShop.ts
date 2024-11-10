@@ -1,6 +1,4 @@
-import {
-  useBarberShopContext,
-} from '@/context/formBarberShopContext';
+import { useBarberShopContext } from '@/context/formBarberShopContext';
 import { toast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
 import {
@@ -74,7 +72,7 @@ export const useFormBarberShop = () => {
   };
 
   const {
-    mutate: createBarberShopMutatate,
+    mutate: createBarberShopMutate,
     isPending: isCreateBarberShopPending,
   } = useMutation({
     mutationFn: async (dto: CreateBarberShopDto) => {
@@ -101,7 +99,7 @@ export const useFormBarberShop = () => {
   });
 
   const submit = handleSubmit((data: CreateBarberShopFormData) => {
-    createBarberShopMutatate(data);
+    createBarberShopMutate(data);
   });
 
   return {

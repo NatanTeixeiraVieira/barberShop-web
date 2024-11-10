@@ -40,11 +40,6 @@ export default function BarberShopProfile() {
                       <UserCircle2 className="size-12" />
                     </AvatarFallback>
                   </Avatar>
-                  {/* <img
-                    src={profile.barberShop.photoUrl}
-                    alt={profile.barberShop.name}
-                    className="w-16 h-16 rounded-full object-cover"
-                  /> */}
                   {profile.isEditing && (
                     <Button
                       variant="default"
@@ -188,6 +183,7 @@ export default function BarberShopProfile() {
             <div className="text-left">
               <button
                 type="button"
+                onClick={profile.handleDeleteBarberShopButtonClick}
                 className={`inline-flex mt-8 items-center bg-error hover:bg-error text-paper justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  border border-error h-10 px-4 py-2`}
               >
                 Deletar Barbearia
@@ -196,15 +192,10 @@ export default function BarberShopProfile() {
           </div>
         )}
       </div>
-      <Dialog
-        open={profile.isConfirmDeleteBarberDialogOpen}
-        onOpenChange={profile.handleDeleteBarberShopButtonClick}
-      >
+      <Dialog open={profile.isConfirmDeleteBarberDialogOpen}>
         <DialogContent className="bg-paper">
           <DialogHeader>
-            <DialogTitle className="text-primary">
-              Confirmar Exclusão
-            </DialogTitle>
+            <DialogTitle className="text-error">Confirmar Exclusão</DialogTitle>
             <DialogDescription>
               Tem certeza que deseja excluir essa barbearia
             </DialogDescription>
@@ -214,14 +205,14 @@ export default function BarberShopProfile() {
               Cancelar
             </Button>
             <Button
-              className="bg-sky-400 hover:bg-sky-500 text-paper"
+              className="bg-error hover:bg-error text-paper"
               onClick={profile.handleConfirmBarberShopDelete}
             >
-              {/* {isDeleteBarberShopServicePending ? (
+              {profile.isDeleteBarberShopPending ? (
                 <Spinner size="sm" />
               ) : (
                 'Confirmar'
-              )} */}
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -46,10 +46,10 @@ export const getBarberShopClientById = async () => {
     `/barber-shop/v1/barber-shop-client-id/`,
   );
 
-  console.log(barberShop)
+  console.log(barberShop);
 
   return barberShop;
-}
+};
 
 export const createBarberShop = async (dto: CreateBarberShopDto) => {
   const createdBarberShop = await api.post<BarberShop>('/barber-shop/v1', dto);
@@ -97,4 +97,8 @@ export const updateBarberShopProfile = async ({
   );
 
   return updatedBarberShop;
+};
+
+export const deleteBarberShop = async (barberShopId: string) => {
+  await api.delete(`/barber-shop/v1/${barberShopId}`);
 };

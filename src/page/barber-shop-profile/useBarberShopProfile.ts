@@ -3,6 +3,7 @@ import {
   barberShopProfileCache,
 } from '@/constants/requestCacheNames';
 import {
+  deleteBarberShop,
   getBarberShopProfile,
   updateBarberShopProfile,
 } from '@/services/barberShop';
@@ -16,13 +17,15 @@ import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { barberShopProfileSchema } from '@/validations/schemas/barberShopProfile';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Cep } from '@/types/cep';
 import { getAddressByCepNumber } from '@/services/cep';
 import { statesMapper } from '@/constants/mappers';
+import { toast } from '@/hooks/useToast';
 
 export const useBarberShopProfile = () => {
   const { barberShopId } = useParams();
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -88,6 +91,27 @@ export const useBarberShopProfile = () => {
     },
 
     onError: () => {},
+  });
+
+  const {
+    mutate: deleteBarberShopMutate,
+    isPending: isDeleteBarberShopPending,
+  } = useMutation({
+    mutationFn: async (barberShopId: string) => {
+      await deleteBarberShop(barberShopId);
+    },
+
+    onSuccess: () => {
+      navigate('/');
+    },
+
+    onError: () => {
+      toast({
+        title: 'Falha ao deletar barbeiro',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
   });
 
   const { data: barberShop, isFetching } = useQuery<BarberShopProfile>({
@@ -199,7 +223,11 @@ export const useBarberShopProfile = () => {
     setIsConfirmDeleteBarberDialogOpen(false);
   };
 
-  const handleConfirmBarberShopDelete = () => {};
+  const handleConfirmBarberShopDelete = () => {
+    if (barberShopId) {
+      deleteBarberShopMutate(barberShopId);
+    }
+  };
 
   return {
     barberShop,
@@ -209,6 +237,7 @@ export const useBarberShopProfile = () => {
     errors,
     avatarImage,
     isConfirmDeleteBarberDialogOpen,
+    isDeleteBarberShopPending,
     handleConfirmBarberShopDelete,
     handleCloseDeleteDialog,
     handleDeleteBarberShopButtonClick,

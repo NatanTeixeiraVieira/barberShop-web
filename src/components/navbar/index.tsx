@@ -15,7 +15,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link
           to="/"
-          className="text-xl font-bold text-gray-800 hover:text-[#38BDF8] transition-colors"
+          className="text-xl font-bold text-gray-800 hover:text-primary transition-colors"
         >
           <img
             src="/LogoBarbeiro.svg"
