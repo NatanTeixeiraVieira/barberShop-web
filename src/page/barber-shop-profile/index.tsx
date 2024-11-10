@@ -13,6 +13,15 @@ import { Label } from '@/components/ui/label';
 import { useBarberShopProfile } from './useBarberShopProfile';
 import { phoneMask } from '@/utils/mask';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import Spinner from '@/components/Spinner';
 
 export default function BarberShopProfile() {
   const profile = useBarberShopProfile();
@@ -89,7 +98,6 @@ export default function BarberShopProfile() {
                 )}
               </Button>
             </div>
-
             <div className="space-y-6">
               {(profile.barberShop.street ||
                 profile.barberShop.city ||
@@ -158,7 +166,6 @@ export default function BarberShopProfile() {
                 </p>
               </div>
             </div>
-
             <div className="border-t pt-4 space-y-2">
               <h2 className="text-lg font-semibold mb-2">
                 Informações adicionais
@@ -178,9 +185,47 @@ export default function BarberShopProfile() {
                 )}
               </div>
             </div>
+            <div className="text-left">
+              <button
+                type="button"
+                className={`inline-flex mt-8 items-center bg-error hover:bg-error text-paper justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  border border-error h-10 px-4 py-2`}
+              >
+                Deletar Barbearia
+              </button>
+            </div>
           </div>
         )}
       </div>
+      <Dialog
+        open={profile.isConfirmDeleteBarberDialogOpen}
+        onOpenChange={profile.handleDeleteBarberShopButtonClick}
+      >
+        <DialogContent className="bg-paper">
+          <DialogHeader>
+            <DialogTitle className="text-primary">
+              Confirmar Exclusão
+            </DialogTitle>
+            <DialogDescription>
+              Tem certeza que deseja excluir essa barbearia
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={profile.handleCloseDeleteDialog}>
+              Cancelar
+            </Button>
+            <Button
+              className="bg-sky-400 hover:bg-sky-500 text-paper"
+              onClick={profile.handleConfirmBarberShopDelete}
+            >
+              {/* {isDeleteBarberShopServicePending ? (
+                <Spinner size="sm" />
+              ) : (
+                'Confirmar'
+              )} */}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

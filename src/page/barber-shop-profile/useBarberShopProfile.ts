@@ -22,13 +22,14 @@ import { getAddressByCepNumber } from '@/services/cep';
 import { statesMapper } from '@/constants/mappers';
 
 export const useBarberShopProfile = () => {
-  const [isEditing, setIsEditing] = useState(false);
-
   const { barberShopId } = useParams();
 
-  const [avatarImage, setAvatarImage] = useState('');
-
   const queryClient = useQueryClient();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [avatarImage, setAvatarImage] = useState('');
+  const [isConfirmDeleteBarberDialogOpen, setIsConfirmDeleteBarberDialogOpen] =
+    useState(false);
 
   const {
     register,
@@ -63,10 +64,7 @@ export const useBarberShopProfile = () => {
       enabled: false,
     });
 
-  const {
-    mutate: updateBarberShopProfileMutatate,
-    isPending: isUpdateBarberShopProfilePending,
-  } = useMutation({
+  const { mutate: updateBarberShopProfileMutate } = useMutation({
     mutationFn: async (dto: UpdateBarberShopProfileDto) => {
       await updateBarberShopProfile(dto);
       return dto;
@@ -130,7 +128,7 @@ export const useBarberShopProfile = () => {
 
   const submit = handleSubmit((data: BarberShopProfileFormData) => {
     if (barberShopId) {
-      updateBarberShopProfileMutatate({
+      updateBarberShopProfileMutate({
         barberShopId,
         fileList: data.file,
         ...data,
@@ -193,6 +191,16 @@ export const useBarberShopProfile = () => {
     );
   };
 
+  const handleDeleteBarberShopButtonClick = () => {
+    setIsConfirmDeleteBarberDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsConfirmDeleteBarberDialogOpen(false);
+  };
+
+  const handleConfirmBarberShopDelete = () => {};
+
   return {
     barberShop,
     isEditing,
@@ -200,6 +208,10 @@ export const useBarberShopProfile = () => {
     isLoading: isFetching,
     errors,
     avatarImage,
+    isConfirmDeleteBarberDialogOpen,
+    handleConfirmBarberShopDelete,
+    handleCloseDeleteDialog,
+    handleDeleteBarberShopButtonClick,
     register,
     renderAddress,
     toggleEdit: handleToggleEdit,
