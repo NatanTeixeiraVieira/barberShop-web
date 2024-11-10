@@ -1,18 +1,15 @@
-import { verifyLoginSchema } from "@/validations/schemas/login"
-import { z } from "zod"
+import { verifyLoginSchema } from '@/validations/schemas/login';
+import { z } from 'zod';
+import { Client } from './client';
 
 export type ReturnLoginCLientDto = {
-  id: string;
-  name: string;
-  email:string;
-  phoneNumber: string;
-  photoUrl: string;
+  client: Client;
   token: string;
-}
+};
 
 export type VerifyLogin = {
-  email: string,
-  password: string,
-}
+  email: string;
+  password: string;
+};
 
-export type VerifiLoginData = z.infer<typeof verifyLoginSchema>
+export type VerifyLoginData = z.infer<typeof verifyLoginSchema>;
