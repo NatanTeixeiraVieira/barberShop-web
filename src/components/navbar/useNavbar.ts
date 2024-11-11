@@ -2,7 +2,7 @@ import { barberShopClient } from '@/constants/requestCacheNames';
 import { useAppContext } from '@/context/appContext';
 import { getBarberShopClientById } from '@/services/barberShop';
 import { BarberShop } from '@/types/barberShop';
-import { getAuth } from '@/utils/auth';
+import { getAuth, logout } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,7 @@ const useNavbar = () => {
 
   const handleClickLogout = () => {
     localStorage.removeItem('token');
+    logout();
     setIsAuthenticate(false);
     navigate('/');
   };
