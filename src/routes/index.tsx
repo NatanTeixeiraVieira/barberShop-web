@@ -9,6 +9,7 @@ import RegisterBarberShop from '@/page/form-barber';
 import ClientProfile from '@/page/client-profile';
 import BarberShopService from '@/page/barber-service';
 import Home from '@/page/home';
+import RequireAuth from '@/components/required-auth';
 
 const routes = () => {
   return (
@@ -18,9 +19,12 @@ const routes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/auth/register" element={<Auth />} />
         <Route path="/auth/login" element={<Auth />} />
+
         <Route
           path="/auth/register-barber-shop"
-          element={<RegisterBarberShop />}
+          element={
+            <RegisterBarberShop />
+          }
         />
         <Route
           path="/details-barber-shop/:barberShopId"
@@ -39,7 +43,12 @@ const routes = () => {
           path="/barber-shop-profile/:barberShopId"
           element={<BarberShopProfile />}
         />
-        <Route path="/client-profile/:clientId" element={<ClientProfile />} />
+        <Route path="/client-profile/:clientId" element={
+          <RequireAuth>
+            <ClientProfile />
+          </RequireAuth>}
+        />
+
       </Routes>
     </BrowserRouter>
   );
