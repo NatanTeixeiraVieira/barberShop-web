@@ -10,18 +10,17 @@ export type Client = {
   photoUrl: string;
 };
 
-export type ClientRegisterData = z.infer<typeof formClientSchema>
+export type ClientRegisterData = z.infer<typeof formClientSchema>;
 
 export type CreateClientDto = {
   name: string;
   email: string;
   password: string;
-}
+};
 
 export type ClientProfileFormData = z.infer<typeof clientProfileSchema>;
 
 export type UpdateClientProfileDto = {
-  id: string;
   name?: string;
   phoneNumber?: string;
   fileList?: FileList;

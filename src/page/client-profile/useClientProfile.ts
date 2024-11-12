@@ -1,5 +1,5 @@
 import { clientByIdCache } from '@/constants/requestCacheNames';
-import { getClientById, updateClientProfile } from '@/services/client';
+import { getLoggedClient, updateClientProfile } from '@/services/client';
 import {
   Client,
   ClientProfileFormData,
@@ -10,24 +10,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 
 export const useClientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [avatarImage, setAvatarImage] = useState('');
 
-  const { clientId } = useParams();
-
   const queryClient = useQueryClient();
 
   const { data: client, isFetching: isLoading } = useQuery<Client>({
     queryKey: [clientByIdCache],
-    queryFn: async () => (await getClientById(clientId!)).data,
+    queryFn: async () => (await getLoggedClient()).data,
 
     retry: false,
     refetchOnWindowFocus: false,
   });
+  console.log('🚀 ~ useClientProfile ~ client:', client);
 
   const {
     register,
@@ -43,7 +41,7 @@ export const useClientProfile = () => {
   });
 
   const {
-    mutate: updateClientProfileMutatate,
+    mutate: updateClientProfileMutate,
     isPending: isUpdateClientProfilePending,
   } = useMutation({
     mutationFn: async (dto: UpdateClientProfileDto) => {
@@ -81,14 +79,11 @@ export const useClientProfile = () => {
   // };
 
   const submit = handleSubmit((data: ClientProfileFormData) => {
-    if (clientId) {
-      console.log('🚀 ~ submit ~ data:', data);
-      updateClientProfileMutatate({
-        id: clientId,
-        fileList: data.file,
-        ...data,
-      });
-    }
+    console.log('🚀 ~ submit ~ data:', data);
+    updateClientProfileMutate({
+      fileList: data.file,
+      ...data,
+    });
   });
 
   const handleToggleEdit = () => {
@@ -166,7 +161,7 @@ export const useClientProfile = () => {
 
   const formatPhone = (phone: string) => {
     console.log('🚀 ~ formatPhone ~ phone:', phone);
-    return phone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    return phone?.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   };
 
   return {

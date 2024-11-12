@@ -22,9 +22,7 @@ const routes = () => {
 
         <Route
           path="/auth/register-barber-shop"
-          element={
-            <RegisterBarberShop />
-          }
+          element={<RegisterBarberShop />}
         />
         <Route
           path="/details-barber-shop/:barberShopId"
@@ -43,12 +41,14 @@ const routes = () => {
           path="/barber-shop-profile/:barberShopId"
           element={<BarberShopProfile />}
         />
-        <Route path="/client-profile/:clientId" element={
-          <RequireAuth>
-            <ClientProfile />
-          </RequireAuth>}
+        <Route
+          path="/client-profile"
+          element={
+            <RequireAuth>
+              <ClientProfile />
+            </RequireAuth>
+          }
         />
-
       </Routes>
     </BrowserRouter>
   );

@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function ClientProfile() {
   const profile = useClientProfile();
-
   return (
     <div className="bg-primary flex justify-center p-4">
       <div className="bg-paper rounded-lg shadow-lg max-w-md w-full overflow-hidden">
