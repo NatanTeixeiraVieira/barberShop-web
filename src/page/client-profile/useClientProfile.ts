@@ -5,6 +5,7 @@ import {
   ClientProfileFormData,
   UpdateClientProfileDto,
 } from '@/types/client';
+import { phoneMask, removeMask } from '@/utils/mask';
 import { clientProfileSchema } from '@/validations/schemas/clientProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -31,6 +32,7 @@ export const useClientProfile = () => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<ClientProfileFormData>({
     resolver: zodResolver(clientProfileSchema),
@@ -77,8 +79,15 @@ export const useClientProfile = () => {
   //   setClient((prev) => ({ ...prev, [name]: value }));
   // };
 
+  const handlePhoneMask = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = phoneMask(e.target.value);
+    setValue("phoneNumber", formattedPhone)
+  }
+
+
   const submit = handleSubmit((data: ClientProfileFormData) => {
-    console.log('🚀 ~ submit ~ data:', data);
+
+    data.phoneNumber = removeMask(getValues("phoneNumber"))
     updateClientProfileMutate({
       fileList: data.file,
       ...data,
@@ -99,6 +108,18 @@ export const useClientProfile = () => {
 
     setIsEditing(!isEditing);
   };
+
+  const handleCancleEdit = () => {
+
+    if (client) {
+      Object.entries(client).forEach(([key, value]) => {
+        setValue(key as keyof ClientProfileFormData, value?.toString() ?? '');
+      });
+    }
+
+    setIsEditing(false);
+    setAvatarImage('')
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -166,14 +187,16 @@ export const useClientProfile = () => {
   return {
     client,
     errors,
-    fileInputRef,
     isEditing,
     isLoading,
     avatarImage,
+    fileInputRef,
+    register,
+    formatPhone,
+    handlePhoneMask,
+    triggerFileInput,
+    handleCancleEdit,
     handleToggleEdit,
     handleImageUpload,
-    register,
-    triggerFileInput,
-    formatPhone,
   };
 };

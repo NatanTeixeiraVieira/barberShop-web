@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 export const useLogin = () => {
+
   const { showPassword, togglePasswordVisibility, setIsAuthenticate } =
     useAppContext();
 
@@ -46,7 +47,7 @@ export const useLogin = () => {
           variant: 'success',
         });
         setIsAuthenticate(true);
-        redirectUser("/", 0)
+        redirectUser('/', 0.5);
       },
 
       onError: () => {

@@ -43,7 +43,7 @@ export default function Home() {
         {!isFetching &&
           barberShop &&
           barberShop.data?.map((barber) => (
-            <div key={barber.id} className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800">
+            <div key={barber.id} className="bg-slate-100 rounded-lg p-4 flex gap-4 items-center text-gray-800">
 
               <Avatar className="size-16">
                 <AvatarImage src={barber.photoUrl} />

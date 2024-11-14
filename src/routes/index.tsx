@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Auth from '@/page/auth';
-import DetailBarberShop from '@/components/details-barber-shop';
+import DetailBarberShop from '@/page/details-barber-shop';
 import Navbar from '@/components/navbar';
 import BarberAppointments from '@/page/barber-appointments';
 import ClientAppointments from '@/page/client-appointments';

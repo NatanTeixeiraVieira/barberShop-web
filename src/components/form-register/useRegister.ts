@@ -10,22 +10,25 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const useRegister = () => {
-  const { showPassword, togglePasswordVisibility, toggleConfirmPasswordVisibility, showConfirmPassword} = useAppContext();
+  const {
+    showPassword,
+    togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
+    showConfirmPassword,
+  } = useAppContext();
 
-  const [registerForm, setRegisterForm] = useState({
-    name: '',
-    email: '',
-    password: '',
+  // estado para pegar os caracteres que estão sendo digitados;
+  const [password, setPassword] = useState('');
+
+  // estado para validação dos caracteres digitados no input
+  const [validations, setValidations] = useState({
+    length: false,
+    uppercase: false,
+    number: false,
+    specialChar: false,
   });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setRegisterForm({
-      ...registerForm,
-      [name]: value,
-    });
-  };
-
+  //Utilização do react hook form para iniciar os campos dos inputs vazios
   const {
     register,
     handleSubmit,
@@ -70,16 +73,30 @@ export const useRegister = () => {
   const submit = handleSubmit((data: ClientRegisterData) => {
     createClientMutatate(data);
   });
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+
+    setValidations({
+      length: value.length >= 8,
+      uppercase: /[A-Z]/.test(value),
+      number: /\d/.test(value),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
+    });
+  };
   return {
-    showPassword,
-    isCreateClientPending,
     errors,
+    password,
+    validations,
+    showPassword,
     showConfirmPassword,
+    isCreateClientPending,
+    submit,
     register,
     setValue,
+    handlePasswordChange,
     togglePasswordVisibility,
-    handleInputChange,
-    submit,
     toggleConfirmPasswordVisibility,
   };
 };

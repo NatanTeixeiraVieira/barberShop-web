@@ -5,39 +5,21 @@ import { Label } from "../ui/label";
 import { useRegister } from "./useRegister";
 import Spinner from "../Spinner";
 import { Toaster } from "../ui/toaster";
-import { useState } from "react";
 
 export default function FormRegister() {
   const {
-    showPassword,
-    isCreateClientPending,
     errors,
+    validations,
+    showPassword,
     showConfirmPassword,
-    register,
-    togglePasswordVisibility,
+    isCreateClientPending,
     submit,
+    register,
+    handlePasswordChange,
+    togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
   } = useRegister();
 
-  const [password, setPassword] = useState('');
-  const [validations, setValidations] = useState({
-    length: false,
-    uppercase: false,
-    number: false,
-    specialChar: false,
-  });
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPassword(value);
-
-    setValidations({
-      length: value.length >= 8,
-      uppercase: /[A-Z]/.test(value),
-      number: /\d/.test(value),
-      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(value),
-    });
-  };
 
   return (
     <form onSubmit={submit}>

@@ -9,9 +9,9 @@ import { Toaster } from "../ui/toaster";
 export default function FormLogin() {
 
   const {
+    errors,
     showPassword,
     isVerifyLoginPending,
-    errors,
     submit,
     register,
     togglePasswordVisibility,
@@ -38,7 +38,7 @@ export default function FormLogin() {
           <div className="relative">
             <Lock className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-            type={`${showPassword === false ? 'password' : 'text'}`}
+              type={`${showPassword === false ? 'password' : 'text'}`}
               {...register('password')}
               placeholder="***************"
               helperText={errors.password?.message}

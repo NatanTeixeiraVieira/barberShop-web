@@ -22,7 +22,6 @@ import { Cep } from '@/types/cep';
 import { getAddressByCepNumber } from '@/services/cep';
 import { statesMapper } from '@/constants/mappers';
 import { toast } from '@/hooks/useToast';
-
 export const useBarberShopProfile = () => {
   const { barberShopId } = useParams();
   const navigate = useNavigate();
@@ -160,6 +159,20 @@ export const useBarberShopProfile = () => {
     }
   });
 
+  const handleCancelEdit = () => {
+    if (barberShop) {
+      Object.entries(barberShop).forEach(([key, value]) => {
+        setValue(
+          key as keyof BarberShopProfileFormData,
+          value?.toString() ?? '',
+        );
+      });
+    }
+
+    // Encerra o modo de edição
+    setIsEditing(false);
+  };
+
   const handleToggleEdit = () => {
     if (isEditing) {
       submit();
@@ -230,22 +243,23 @@ export const useBarberShopProfile = () => {
   };
 
   return {
-    barberShop,
-    isEditing,
-    fileInputRef,
-    isLoading: isFetching,
     errors,
+    isEditing,
+    barberShop,
+    isFetching,
     avatarImage,
-    isConfirmDeleteBarberDialogOpen,
+    fileInputRef,
     isDeleteBarberShopPending,
-    handleConfirmBarberShopDelete,
-    handleCloseDeleteDialog,
-    handleDeleteBarberShopButtonClick,
+    isConfirmDeleteBarberDialogOpen,
     register,
-    renderAddress,
-    toggleEdit: handleToggleEdit,
-    handleImageUpload,
-    triggerFileInput,
     formatCNPJ,
+    renderAddress,
+    handleCancelEdit,
+    handleToggleEdit,
+    triggerFileInput,
+    handleImageUpload,
+    handleCloseDeleteDialog,
+    handleConfirmBarberShopDelete,
+    handleDeleteBarberShopButtonClick,
   };
 };

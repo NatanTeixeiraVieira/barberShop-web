@@ -6,6 +6,7 @@ import {
   Check,
   Upload,
   UserCircle2,
+  X,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -22,6 +23,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import Spinner from '@/components/Spinner';
+import Arrow from '@/components/arrow';
 
 export default function BarberShopProfile() {
   const profile = useBarberShopProfile();
@@ -33,6 +35,22 @@ export default function BarberShopProfile() {
           <div className="px-6 py-12 space-y-4 w-full">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={profile.handleCancelEdit}
+                  disabled={profile.isFetching}
+                >
+                  {profile.isEditing ? (
+                    profile.isFetching ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900" />
+                    ) : (
+                      <X />
+                    )
+                  ) : (
+                    <Arrow to="/"/>
+                  )}
+                </Button>
                 <div className="relative">
                   <Avatar className="size-16">
                     <AvatarImage src={profile.avatarImage} />
@@ -79,11 +97,11 @@ export default function BarberShopProfile() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={profile.toggleEdit}
-                disabled={profile.isLoading}
+                onClick={profile.handleToggleEdit}
+                disabled={profile.isFetching}
               >
                 {profile.isEditing ? (
-                  profile.isLoading ? (
+                  profile.isFetching ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900" />
                   ) : (
                     <Check className="h-4 w-4" />
@@ -97,47 +115,47 @@ export default function BarberShopProfile() {
               {(profile.barberShop.street ||
                 profile.barberShop.city ||
                 profile.barberShop.state) && (
-                <div className="flex items-start space-x-2">
-                  <MapPin className="text-gray-500 mt-1 flex-shrink-0" />
-                  {profile.isEditing ? (
-                    <div className="grid grid-cols-2 gap-6 w-full">
-                      <Input
-                        id="cep"
-                        placeholder="CEP"
-                        {...profile.register('cep')}
-                        helperText={profile.errors.cep?.message}
-                      />
-                      <Input
-                        {...profile.register('street')}
-                        helperText={profile.errors.street?.message}
-                        placeholder="Rua"
-                      />
-                      <Input
-                        {...profile.register('number')}
-                        helperText={profile.errors.number?.message}
-                        placeholder="Número"
-                      />
-                      <Input
-                        {...profile.register('neighborhood')}
-                        helperText={profile.errors.neighborhood?.message}
-                        placeholder="Bairro"
-                      />
-                      <Input
-                        {...profile.register('city')}
-                        helperText={profile.errors.city?.message}
-                        placeholder="Cidade"
-                      />
-                      <Input
-                        {...profile.register('state')}
-                        helperText={profile.errors.state?.message}
-                        placeholder="Estado"
-                      />
-                    </div>
-                  ) : (
-                    <p className="text-gray-700">{profile.renderAddress()}</p>
-                  )}
-                </div>
-              )}
+                  <div className="flex items-start space-x-2">
+                    <MapPin className="text-gray-500 mt-1 flex-shrink-0" />
+                    {profile.isEditing ? (
+                      <div className="grid grid-cols-2 gap-6 w-full">
+                        <Input
+                          id="cep"
+                          placeholder="CEP"
+                          {...profile.register('cep')}
+                          helperText={profile.errors.cep?.message}
+                        />
+                        <Input
+                          {...profile.register('street')}
+                          helperText={profile.errors.street?.message}
+                          placeholder="Rua"
+                        />
+                        <Input
+                          {...profile.register('number')}
+                          helperText={profile.errors.number?.message}
+                          placeholder="Número"
+                        />
+                        <Input
+                          {...profile.register('neighborhood')}
+                          helperText={profile.errors.neighborhood?.message}
+                          placeholder="Bairro"
+                        />
+                        <Input
+                          {...profile.register('city')}
+                          helperText={profile.errors.city?.message}
+                          placeholder="Cidade"
+                        />
+                        <Input
+                          {...profile.register('state')}
+                          helperText={profile.errors.state?.message}
+                          placeholder="Estado"
+                        />
+                      </div>
+                    ) : (
+                      <p className="text-gray-700">{profile.renderAddress()}</p>
+                    )}
+                  </div>
+                )}
               {profile.barberShop.phone && (
                 <div className="flex items-center space-x-2">
                   <Phone className="text-gray-500" />

@@ -4,7 +4,7 @@ export const formClientSchema = z
   .object({
     name: z
       .string()
-      .min(1, 'o nome é obrigatório')
+      .min(4, 'o nome é obrigatório')
       .refine((value) => /\S/.test(value), 'Nome não pode ser apenas espaços'),
     email: z
       .string()

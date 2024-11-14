@@ -1,6 +1,5 @@
 import { barberShopProfileCache } from '@/constants/requestCacheNames';
 import { toast } from '@/hooks/useToast';
-import { api } from '@/services/api';
 import { getBarberShopProfile } from '@/services/barberShop';
 import { createFavoriteBarberShop, deleteFavorite } from '@/services/favorite';
 import { getBarberShopDetails } from '@/services/serviceBarberShop';
@@ -9,7 +8,7 @@ import { BarberShopDetails } from '@/types/barberShopDetails';
 import { CreateFavoriteBarberShopDto } from '@/types/favorite-barber-shop';
 import { getAuth } from '@/utils/auth';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const useDetailsBarberShop = () => {
@@ -87,7 +86,6 @@ const useDetailsBarberShop = () => {
 
     const {
       mutate: deleteFavoriteMutate,
-      isPending: isDeletefavoritePending,
     } = useMutation({
       mutationFn: async (barberShopId: string) => {
         await deleteFavorite(barberShopId);

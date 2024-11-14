@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useDetailsBarberShop from "./useDetailsBarberShop";
 import { Link } from "react-router-dom";
-import Schedule from "../Schedule";
+import Schedule from "../../components/Schedule";
 import { Star, Heart } from "lucide-react";
-import { Toaster } from "../ui/toaster";
+import { Toaster } from "../../components/ui/toaster";
+import Arrow from "@/components/arrow";
 
 const BarberShopDetails: React.FC = () => {
   const { barberShopServices, isLoading, hasServices, barberShop, auth, isFavorited,
@@ -13,22 +14,7 @@ const BarberShopDetails: React.FC = () => {
   return (
     <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md my-8">
       <div className="flex items-center mb-4">
-        <Link to="/" className="text-gray-500 hover:text-gray-700">
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </Link>
+        <Arrow to="/"/>
         <div className="w-full flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
           <h1 className="text-2xl font-bold">{barberShop?.name}</h1>
 

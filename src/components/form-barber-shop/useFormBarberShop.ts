@@ -1,16 +1,12 @@
-import { statesMapper } from '@/constants/mappers';
-import { addressByCepCache } from '@/constants/requestCacheNames';
 import { toast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
-import { getAddressByCepNumber } from '@/services/cep';
 import { CreateBarberShopDto, CreateBarberShopFormData, FormBarberShop } from '@/types/barberShop';
-import { Cep } from '@/types/cep';
 import { cepMask, formatCnpj, phoneMask, removeMask } from '@/utils/mask';
 import { redirectUser } from '@/utils/redirect';
 import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { ReactEventHandler, useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const brazilianStates = [
@@ -66,7 +62,6 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
     setValue,
     getValues,
     reset,
-    watch,
     formState: { errors },
   } = useForm<CreateBarberShopFormData>({
     resolver: zodResolver(formBarberShopSchema),
@@ -83,16 +78,6 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
     },
   });
 
-  const cep = watch('cep');
-
-  const { data: addressByCep, refetch: refetchGetAddressByCepNumber } =
-    useQuery<Cep>({
-      queryKey: [addressByCepCache, cep],
-      queryFn: async () => (await getAddressByCepNumber(cep)).data,
-      retry: false,
-      refetchOnWindowFocus: false,
-      enabled: cep.length === 8,  // Apenas ativa se o CEP tiver 8 caracteres
-    });
 
   const handleChange = (field: string, value: string) => {
     setFormBarberShop((prev) => ({
@@ -122,15 +107,6 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
       });
     },
   });
-
-  useEffect(() => {
-    if (addressByCep) {
-      setValue('city', addressByCep.city);
-      setValue('neighborhood', addressByCep.neighborhood);
-      setValue('state', statesMapper[addressByCep.state]);
-      setValue('street', addressByCep.street);
-    }
-  }, [addressByCep, setValue]);
 
   const handleCNPJChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedCNPJ = formatCnpj(e.target.value);

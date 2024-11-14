@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import useNavbar from './useNavbar';
+import { LogOut } from 'lucide-react';
 
 export default function Navbar() {
   const {
@@ -134,7 +135,8 @@ export default function Navbar() {
                 onClick={handleClickLogout}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-primary transition-colors bg-white hover:bg-primary text-primary hover:text-white h-10 px-4 py-2"
               >
-                Logout
+                Sair
+                <LogOut className='w-4 h-4 ml-2' />
               </button>
             </>
           ) : (
