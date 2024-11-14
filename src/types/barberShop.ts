@@ -3,6 +3,18 @@ import { barberShopProfileSchema } from '@/validations/schemas/barberShopProfile
 import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { z } from 'zod';
 
+export type FormBarberShop = {
+  name: string;
+  cnpj: string;
+  cep: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  phone: string;
+  street: string;
+};
+
 export type BarberShop = {
   id: string;
   name: string;

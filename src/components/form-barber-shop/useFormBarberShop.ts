@@ -4,13 +4,13 @@ import { useBarberShopContext } from '@/context/formBarberShopContext';
 import { toast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
 import { getAddressByCepNumber } from '@/services/cep';
-import { CreateBarberShopDto, CreateBarberShopFormData } from '@/types/barberShop';
+import { CreateBarberShopDto, CreateBarberShopFormData, FormBarberShop } from '@/types/barberShop';
 import { Cep } from '@/types/cep';
 import { redirectUser } from '@/utils/redirect';
 import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const brazilianStates = [
@@ -44,7 +44,21 @@ export const brazilianStates = [
 ];
 
 export const useFormBarberShop = () => {
-  const { formBarberShop, setFormBarberShop } = useBarberShopContext();
+
+
+  const valuesBarberShop = {
+    name: "",
+    cnpj: "",
+    cep: "",
+    number: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    phone: "",
+    street: ""
+}
+
+const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarberShop);
 
   const {
     register,
