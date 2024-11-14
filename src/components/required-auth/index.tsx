@@ -1,6 +1,6 @@
 import { useAppContext } from '@/context/appContext';
+import { redirectUser } from '@/utils/redirect';
 import { ReactNode, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface RequireAuthProps {
   children: ReactNode;
@@ -8,7 +8,6 @@ interface RequireAuthProps {
 
 export default function RequireAuth({ children }: RequireAuthProps) {
   const { isAuthenticate, setIsAuthenticate } = useAppContext();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -18,9 +17,9 @@ export default function RequireAuth({ children }: RequireAuthProps) {
       console.log(isAuthenticate)
     } else {
       setIsAuthenticate(false);
-      navigate('/auth/login');
+      redirectUser("/auth/login", 0)
     }
-  }, [navigate, setIsAuthenticate]);
+  }, [redirectUser, setIsAuthenticate]);
 
   if (!isAuthenticate) return null;
 

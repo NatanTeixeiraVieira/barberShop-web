@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const useRegister = () => {
-  const { showPassword, togglePasswordVisibility } = useAppContext();
+  const { showPassword, togglePasswordVisibility, toggleConfirmPasswordVisibility, showConfirmPassword} = useAppContext();
 
   const [registerForm, setRegisterForm] = useState({
     name: '',
@@ -74,10 +74,12 @@ export const useRegister = () => {
     showPassword,
     isCreateClientPending,
     errors,
+    showConfirmPassword,
     register,
     setValue,
     togglePasswordVisibility,
     handleInputChange,
     submit,
+    toggleConfirmPasswordVisibility,
   };
 };

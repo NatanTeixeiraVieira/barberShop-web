@@ -71,7 +71,7 @@ export default function Home() {
               </div>
               <Link
                 to={`/details-barber-shop/${barber.id}`}
-                  className='border border-slate-400 px-4 rounded-md bg-white hover:bg-primary text-black hover:text-white'
+                  className='border border-slate-400 px-4 py-1 rounded-md bg-white hover:bg-primary text-black hover:text-white'
               >
                   Ver Perfil
               </Link>

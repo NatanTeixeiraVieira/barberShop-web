@@ -24,6 +24,9 @@ export default function FormBarberShop() {
     register,
     setValue,
     isCreateBarberShopPending,
+    handleCNPJChange,
+    handleCepChange,
+    handlePhoneMask,
   } = useFormBarberShop();
 
   return (
@@ -35,7 +38,11 @@ export default function FormBarberShop() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="cnpj">CNPJ</Label>
-          <Input {...register("cnpj")} helperText={errors.cnpj?.message} />
+          <Input {...register("cnpj")} onChange={handleCNPJChange} helperText={errors.cnpj?.message} maxLength={18}/>
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="cep">CEP</Label>
+          <Input {...register("cep")} onChange={handleCepChange} helperText={errors.cep?.message} maxLength={9}/>
         </div>
         <div className="space-y-2">
           <Label htmlFor="estado">Estado</Label>
@@ -60,10 +67,7 @@ export default function FormBarberShop() {
           </Select>
           <span className="text-xs text-error">{errors.state?.message}</span>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="cep">CEP</Label>
-          <Input {...register("cep")} helperText={errors.cep?.message} />
-        </div>
+
         <div className="space-y-2">
           <Label htmlFor="street">Rua</Label>
           <Input {...register("street")} helperText={errors.street?.message} />
@@ -85,7 +89,7 @@ export default function FormBarberShop() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="telefone">Telefone</Label>
-          <Input {...register("phone")} helperText={errors.phone?.message} />
+          <Input {...register("phone")} onChange={handlePhoneMask} helperText={errors.phone?.message} maxLength={14}/>
         </div>
         <div className="p-4">
           <Button type="submit" className="w-full">

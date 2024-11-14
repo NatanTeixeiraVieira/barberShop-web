@@ -40,6 +40,7 @@ export default function FormLogin() {
             <Input
             type={`${showPassword === false ? 'password' : 'text'}`}
               {...register('password')}
+              placeholder="***************"
               helperText={errors.password?.message}
               className="pl-8 pr-8"
             />
@@ -51,6 +52,7 @@ export default function FormLogin() {
             </div>
           </div>
         </div>
+
       </div>
       <Button className="w-full mt-4" type="submit">
         {isVerifyLoginPending ? <Spinner size="sm" /> : 'Entrar'}

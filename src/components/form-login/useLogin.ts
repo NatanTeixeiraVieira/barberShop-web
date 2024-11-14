@@ -51,11 +51,10 @@ export const useLogin = () => {
 
       onError: () => {
         toast({
-          title: 'Falha ao realizar login',
+          title: 'Email ou senha invalidos',
           className: 'h-20',
           variant: 'error',
         });
-        console.log('Erro ao realizar login');
       },
     });
 

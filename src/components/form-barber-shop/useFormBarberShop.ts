@@ -1,16 +1,16 @@
 import { statesMapper } from '@/constants/mappers';
 import { addressByCepCache } from '@/constants/requestCacheNames';
-import { useBarberShopContext } from '@/context/formBarberShopContext';
 import { toast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
 import { getAddressByCepNumber } from '@/services/cep';
 import { CreateBarberShopDto, CreateBarberShopFormData, FormBarberShop } from '@/types/barberShop';
 import { Cep } from '@/types/cep';
+import { cepMask, formatCnpj, phoneMask, removeMask } from '@/utils/mask';
 import { redirectUser } from '@/utils/redirect';
 import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { ReactEventHandler, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const brazilianStates = [
@@ -64,6 +64,7 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
     register,
     handleSubmit,
     setValue,
+    getValues,
     reset,
     watch,
     formState: { errors },
@@ -131,9 +132,30 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
     }
   }, [addressByCep, setValue]);
 
+  const handleCNPJChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedCNPJ = formatCnpj(e.target.value);
+    setValue("cnpj", formattedCNPJ);
+  };
+
+  const handlePhoneMask = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = phoneMask(e.target.value);
+    setValue("phone", formattedPhone)
+  }
+
+
+  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedCEP = cepMask(e.target.value);
+    setValue("cep", formattedCEP);
+  };
+
   const submit = handleSubmit((data: CreateBarberShopFormData) => {
+    data.cnpj = removeMask(getValues("cnpj"));
+    data.cep = removeMask(getValues("cep"));
+    data.phone = removeMask(getValues("phone"));
     createBarberShopMutate(data);
   });
+
+
 
   return {
     isCreateBarberShopPending,
@@ -144,5 +166,8 @@ const [formBarberShop, setFormBarberShop] = useState<FormBarberShop>(valuesBarbe
     register,
     errors,
     setValue,
+    handleCNPJChange,
+    handleCepChange,
+    handlePhoneMask,
   };
 };
