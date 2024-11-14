@@ -42,7 +42,6 @@ export const useClientProfile = () => {
 
   const {
     mutate: updateClientProfileMutate,
-    isPending: isUpdateClientProfilePending,
   } = useMutation({
     mutationFn: async (dto: UpdateClientProfileDto) => {
       await updateClientProfile(dto);

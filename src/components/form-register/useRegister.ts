@@ -2,6 +2,7 @@ import { useAppContext } from '@/context/appContext';
 import { toast } from '@/hooks/useToast';
 import { createClient } from '@/services/client';
 import { ClientRegisterData, CreateClientDto } from '@/types/client';
+import { redirectUser } from '@/utils/redirect';
 import { formClientSchema } from '@/validations/schemas/form-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -54,6 +55,7 @@ export const useRegister = () => {
           variant: 'success',
         });
         reset();
+        redirectUser('/auth/login', 1);
       },
 
       onError: () => {

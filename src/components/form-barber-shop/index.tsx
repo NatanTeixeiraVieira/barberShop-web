@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Toaster } from "../ui/toaster";
 import { useFormBarberShop } from "./useFormBarberShop";
 
 export default function FormBarberShop() {
@@ -91,6 +92,7 @@ export default function FormBarberShop() {
             {isCreateBarberShopPending ? <Spinner size="sm" /> : "Cadastrar Barbearia"}
           </Button>
         </div>
+        <Toaster />
       </div>
     </form>
   );

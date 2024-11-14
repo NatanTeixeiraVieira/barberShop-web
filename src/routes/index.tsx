@@ -28,18 +28,20 @@ const routes = () => {
           path="/details-barber-shop/:barberShopId"
           element={<DetailBarberShop />}
         />
-        <Route path="/client-appointments" element={<ClientAppointments />} />
+        {/* <Route path="/favorite" element={<Favorite/>} /> */}
+
+        <Route path="/client-appointments" element={<RequireAuth><ClientAppointments /></RequireAuth>} />
         <Route
           path="/barber-shop-appointments/:barberShopId"
-          element={<BarberAppointments />}
+          element={<RequireAuth><BarberAppointments /></RequireAuth>}
         />
         <Route
           path="/barber-shop-service/:barberShopId"
-          element={<BarberShopService />}
+          element={<RequireAuth><BarberShopService /></RequireAuth>}
         />
         <Route
           path="/barber-shop-profile/:barberShopId"
-          element={<BarberShopProfile />}
+          element={<RequireAuth><BarberShopProfile /></RequireAuth>}
         />
         <Route
           path="/client-profile"

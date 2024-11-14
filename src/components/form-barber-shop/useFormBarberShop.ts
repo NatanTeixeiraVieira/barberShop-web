@@ -1,13 +1,16 @@
+import { statesMapper } from '@/constants/mappers';
+import { addressByCepCache } from '@/constants/requestCacheNames';
 import { useBarberShopContext } from '@/context/formBarberShopContext';
 import { toast } from '@/hooks/useToast';
 import { createBarberShop } from '@/services/barberShop';
-import {
-  CreateBarberShopDto,
-  CreateBarberShopFormData,
-} from '@/types/barberShop';
+import { getAddressByCepNumber } from '@/services/cep';
+import { CreateBarberShopDto, CreateBarberShopFormData } from '@/types/barberShop';
+import { Cep } from '@/types/cep';
+import { redirectUser } from '@/utils/redirect';
 import { formBarberShopSchema } from '@/validations/schemas/form-barber-shop';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const brazilianStates = [
@@ -48,6 +51,7 @@ export const useFormBarberShop = () => {
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<CreateBarberShopFormData>({
     resolver: zodResolver(formBarberShopSchema),
@@ -64,6 +68,17 @@ export const useFormBarberShop = () => {
     },
   });
 
+  const cep = watch('cep');
+
+  const { data: addressByCep, refetch: refetchGetAddressByCepNumber } =
+    useQuery<Cep>({
+      queryKey: [addressByCepCache, cep],
+      queryFn: async () => (await getAddressByCepNumber(cep)).data,
+      retry: false,
+      refetchOnWindowFocus: false,
+      enabled: cep.length === 8,  // Apenas ativa se o CEP tiver 8 caracteres
+    });
+
   const handleChange = (field: string, value: string) => {
     setFormBarberShop((prev) => ({
       ...prev,
@@ -71,24 +86,19 @@ export const useFormBarberShop = () => {
     }));
   };
 
-  const {
-    mutate: createBarberShopMutate,
-    isPending: isCreateBarberShopPending,
-  } = useMutation({
+  const { mutate: createBarberShopMutate, isPending: isCreateBarberShopPending } = useMutation({
     mutationFn: async (dto: CreateBarberShopDto) => {
       await createBarberShop(dto);
-      return dto;
     },
-
     onSuccess: () => {
       toast({
-        title: 'Barbeiro criado com sucesso',
+        title: 'Barbearia criada com sucesso',
         className: 'h-20',
         variant: 'success',
       });
       reset();
+      redirectUser(`/`, 1);
     },
-
     onError: () => {
       toast({
         title: 'Falha ao cadastrar barbearia',
@@ -97,6 +107,15 @@ export const useFormBarberShop = () => {
       });
     },
   });
+
+  useEffect(() => {
+    if (addressByCep) {
+      setValue('city', addressByCep.city);
+      setValue('neighborhood', addressByCep.neighborhood);
+      setValue('state', statesMapper[addressByCep.state]);
+      setValue('street', addressByCep.street);
+    }
+  }, [addressByCep, setValue]);
 
   const submit = handleSubmit((data: CreateBarberShopFormData) => {
     createBarberShopMutate(data);

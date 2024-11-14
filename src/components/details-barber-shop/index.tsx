@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useDetailsBarberShop from "./useDetailsBarberShop";
 import { Link } from "react-router-dom";
 import Schedule from "../Schedule";
-import { Star } from "lucide-react";
+import { Star, Heart } from "lucide-react";
+import { Toaster } from "../ui/toaster";
 
 const BarberShopDetails: React.FC = () => {
-  const { barberShopServices, isLoading, hasServices, barberShop, auth } = useDetailsBarberShop();
+  const { barberShopServices, isLoading, hasServices, barberShop, auth, isFavorited,
+    handleFavoriteClick,
+    handleRemoveFavoriteClick, } = useDetailsBarberShop();
 
   return (
     <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md my-8">
       <div className="flex items-center mb-4">
-        <Link to='/' className="text-gray-500 hover:text-gray-700">
+        <Link to="/" className="text-gray-500 hover:text-gray-700">
           <svg
             className="h-6 w-6"
             fill="none"
@@ -26,7 +29,7 @@ const BarberShopDetails: React.FC = () => {
             />
           </svg>
         </Link>
-        <div className=" w-full flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
+        <div className="w-full flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
           <h1 className="text-2xl font-bold">{barberShop?.name}</h1>
 
           {barberShop && (
@@ -35,18 +38,31 @@ const BarberShopDetails: React.FC = () => {
                 <Star
                   key={`${barberShop.id}${i}`}
                   className={`w-4 h-4 ${i < Math.floor(barberShop.rating)
-                    ? 'text-yellow-400 fill-yellow-400'
-                    : 'text-gray-300'
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
                     }`}
                 />
               ))}
               <span className="ml-1 text-sm text-gray-600">
                 {barberShop.rating.toFixed(1)}
               </span>
+              {auth?.token && (
+                <button
+                  onClick={isFavorited ? handleRemoveFavoriteClick : handleFavoriteClick}
+                  className="ml-2 flex items-center justify-center"
+                  aria-label={isFavorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                >
+                  <Heart
+                    className={`w-5 h-5 transition-colors ${isFavorited ? "text-red-500 fill-current" : "text-gray-500 hover:text-red-500"
+                      }`}
+                  />
+                </button>
+              )}
+
+
             </div>
           )}
         </div>
-
       </div>
 
       <h2 className="text-xl font-semibold mb-2">Lista de serviços</h2>
@@ -55,11 +71,16 @@ const BarberShopDetails: React.FC = () => {
         <p className="text-gray-600">Carregando serviços...</p>
       ) : hasServices ? (
         barberShopServices?.map((service) => (
-          <div key={service.id} className="flex justify-between items-center mb-4">
+          <div
+            key={service.id}
+            className="flex justify-between items-center mb-4"
+          >
             <div>
               <p className="font-medium">{service.name}</p>
               <p className="text-sm text-gray-600">R$ {service.price}</p>
-              <p className="text-sm text-gray-600">Duração: {service.duration} min</p>
+              <p className="text-sm text-gray-600">
+                Duração: {service.duration} min
+              </p>
             </div>
             {auth?.token ? (
               <Schedule />
@@ -76,6 +97,7 @@ const BarberShopDetails: React.FC = () => {
       ) : (
         <p className="text-gray-600">Nenhum serviço encontrado.</p>
       )}
+      <Toaster />
     </div>
   );
 };

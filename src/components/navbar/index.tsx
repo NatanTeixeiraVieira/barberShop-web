@@ -75,6 +75,12 @@ export default function Navbar() {
                         Gerenciar horários
                       </Link>
                       <Link
+                        to={`/barber-shop-service/${barberShop.id}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Serviços
+                      </Link>
+                      <Link
                         to={`/`}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >

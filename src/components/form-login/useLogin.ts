@@ -3,16 +3,15 @@ import { toast } from '@/hooks/useToast';
 import { verifyLogin } from '@/services/login';
 import { VerifyLoginData, VerifyLogin } from '@/types/login';
 import { authenticate } from '@/utils/auth';
+import { redirectUser } from '@/utils/redirect';
 import { verifyLoginSchema } from '@/validations/schemas/login';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 export const useLogin = () => {
   const { showPassword, togglePasswordVisibility, setIsAuthenticate } =
     useAppContext();
-  const navigate = useNavigate();
 
   const {
     register,
@@ -47,7 +46,7 @@ export const useLogin = () => {
           variant: 'success',
         });
         setIsAuthenticate(true);
-        navigate('/');
+        redirectUser("/", 0)
       },
 
       onError: () => {

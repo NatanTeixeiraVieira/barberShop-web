@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useRegister } from "./useRegister";
 import Spinner from "../Spinner";
+import { Toaster } from "../ui/toaster";
 
 export default function FormRegister() {
 
@@ -62,6 +63,7 @@ export default function FormRegister() {
     <Button className="w-full mt-4" type="submit">
       {isCreateClientPending ? <Spinner size="sm"/> : 'Cadastrar'}
     </Button>
+    <Toaster />
   </form>
   )
 }

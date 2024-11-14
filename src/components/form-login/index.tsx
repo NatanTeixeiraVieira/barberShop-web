@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useLogin } from "./useLogin";
 import Spinner from "../Spinner";
+import { Toaster } from "../ui/toaster";
 
 export default function FormLogin() {
 
@@ -54,6 +55,7 @@ export default function FormLogin() {
       <Button className="w-full mt-4" type="submit">
         {isVerifyLoginPending ? <Spinner size="sm" /> : 'Entrar'}
       </Button>
+      <Toaster />
     </form>
   )
 }
