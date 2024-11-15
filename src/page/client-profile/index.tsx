@@ -1,13 +1,21 @@
-import { Phone, Edit2, Check, Upload, Mail, UserCircle2, X } from 'lucide-react';
+import {
+  Phone,
+  Edit2,
+  Check,
+  Upload,
+  Mail,
+  UserCircle2,
+  X,
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useClientProfile } from './useClientProfile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Arrow from '@/components/arrow';
 import { phoneMask } from '@/utils/mask';
+import Spinner from '@/components/Spinner';
 
 export default function ClientProfile() {
-
   const profile = useClientProfile();
 
   return (
@@ -19,7 +27,7 @@ export default function ClientProfile() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={profile.handleCancleEdit}
+                onClick={profile.handleCancelEdit}
               >
                 {profile.isEditing ? (
                   profile.isLoading ? (
@@ -70,6 +78,7 @@ export default function ClientProfile() {
                   <Input
                     {...profile.register('name')}
                     className="font-bold text-xl"
+                    helperText={profile.errors.name?.message}
                   />
                 ) : (
                   <h1 className="text-2xl font-bold">{profile.client.name}</h1>
@@ -85,7 +94,10 @@ export default function ClientProfile() {
                   profile.isLoading ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900" />
                   ) : (
-                    <Check className="h-4 w-4" />
+                    <>
+                      {!profile.isPending && <Check className="size-5" />}
+                      {profile.isPending && <Spinner size="sm" />}
+                    </>
                   )
                 ) : (
                   <Edit2 className="h-4 w-4" />
@@ -102,11 +114,14 @@ export default function ClientProfile() {
                 <Phone className="text-gray-500" />
                 {profile.isEditing ? (
                   <Input
-                    {...profile.register('phoneNumber')}
-                    placeholder="Phone Number"
-                    onChange={profile.handlePhoneMask}
+                    type="tel"
+                    {...profile.register('phoneNumber', {
+                      onChange: profile.handlePhoneMask,
+                    })}
+                    placeholder="42988887777"
+                    helperText={profile.errors.phoneNumber?.message}
                   />
-                ): (
+                ) : (
                   <p className="text-gray-700">
                     {phoneMask(profile.client.phoneNumber)}
                   </p>

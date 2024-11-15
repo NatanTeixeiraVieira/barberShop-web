@@ -2,8 +2,11 @@ import { z } from 'zod';
 import { commonRequiredField } from './utils';
 
 export const clientProfileSchema = z.object({
-  name: commonRequiredField('O nome é obrigatório.'),
-  phoneNumber: commonRequiredField('O número de telefone é obrigatório.'),
+  name: commonRequiredField('O nome é obrigatório.').min(
+    3,
+    'O nome precisa conter pelo memos 3 caracteres.',
+  ),
+  phoneNumber: z.string().optional(),
   file: z
     .custom<FileList>((value) => {
       return value instanceof FileList;

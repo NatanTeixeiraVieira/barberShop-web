@@ -42,20 +42,20 @@ export const useClientProfile = () => {
     },
   });
 
-  const {
-    mutate: updateClientProfileMutate,
-  } = useMutation({
+  const { mutate: updateClientProfileMutate, isPending } = useMutation({
     mutationFn: async (dto: UpdateClientProfileDto) => {
       await updateClientProfile(dto);
       return dto;
     },
     onSuccess: (_, variables) => {
       setIsEditing(false);
+      console.log('🚀 ~ useClientProfile ~ variables:', variables);
       queryClient.setQueryData<Client>([clientByIdCache], (previousCache) => {
         if (previousCache) {
           return {
             ...previousCache,
             ...variables,
+            photoUrl: avatarImage,
           };
         }
 
@@ -74,20 +74,21 @@ export const useClientProfile = () => {
     }
   }, [client]);
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.target;
-  //   setClient((prev) => ({ ...prev, [name]: value }));
-  // };
-
   const handlePhoneMask = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = phoneMask(e.target.value);
-    setValue("phoneNumber", formattedPhone)
-  }
-
+    setValue('phoneNumber', formattedPhone);
+  };
 
   const submit = handleSubmit((data: ClientProfileFormData) => {
-
-    data.phoneNumber = removeMask(getValues("phoneNumber"))
+    console.log(
+      "🚀 ~ submit ~ getValues('phoneNumber'):",
+      getValues('phoneNumber'),
+    );
+    console.log(
+      "🚀 ~ submit ~ removeMask(getValues('phoneNumber')):",
+      removeMask(getValues('phoneNumber')),
+    );
+    data.phoneNumber = removeMask(getValues('phoneNumber'));
     updateClientProfileMutate({
       fileList: data.file,
       ...data,
@@ -109,8 +110,7 @@ export const useClientProfile = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleCancleEdit = () => {
-
+  const handleCancelEdit = () => {
     if (client) {
       Object.entries(client).forEach(([key, value]) => {
         setValue(key as keyof ClientProfileFormData, value?.toString() ?? '');
@@ -118,8 +118,7 @@ export const useClientProfile = () => {
     }
 
     setIsEditing(false);
-    setAvatarImage('')
-  }
+  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -131,49 +130,6 @@ export const useClientProfile = () => {
       reader.readAsDataURL(file);
     }
   };
-
-  // const handleSave = async () => {
-  //   try {
-  //     const response = await fetch('/api/client-profile', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(client),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to save client information');
-  //     }
-
-  //     const data = await response.json();
-  //     setClient(data);
-  //     setIsEditing(false);
-  //     toast({
-  //       title: 'Success',
-  //       description: 'Client information updated successfully.',
-  //     });
-  //   } catch (error) {
-  //     console.error('Error saving client information:', error);
-  //     toast({
-  //       title: 'Error',
-  //       description: 'Failed to update client information. Please try again.',
-  //       variant: 'destructive',
-  //     });
-  //   } finally {
-  //   }
-  // };
-
-  // const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setClient((prev) => ({ ...prev, photoUrl: reader.result as string }));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
@@ -191,11 +147,12 @@ export const useClientProfile = () => {
     isLoading,
     avatarImage,
     fileInputRef,
+    isPending,
     register,
     formatPhone,
     handlePhoneMask,
     triggerFileInput,
-    handleCancleEdit,
+    handleCancelEdit,
     handleToggleEdit,
     handleImageUpload,
   };

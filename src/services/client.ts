@@ -22,6 +22,7 @@ export const updateClientProfile = async ({
   phoneNumber,
   fileList,
 }: UpdateClientProfileDto) => {
+  console.log('🚀 ~ phoneNumber:', phoneNumber);
   const body = new FormData();
 
   const dto: Omit<UpdateClientProfileDto, 'id' | 'fileList'> = {
