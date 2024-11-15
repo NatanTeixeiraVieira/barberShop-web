@@ -48,7 +48,7 @@ export default function BarberShopProfile() {
                       <X />
                     )
                   ) : (
-                    <Arrow to="/"/>
+                    <Arrow to="/" />
                   )}
                 </Button>
                 <div className="relative">
@@ -104,7 +104,10 @@ export default function BarberShopProfile() {
                   profile.isFetching ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-gray-900" />
                   ) : (
-                    <Check className="h-4 w-4" />
+                    <>
+                      {profile.isPending && <Spinner size="sm" />}
+                      {!profile.isPending && <Check className="size-5" />}
+                    </>
                   )
                 ) : (
                   <Edit2 className="h-4 w-4" />
@@ -115,47 +118,49 @@ export default function BarberShopProfile() {
               {(profile.barberShop.street ||
                 profile.barberShop.city ||
                 profile.barberShop.state) && (
-                  <div className="flex items-start space-x-2">
-                    <MapPin className="text-gray-500 mt-1 flex-shrink-0" />
-                    {profile.isEditing ? (
-                      <div className="grid grid-cols-2 gap-6 w-full">
-                        <Input
-                          id="cep"
-                          placeholder="CEP"
-                          {...profile.register('cep')}
-                          helperText={profile.errors.cep?.message}
-                        />
-                        <Input
-                          {...profile.register('street')}
-                          helperText={profile.errors.street?.message}
-                          placeholder="Rua"
-                        />
-                        <Input
-                          {...profile.register('number')}
-                          helperText={profile.errors.number?.message}
-                          placeholder="Número"
-                        />
-                        <Input
-                          {...profile.register('neighborhood')}
-                          helperText={profile.errors.neighborhood?.message}
-                          placeholder="Bairro"
-                        />
-                        <Input
-                          {...profile.register('city')}
-                          helperText={profile.errors.city?.message}
-                          placeholder="Cidade"
-                        />
-                        <Input
-                          {...profile.register('state')}
-                          helperText={profile.errors.state?.message}
-                          placeholder="Estado"
-                        />
-                      </div>
-                    ) : (
-                      <p className="text-gray-700">{profile.renderAddress()}</p>
-                    )}
-                  </div>
-                )}
+                <div className="flex items-start space-x-2">
+                  <MapPin className="text-gray-500 mt-1 flex-shrink-0" />
+                  {profile.isEditing ? (
+                    <div className="grid grid-cols-2 gap-6 w-full">
+                      <Input
+                        id="cep"
+                        placeholder="CEP"
+                        {...profile.register('cep', {
+                          onChange: profile.handleCepChange,
+                        })}
+                        helperText={profile.errors.cep?.message}
+                      />
+                      <Input
+                        {...profile.register('street')}
+                        helperText={profile.errors.street?.message}
+                        placeholder="Rua"
+                      />
+                      <Input
+                        {...profile.register('number')}
+                        helperText={profile.errors.number?.message}
+                        placeholder="Número"
+                      />
+                      <Input
+                        {...profile.register('neighborhood')}
+                        helperText={profile.errors.neighborhood?.message}
+                        placeholder="Bairro"
+                      />
+                      <Input
+                        {...profile.register('city')}
+                        helperText={profile.errors.city?.message}
+                        placeholder="Cidade"
+                      />
+                      <Input
+                        {...profile.register('state')}
+                        helperText={profile.errors.state?.message}
+                        placeholder="Estado"
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-gray-700">{profile.renderAddress()}</p>
+                  )}
+                </div>
+              )}
               {profile.barberShop.phone && (
                 <div className="flex items-center space-x-2">
                   <Phone className="text-gray-500" />
@@ -188,7 +193,9 @@ export default function BarberShopProfile() {
                 {profile.isEditing ? (
                   <Input
                     id="cnpj"
-                    {...profile.register('cnpj')}
+                    {...profile.register('cnpj', {
+                      onChange: profile.handleCnpjChange,
+                    })}
                     helperText={profile.errors.cnpj?.message}
                   />
                 ) : (

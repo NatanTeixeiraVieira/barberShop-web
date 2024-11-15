@@ -35,7 +35,9 @@ export const useHome = () => {
   };
 
   useEffect(() => {
-    refetchBarberShop();
+    if (currentPage > 1) {
+      refetchBarberShop();
+    }
   }, [currentPage, refetchBarberShop]);
 
   return {

@@ -22,6 +22,7 @@ import { Cep } from '@/types/cep';
 import { getAddressByCepNumber } from '@/services/cep';
 import { statesMapper } from '@/constants/mappers';
 import { toast } from '@/hooks/useToast';
+import { cepMask, cnpjMask } from '@/utils/mask';
 export const useBarberShopProfile = () => {
   const { barberShopId } = useParams();
   const navigate = useNavigate();
@@ -56,17 +57,20 @@ export const useBarberShopProfile = () => {
 
   const cep = watch('cep');
 
-  const { data: addressByCep, refetch: refetchGetAddressByCepNumber } =
-    useQuery<Cep>({
-      queryKey: [addressByCepCache],
-      queryFn: async () => (await getAddressByCepNumber(cep)).data,
+  const {
+    data: addressByCep,
+    refetch: refetchGetAddressByCepNumber,
+    error,
+  } = useQuery<Cep>({
+    queryKey: [addressByCepCache],
+    queryFn: async () => (await getAddressByCepNumber(cep)).data,
 
-      retry: false,
-      refetchOnWindowFocus: false,
-      enabled: false,
-    });
+    retry: false,
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
 
-  const { mutate: updateBarberShopProfileMutate } = useMutation({
+  const { mutate: updateBarberShopProfileMutate, isPending } = useMutation({
     mutationFn: async (dto: UpdateBarberShopProfileDto) => {
       await updateBarberShopProfile(dto);
       return dto;
@@ -81,6 +85,7 @@ export const useBarberShopProfile = () => {
               ...previousCache,
               ...variables,
               id: variables.barberShopId,
+              photoUrl: avatarImage,
             };
           }
 
@@ -88,9 +93,17 @@ export const useBarberShopProfile = () => {
         },
       );
     },
-
-    onError: () => {},
   });
+
+  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedCEP = cepMask(e.target.value);
+    setValue('cep', formattedCEP);
+  };
+
+  const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedCNPJ = cnpjMask(e.target.value);
+    setValue('cnpj', formattedCNPJ);
+  };
 
   const {
     mutate: deleteBarberShopMutate,
@@ -133,7 +146,7 @@ export const useBarberShopProfile = () => {
   }, [barberShop]);
 
   useEffect(() => {
-    if (cep.length === 8) {
+    if (cep.length === 9) {
       refetchGetAddressByCepNumber();
     }
   }, [cep, refetchGetAddressByCepNumber]);
@@ -146,6 +159,16 @@ export const useBarberShopProfile = () => {
       setValue('street', addressByCep.street);
     }
   }, [addressByCep, setValue]);
+
+  useEffect(() => {
+    if (error) {
+      queryClient.setQueryData([addressByCepCache], null);
+      setValue('city', '');
+      setValue('state', '');
+      setValue('neighborhood', '');
+      setValue('street', '');
+    }
+  }, [error, queryClient, setValue]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -209,7 +232,7 @@ export const useBarberShopProfile = () => {
       barberShop?.neighborhood,
       barberShop?.city,
       barberShop?.state,
-      barberShop?.cep,
+      cepMask(barberShop?.cep),
     ].filter(Boolean);
 
     return addressParts.length > 0
@@ -251,6 +274,9 @@ export const useBarberShopProfile = () => {
     fileInputRef,
     isDeleteBarberShopPending,
     isConfirmDeleteBarberDialogOpen,
+    isPending,
+    handleCepChange,
+    handleCnpjChange,
     register,
     formatCNPJ,
     renderAddress,

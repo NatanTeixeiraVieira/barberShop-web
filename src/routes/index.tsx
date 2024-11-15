@@ -5,7 +5,7 @@ import Navbar from '@/components/navbar';
 import BarberAppointments from '@/page/barber-appointments';
 import ClientAppointments from '@/page/client-appointments';
 import BarberShopProfile from '@/page/barber-shop-profile';
-import RegisterBarberShop from '@/page/form-barber';
+import RegisterBarberShop from '@/page/register-barber-shop';
 import ClientProfile from '@/page/client-profile';
 import BarberShopService from '@/page/barber-service';
 import Home from '@/page/home';
@@ -30,18 +30,37 @@ const routes = () => {
         />
         {/* <Route path="/favorite" element={<Favorite/>} /> */}
 
-        <Route path="/client-appointments" element={<RequireAuth><ClientAppointments /></RequireAuth>} />
+        <Route
+          path="/client-appointments"
+          element={
+            <RequireAuth>
+              <ClientAppointments />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/barber-shop-appointments/:barberShopId"
-          element={<RequireAuth><BarberAppointments /></RequireAuth>}
+          element={
+            <RequireAuth>
+              <BarberAppointments />
+            </RequireAuth>
+          }
         />
         <Route
           path="/barber-shop-service/:barberShopId"
-          element={<RequireAuth><BarberShopService /></RequireAuth>}
+          element={
+            <RequireAuth>
+              <BarberShopService />
+            </RequireAuth>
+          }
         />
         <Route
           path="/barber-shop-profile/:barberShopId"
-          element={<RequireAuth><BarberShopProfile /></RequireAuth>}
+          element={
+            <RequireAuth>
+              <BarberShopProfile />
+            </RequireAuth>
+          }
         />
         <Route
           path="/client-profile"
