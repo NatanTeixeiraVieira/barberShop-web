@@ -1,13 +1,12 @@
-import { Label } from "@radix-ui/react-label";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { useLogin } from "./useLogin";
-import Spinner from "../Spinner";
-import { Toaster } from "../ui/toaster";
+import { Label } from '@radix-ui/react-label';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { useLogin } from './useLogin';
+import Spinner from '../Spinner';
+import { Toaster } from '../ui/toaster';
 
 export default function FormLogin() {
-
   const {
     errors,
     showPassword,
@@ -27,7 +26,6 @@ export default function FormLogin() {
             <Input
               {...register('email')}
               helperText={errors.email?.message}
-
               placeholder="seu@email.com"
               className="pl-8"
             />
@@ -46,18 +44,17 @@ export default function FormLogin() {
             />
             <div
               onClick={togglePasswordVisibility}
-              className="absolute right-2 top-2.5 h-4 w-4 text-muted-foreground cursor-pointer"
+              className="absolute right-3 top-2 h-4 w-4 text-muted-foreground cursor-pointer"
             >
               {showPassword ? <EyeOff /> : <Eye />}
             </div>
           </div>
         </div>
-
       </div>
       <Button className="w-full mt-4" type="submit">
         {isVerifyLoginPending ? <Spinner size="sm" /> : 'Entrar'}
       </Button>
       <Toaster />
     </form>
-  )
+  );
 }
