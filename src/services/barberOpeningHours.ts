@@ -1,4 +1,7 @@
-import { BarberOpeningHours } from '@/types/barberOpeningHours';
+import {
+  BarberOpeningHours,
+  CreateOpeningHoursDtoArray,
+} from '@/types/barberOpeningHours';
 import { api } from './api';
 
 export const getBarberOpeningHours = async (barberId: string) => {
@@ -7,4 +10,15 @@ export const getBarberOpeningHours = async (barberId: string) => {
   );
 
   return barberOpeningHours;
+};
+
+export const createBarberOpeningHours = async (
+  dto: CreateOpeningHoursDtoArray,
+) => {
+  const createdBarberOpeningHours = await api.post<BarberOpeningHours>(
+    '/barber-opening-hours/v1',
+    dto,
+  );
+
+  return createdBarberOpeningHours;
 };

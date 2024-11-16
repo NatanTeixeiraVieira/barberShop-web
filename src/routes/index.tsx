@@ -10,6 +10,7 @@ import ClientProfile from '@/page/client-profile';
 import BarberShopService from '@/page/barber-service';
 import Home from '@/page/home';
 import RequireAuth from '@/components/required-auth';
+import BarberOpeningHours from '@/page/barber-opening-hours';
 
 const routes = () => {
   return (
@@ -51,6 +52,14 @@ const routes = () => {
           element={
             <RequireAuth>
               <BarberShopService />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/barber-opening-hours/:barberShopId"
+          element={
+            <RequireAuth>
+              <BarberOpeningHours />
             </RequireAuth>
           }
         />

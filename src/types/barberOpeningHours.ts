@@ -12,3 +12,14 @@ export type WeekdayOutput = {
 export type BarberOpeningHours = {
   weekdays: WeekdayOutput[];
 };
+
+export type CreateOpeningHoursDto = {
+  weekday: string;
+  start: string;
+  end: string;
+  barberShopId: string;
+};
+
+export type CreateOpeningHoursDtoArray = {
+  weekdays: CreateOpeningHoursDto[];
+};

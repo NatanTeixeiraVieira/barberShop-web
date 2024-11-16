@@ -7,7 +7,7 @@ export default {
       colors: {
         primary: '#38BDF8',
         secondary: '#46A5C1',
-        paper: '#efefef',
+        paper: '#fefefe',
         star: '#FC980D',
         success: '#28a745',
         error: '#dc3545',
