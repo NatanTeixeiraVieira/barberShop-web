@@ -44,7 +44,7 @@ export const useRegister = () => {
     },
   });
 
-  const { mutate: createClientMutatate, isPending: isCreateClientPending } =
+  const { mutate: createClientMutate, isPending: isCreateClientPending } =
     useMutation({
       mutationFn: async (dto: CreateClientDto) => {
         await createClient(dto);
@@ -71,7 +71,7 @@ export const useRegister = () => {
     });
 
   const submit = handleSubmit((data: ClientRegisterData) => {
-    createClientMutatate(data);
+    createClientMutate(data);
   });
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
