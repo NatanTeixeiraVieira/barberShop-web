@@ -10,8 +10,14 @@ import { useNavigate } from 'react-router-dom';
 const useNavbar = () => {
   const { activeTab, setActiveTab, isAuthenticate, setIsAuthenticate } =
     useAppContext();
-    
+
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+  const toggleMenu = () => {
+    setOpenMenu((prev) => !prev);
+  };
 
   const handleMouseEnter = (dropdownName: string) => {
     setActiveDropdown(dropdownName);
@@ -48,6 +54,8 @@ const useNavbar = () => {
   return {
     activeTab,
     isAuthenticate,
+    openMenu,
+    toggleMenu,
     auth,
     barberShop,
     activeDropdown,
