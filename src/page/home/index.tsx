@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useHome } from './useHome';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 
 export default function Home() {
   const {

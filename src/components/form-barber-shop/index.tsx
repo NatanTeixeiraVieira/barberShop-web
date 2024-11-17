@@ -1,6 +1,6 @@
 'use client';
 
-import Spinner from '../Spinner';
+import Spinner from '../spinner';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';

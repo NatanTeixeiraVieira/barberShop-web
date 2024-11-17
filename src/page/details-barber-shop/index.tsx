@@ -1,20 +1,26 @@
-import React from "react";
-import useDetailsBarberShop from "./useDetailsBarberShop";
-import { Link } from "react-router-dom";
-import Schedule from "../../components/Schedule";
-import { Star, Heart } from "lucide-react";
-import { Toaster } from "../../components/ui/toaster";
-import Arrow from "@/components/arrow";
+import useDetailsBarberShop from './useDetailsBarberShop';
+import { Link } from 'react-router-dom';
+import Schedule from '../../components/schedule';
+import { Star, Heart } from 'lucide-react';
+import { Toaster } from '../../components/ui/toaster';
+import Arrow from '@/components/arrow';
 
-const BarberShopDetails: React.FC = () => {
-  const { barberShopServices, isLoading, hasServices, barberShop, auth, isFavorited,
+export default function BarberShopDetails() {
+  const {
+    barberShopServices,
+    isLoading,
+    hasServices,
+    barberShop,
+    auth,
+    isFavorite,
     handleFavoriteClick,
-    handleRemoveFavoriteClick, } = useDetailsBarberShop();
+    handleRemoveFavoriteClick,
+  } = useDetailsBarberShop();
 
   return (
     <div className="p-6 max-w-lg mx-auto bg-white rounded-lg shadow-md my-8">
       <div className="flex items-center mb-4">
-        <Arrow to="/"/>
+        <Arrow to="/" />
         <div className="w-full flex flex-col items-center gap-2 sm:justify-between sm:flex-row">
           <h1 className="text-2xl font-bold">{barberShop?.name}</h1>
 
@@ -23,10 +29,11 @@ const BarberShopDetails: React.FC = () => {
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={`${barberShop.id}${i}`}
-                  className={`w-4 h-4 ${i < Math.floor(barberShop.rating)
-                    ? "text-yellow-400 fill-yellow-400"
-                    : "text-gray-300"
-                    }`}
+                  className={`w-4 h-4 ${
+                    i < Math.floor(barberShop.rating)
+                      ? 'text-yellow-400 fill-yellow-400'
+                      : 'text-gray-300'
+                  }`}
                 />
               ))}
               <span className="ml-1 text-sm text-gray-600">
@@ -34,18 +41,25 @@ const BarberShopDetails: React.FC = () => {
               </span>
               {auth?.token && (
                 <button
-                  onClick={isFavorited ? handleRemoveFavoriteClick : handleFavoriteClick}
+                  onClick={
+                    isFavorite ? handleRemoveFavoriteClick : handleFavoriteClick
+                  }
                   className="ml-2 flex items-center justify-center"
-                  aria-label={isFavorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                  aria-label={
+                    isFavorite
+                      ? 'Remover dos favoritos'
+                      : 'Adicionar aos favoritos'
+                  }
                 >
                   <Heart
-                    className={`w-5 h-5 transition-colors ${isFavorited ? "text-red-500 fill-current" : "text-gray-500 hover:text-red-500"
-                      }`}
+                    className={`w-5 h-5 transition-colors ${
+                      isFavorite
+                        ? 'text-red-500 fill-current'
+                        : 'text-gray-500 hover:text-red-500'
+                    }`}
                   />
                 </button>
               )}
-
-
             </div>
           )}
         </div>
@@ -59,7 +73,7 @@ const BarberShopDetails: React.FC = () => {
         barberShopServices?.map((service) => (
           <div
             key={service.id}
-            className="flex justify-between items-center mb-4"
+            className="flex justify-between items-center mb-4 "
           >
             <div>
               <p className="font-medium">{service.name}</p>
@@ -68,8 +82,15 @@ const BarberShopDetails: React.FC = () => {
                 Duração: {service.duration} min
               </p>
             </div>
-            {auth?.token ? (
-              <Schedule />
+            {auth?.token && barberShop ? (
+              <div>
+                <Schedule
+                  barberShopName={barberShop.name}
+                  serviceName={service.name}
+                  servicePrice={service.price}
+                  serviceId={service.id}
+                />
+              </div>
             ) : (
               <Link
                 to="/auth/login"
@@ -86,6 +107,4 @@ const BarberShopDetails: React.FC = () => {
       <Toaster />
     </div>
   );
-};
-
-export default BarberShopDetails;
+}

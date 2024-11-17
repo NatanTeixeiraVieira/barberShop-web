@@ -13,17 +13,17 @@ import { useParams } from 'react-router-dom';
 
 const useDetailsBarberShop = () => {
   const { barberShopId } = useParams<{ barberShopId: string }>();
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const handleFavoriteClick = () => {
     submit();
-    setIsFavorited(true);
+    setIsFavorite(true);
   };
 
-  const handleRemoveFavoriteClick = () =>{
-    handleRemoveFavoriteDelete()
-    setIsFavorited(false);
-  }
+  const handleRemoveFavoriteClick = () => {
+    handleRemoveFavoriteDelete();
+    setIsFavorite(false);
+  };
 
   if (!barberShopId) {
     throw new Error('BarberShop ID não encontrado na URL.');
@@ -58,70 +58,66 @@ const useDetailsBarberShop = () => {
 
   const auth = useMemo(() => getAuth(), []);
 
+  const { mutate: createFavoriteBarberShopMutate } = useMutation({
+    mutationFn: async (dto: CreateFavoriteBarberShopDto) => {
+      const data = await createFavoriteBarberShop(dto);
+      console.log(data);
+      return data;
+    },
 
-  const { mutate: createFavoriteBarberShopMutate } =
-    useMutation({
-      mutationFn: async (dto: CreateFavoriteBarberShopDto) => {
-        const data = await createFavoriteBarberShop(dto);
-        console.log(data);
-        return data;
-      },
+    onSuccess: () => {
+      toast({
+        title: 'Barbearia adicionada aos favoritos',
+        className: 'h-20',
+        variant: 'success',
+      });
+    },
 
-      onSuccess: () => {
-        toast({
-          title: 'Barbearia adicionada aos favoritos',
-          className: 'h-20',
-          variant: 'success',
-        });
-      },
+    onError: () => {
+      toast({
+        title: 'Falha ao adicionar aos favoritos',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
+  });
 
-      onError: () => {
-        toast({
-          title: 'Falha ao adicionar aos favoritos',
-          className: 'h-20',
-          variant: 'error',
-        });
-      },
-    });
+  const { mutate: deleteFavoriteMutate } = useMutation({
+    mutationFn: async (barberShopId: string) => {
+      await deleteFavorite(barberShopId);
+    },
 
-    const {
-      mutate: deleteFavoriteMutate,
-    } = useMutation({
-      mutationFn: async (barberShopId: string) => {
-        await deleteFavorite(barberShopId);
-      },
+    onSuccess: () => {
+      toast({
+        title: 'Barbearia removida dos favoritos',
+        className: 'h-20',
+        variant: 'success',
+      });
+      setIsFavorite(false);
+    },
 
-      onSuccess: () => {
-        toast({
-          title: 'Barbearia removida dos favoritos',
-          className: 'h-20',
-          variant: 'success',
-        })
-        setIsFavorited(false);
-      },
+    onError: () => {
+      toast({
+        title: 'Falha ao remover dos favoritos',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
+  });
 
-      onError: () => {
-        toast({
-          title: 'Falha ao remover dos favoritos',
-          className: 'h-20',
-          variant: 'error',
-        });
-      },
-    });
+  const handleRemoveFavoriteDelete = () => {
+    if (barberShopId) {
+      deleteFavoriteMutate(barberShopId);
+    }
+  };
+  const submit = () => {
+    if (!barberShop?.id) {
+      console.error('ID da barbearia não encontrado');
+      return;
+    }
 
-    const handleRemoveFavoriteDelete = () => {
-      if (barberShopId) {
-        deleteFavoriteMutate(barberShopId);
-      }
-    };
-    const submit = () => {
-      if (!barberShop?.id) {
-        console.error("ID da barbearia não encontrado");
-        return;
-      }
-
-      createFavoriteBarberShopMutate({ barberShopId: barberShop.id });
-    };
+    createFavoriteBarberShopMutate({ barberShopId: barberShop.id });
+  };
 
   return {
     auth,
@@ -131,7 +127,7 @@ const useDetailsBarberShop = () => {
     isLoading,
     isError,
     hasServices,
-    isFavorited,
+    isFavorite,
     handleFavoriteClick,
     submit,
     handleConfirmBarberShopDelete: handleRemoveFavoriteDelete,

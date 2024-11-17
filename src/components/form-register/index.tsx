@@ -3,7 +3,7 @@ import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useRegister } from './useRegister';
-import Spinner from '../Spinner';
+import Spinner from '../spinner';
 import { Toaster } from '../ui/toaster';
 
 export default function FormRegister() {

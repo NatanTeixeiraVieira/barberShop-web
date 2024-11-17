@@ -16,7 +16,7 @@ import {
 import { X } from 'lucide-react';
 import { daysOfWeek } from '@/constants/days';
 import { useBarberOpeningHours } from './useBarberOpeningHours';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 import { Toaster } from '@/components/ui/toaster';
 
 export default function BarberOpeningHours() {

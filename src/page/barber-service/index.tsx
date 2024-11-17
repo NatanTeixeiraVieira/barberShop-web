@@ -13,7 +13,10 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { barberShopClient } from '@/constants/requestCacheNames';
+import {
+  barberShopClient,
+  barberShopServiceCache,
+} from '@/constants/requestCacheNames';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createBarberShopService,
@@ -30,7 +33,7 @@ import {
   UpsertBarberShopService,
 } from '@/types/barberService';
 import { toast } from '@/hooks/useToast';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 
 type BarberShopServicesListOptionalId = Omit<BarberShopServiceType, 'id'> & {
   id?: string;
@@ -44,7 +47,7 @@ export default function BarberShopService() {
   const { barberShopId } = useParams();
 
   const { data: barberShopService } = useQuery<BarberShopServicesList>({
-    queryKey: [barberShopClient],
+    queryKey: [barberShopServiceCache],
     queryFn: async () =>
       (await getBarberShopServicesByBarberShopId(barberShopId!)).data,
 
@@ -127,6 +130,7 @@ export default function BarberShopService() {
 
   useEffect(() => {
     if (barberShopService) {
+      console.log('🚀 ~ useEffect ~ barberShopService:', barberShopService);
       setServices(barberShopService);
     }
   }, [barberShopService]);
@@ -272,7 +276,7 @@ export default function BarberShopService() {
           >
             <DialogContent className="bg-paper">
               <DialogHeader>
-                <DialogTitle className="text-primary">
+                <DialogTitle className="text-error">
                   Confirmar Exclusão
                 </DialogTitle>
                 <DialogDescription>
@@ -288,7 +292,7 @@ export default function BarberShopService() {
                   Cancelar
                 </Button>
                 <Button
-                  className="bg-sky-400 hover:bg-sky-500 text-paper"
+                  className="bg-error hover:bg-error text-paper"
                   onClick={handleDeleteService}
                 >
                   {isDeleteBarberShopServicePending ? (

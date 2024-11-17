@@ -22,7 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 import Arrow from '@/components/arrow';
 
 export default function BarberShopProfile() {

@@ -4,11 +4,23 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import 'dayjs/locale/pt-br';
 import { capitalize } from '@/utils/formatter';
 import { Toaster } from '../ui/toaster';
-import Spinner from '../Spinner';
+import Spinner from '../spinner';
 import { useSchedule } from './useSchedule';
 
-export default function Schedule() {
-  const schedule = useSchedule();
+type ScheduleProps = {
+  barberShopName: string;
+  serviceId: string;
+  serviceName: string;
+  servicePrice: number;
+};
+
+export default function Schedule({
+  barberShopName,
+  serviceName,
+  servicePrice,
+  serviceId,
+}: ScheduleProps) {
+  const schedule = useSchedule(serviceId);
 
   return (
     <Dialog open={schedule.isOpen} onOpenChange={schedule.setIsOpen}>
@@ -16,16 +28,16 @@ export default function Schedule() {
         <Button variant="outline">Agendar Serviço</Button>
       </DialogTrigger>
       <DialogContent
-        className="p-0 bg-[#e6f3f7] rounded-lg overflow-hidden"
+        className="p-0 bg-paper rounded-lg overflow-hidden"
         onClose={schedule.handleCloseModal}
       >
         <div className="bg-white p-4 rounded-t-lg">
-          <div className="text-primary text-lg font-semibold mb-2">
-            Natãn Vieira
-          </div>
+          <h1 className="text-primary text-lg font-semibold mb-2">
+            {barberShopName}
+          </h1>
           <div className="flex justify-between text-gray-600">
-            <span>Corte masculino</span>
-            <span>R$ 29,90</span>
+            <span>{serviceName}</span>
+            <span>R$ {servicePrice.toFixed(2).replace('.', ',')}</span>
           </div>
         </div>
         <div className="p-4">
@@ -56,7 +68,7 @@ export default function Schedule() {
             <div className="flex gap-2 justify-center">
               {schedule.availableDays?.map((day) => {
                 const isSelected =
-                  day.date.toDate().toDateString() ===
+                  day.date?.toDate().toDateString() ===
                   schedule.selectedDate?.toDateString();
                 return (
                   <Button
@@ -68,7 +80,7 @@ export default function Schedule() {
                         : 'bg-white text-primary hover:bg-gray-100'
                     }`}
                     onClick={() => {
-                      schedule.handleDateSelect(day.date.toDate());
+                      schedule.handleDateSelect(day.date?.toDate());
                       schedule.setSelectedDay(day);
                       schedule.setSelectedHour(null); // Reseta a seleção de horas ao mudar de dia
                       schedule.setSelectedMinute(null);
@@ -87,9 +99,10 @@ export default function Schedule() {
                 {schedule.selectedDay.openingHours.map((hour) => {
                   const startHour = parseInt(hour.start.split(':')[0]);
                   const endHour = parseInt(hour.end.split(':')[0]);
-                  const isCurrentDay =
-                    schedule.weekdaysMap[schedule.selectedDay?.name ?? ''] ===
-                    schedule.todayDayOfWeek;
+                  const isCurrentDay = schedule.selectedDay?.name
+                    ? schedule.weekdaysMap[schedule.selectedDay?.name] ===
+                      schedule.todayDayOfWeek
+                    : false;
                   const currentHour = schedule.today.hour();
 
                   return Array.from(
