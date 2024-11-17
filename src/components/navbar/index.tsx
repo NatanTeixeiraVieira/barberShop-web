@@ -194,7 +194,7 @@ export default function Navbar() {
                         Ver Perfil
                       </Link>
                       <Link
-                        to={`/`}
+                        to={`/barber-opening-hours/${barberShop.id}`}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         Gerenciar horários
@@ -259,7 +259,7 @@ export default function Navbar() {
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-primary transition-colors bg-white hover:bg-primary text-primary hover:text-white h-10 px-4 py-2"
               >
                 Sair
-                <LogOut className='w-4 h-4 ml-2' />
+                <LogOut className="w-4 h-4 ml-2" />
               </button>
             </>
           ) : (
