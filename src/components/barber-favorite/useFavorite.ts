@@ -9,7 +9,6 @@ const useFavorite = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const auth = useMemo(() => getAuth(), []);
 
-
   const {
     data: favoriteList,
     refetch: refetchFavoriteList,
