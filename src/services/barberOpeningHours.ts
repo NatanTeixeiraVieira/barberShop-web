@@ -15,6 +15,7 @@ export const getBarberOpeningHours = async (barberId: string) => {
 export const createBarberOpeningHours = async (
   dto: CreateOpeningHoursDtoArray,
 ) => {
+  console.log('🚀 ~ dto:', dto);
   const createdBarberOpeningHours = await api.post<BarberOpeningHours>(
     '/barber-opening-hours/v1',
     dto,

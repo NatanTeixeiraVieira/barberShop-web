@@ -20,6 +20,11 @@ export type CreateOpeningHoursDto = {
   barberShopId: string;
 };
 
+export type DeletedOpeningHours = {
+  id: string;
+};
+
 export type CreateOpeningHoursDtoArray = {
-  weekdays: CreateOpeningHoursDto[];
+  created: CreateOpeningHoursDto[];
+  deleted: DeletedOpeningHours[];
 };

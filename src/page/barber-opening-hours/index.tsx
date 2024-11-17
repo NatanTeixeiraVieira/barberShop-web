@@ -14,10 +14,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { X } from 'lucide-react';
+import { daysOfWeek } from '@/constants/days';
 import { useBarberOpeningHours } from './useBarberOpeningHours';
+import Spinner from '@/components/Spinner';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function BarberOpeningHours() {
-  const openingHours = useBarberOpeningHours();
+  const barberOpeningHours = useBarberOpeningHours();
 
   return (
     <div className="min-h-screen bg-primary">
@@ -33,14 +36,14 @@ export default function BarberOpeningHours() {
             <div className="space-y-4">
               <div className="flex flex-wrap gap-4">
                 <Select
-                  value={openingHours.selectedDay}
-                  onValueChange={openingHours.setSelectedDay}
+                  value={barberOpeningHours.selectedDay}
+                  onValueChange={barberOpeningHours.setSelectedDay}
                 >
-                  <SelectTrigger className="w-[180px] focus:ring-primary">
+                  <SelectTrigger className="focus:ring-primary w-[180px]">
                     <SelectValue placeholder="Selecione o dia" />
                   </SelectTrigger>
-                  <SelectContent className="bg-paper">
-                    {openingHours.daysOfWeek.map((day) => (
+                  <SelectContent className="bg-paper w-[180px]">
+                    {daysOfWeek.map((day) => (
                       <SelectItem key={day} value={day}>
                         {day}
                       </SelectItem>
@@ -49,13 +52,13 @@ export default function BarberOpeningHours() {
                 </Select>
                 <div className="flex items-center gap-2">
                   <Select
-                    value={openingHours.startHour}
-                    onValueChange={openingHours.setStartHour}
+                    value={barberOpeningHours.startHour}
+                    onValueChange={barberOpeningHours.setStartHour}
                   >
-                    <SelectTrigger className="w-[80px] focus:ring-primary">
+                    <SelectTrigger className="w-20 focus:ring-primary">
                       <SelectValue placeholder="Hora" />
                     </SelectTrigger>
-                    <SelectContent className="bg-paper">
+                    <SelectContent className="bg-paper w-20">
                       {Array.from({ length: 24 }, (_, i) =>
                         i.toString().padStart(2, '0'),
                       ).map((hour) => (
@@ -67,13 +70,13 @@ export default function BarberOpeningHours() {
                   </Select>
                   <span>:</span>
                   <Select
-                    value={openingHours.startMinute}
-                    onValueChange={openingHours.setStartMinute}
+                    value={barberOpeningHours.startMinute}
+                    onValueChange={barberOpeningHours.setStartMinute}
                   >
-                    <SelectTrigger className="w-[80px] focus:ring-primary">
+                    <SelectTrigger className="w-20 focus:ring-primary">
                       <SelectValue placeholder="Min" />
                     </SelectTrigger>
-                    <SelectContent className="bg-paper">
+                    <SelectContent className="bg-paper w-20">
                       {Array.from({ length: 12 }, (_, i) =>
                         (i * 5).toString().padStart(2, '0'),
                       ).map((minute) => (
@@ -86,13 +89,13 @@ export default function BarberOpeningHours() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Select
-                    value={openingHours.endHour}
-                    onValueChange={openingHours.setEndHour}
+                    value={barberOpeningHours.endHour}
+                    onValueChange={barberOpeningHours.setEndHour}
                   >
-                    <SelectTrigger className="w-[80px] focus:ring-primary">
+                    <SelectTrigger className="w-20 focus:ring-primary">
                       <SelectValue placeholder="Hora" />
                     </SelectTrigger>
-                    <SelectContent className="bg-paper">
+                    <SelectContent className="bg-paper w-20">
                       {Array.from({ length: 24 }, (_, i) =>
                         i.toString().padStart(2, '0'),
                       ).map((hour) => (
@@ -104,13 +107,13 @@ export default function BarberOpeningHours() {
                   </Select>
                   <span>:</span>
                   <Select
-                    value={openingHours.endMinute}
-                    onValueChange={openingHours.setEndMinute}
+                    value={barberOpeningHours.endMinute}
+                    onValueChange={barberOpeningHours.setEndMinute}
                   >
-                    <SelectTrigger className="w-[80px] focus:ring-primary">
+                    <SelectTrigger className="w-20 focus:ring-primary">
                       <SelectValue placeholder="Min" />
                     </SelectTrigger>
-                    <SelectContent className="bg-paper">
+                    <SelectContent className="bg-paper w-20">
                       {Array.from({ length: 12 }, (_, i) =>
                         (i * 5).toString().padStart(2, '0'),
                       ).map((minute) => (
@@ -122,7 +125,7 @@ export default function BarberOpeningHours() {
                   </Select>
                 </div>
                 <Button
-                  onClick={openingHours.addTimeSlot}
+                  onClick={barberOpeningHours.addTimeSlot}
                   className="bg-primary text-white hover:bg-primary/90"
                 >
                   Adicionar Horário
@@ -130,50 +133,67 @@ export default function BarberOpeningHours() {
               </div>
 
               <div className="space-y-2">
-                {openingHours.daysOfWeek.map((day) => (
-                  <div key={day} className="border p-4 rounded-md">
-                    <h3 className="font-semibold mb-2">{day}</h3>
-                    {openingHours.schedule[day]?.map((slot, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between mb-2 bg-primary/10 p-2 rounded"
-                      >
-                        <span className="text-primary">
-                          {slot.start} - {slot.end}
-                        </span>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() =>
-                            openingHours.removeTimeSlot(day, index)
-                          }
-                          className="text-primary hover:text-white hover:bg-primary"
+                {daysOfWeek.map((day) => {
+                  const weekdaySchedule =
+                    barberOpeningHours.schedule.weekdays.find(
+                      (w) => w.name === day,
+                    );
+                  return (
+                    <div key={day} className="border p-4 rounded-md">
+                      <h3 className="font-semibold mb-2">{day}</h3>
+                      {weekdaySchedule?.openingHours.map((slot, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between mb-2 bg-primary/10 p-2 rounded"
                         >
-                          <X className="h-4 w-4" />
-                          <span className="sr-only">Remover horário</span>
-                        </Button>
-                      </div>
-                    ))}
-                    {!openingHours.schedule[day]?.length && (
-                      <p className="text-sm text-muted-foreground">
-                        Nenhum horário adicionado
-                      </p>
-                    )}
-                  </div>
-                ))}
+                          <span className="text-primary">
+                            {slot.start} - {slot.end}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() =>
+                              barberOpeningHours.removeTimeSlot(
+                                slot,
+                                day,
+                                index,
+                              )
+                            }
+                            className="text-primary hover:text-white hover:bg-primary"
+                          >
+                            <X className="h-4 w-4" />
+                            <span className="sr-only">Remover horário</span>
+                          </Button>
+                        </div>
+                      ))}
+                      {(!weekdaySchedule ||
+                        weekdaySchedule.openingHours.length === 0) && (
+                        <p className="text-sm text-muted-foreground">
+                          Nenhum horário adicionado
+                        </p>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="flex justify-end">
                 <Button
-                  onClick={openingHours.handleSubmit}
-                  className="bg-primary text-white hover:bg-primary/90"
+                  disabled={barberOpeningHours.isCreateOpeningHoursPending}
+                  onClick={barberOpeningHours.handleSubmit}
+                  className="bg-primary text-white hover:bg-primary/90 w-32"
                 >
-                  Salvar Horários
+                  {barberOpeningHours.isCreateOpeningHoursPending && (
+                    <Spinner size="sm" />
+                  )}
+                  {!barberOpeningHours.isCreateOpeningHoursPending &&
+                    'Salvar Horários'}
                 </Button>
               </div>
             </div>
           </CardContent>
         </Card>
+        <Toaster />
       </main>
     </div>
   );

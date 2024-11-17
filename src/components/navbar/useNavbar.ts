@@ -3,14 +3,14 @@ import { useAppContext } from '@/context/appContext';
 import { getBarberShopClientById } from '@/services/barberShop';
 import { BarberShop } from '@/types/barberShop';
 import { getAuth, logout } from '@/utils/auth';
+import { redirectUser } from '@/utils/redirect';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const useNavbar = () => {
   const { activeTab, setActiveTab, isAuthenticate, setIsAuthenticate } =
     useAppContext();
-    
+
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const handleMouseEnter = (dropdownName: string) => {
@@ -30,8 +30,6 @@ const useNavbar = () => {
   });
   console.log('🚀 ~ useNavbar ~ barberShop:', barberShop);
 
-  const navigate = useNavigate();
-
   const handleClickBarberShop = () => {
     setActiveTab('barber');
   };
@@ -40,7 +38,7 @@ const useNavbar = () => {
     localStorage.removeItem('token');
     logout();
     setIsAuthenticate(false);
-    navigate('/');
+    redirectUser('/', 0);
   };
 
   const auth = useMemo(() => getAuth(), []);
