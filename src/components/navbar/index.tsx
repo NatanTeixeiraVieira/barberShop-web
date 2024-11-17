@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import useNavbar from './useNavbar';
+import { useNavbar } from './useNavbar';
 import { LogOut, Menu, X } from 'lucide-react';
 import { Button, Drawer } from '@mui/material';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
@@ -52,7 +52,7 @@ export default function Navbar() {
               >
                 Home
               </Link>
-              {auth?.token ? (
+              {auth?.client ? (
                 <>
                   {!barberShop && (
                     <Link
@@ -149,7 +149,7 @@ export default function Navbar() {
         </div>
 
         <div className="hidden sm:flex sm:items-center sm:flex-row gap-3 mt-3">
-          {auth?.token ? (
+          {auth?.client ? (
             <>
               {!barberShop && (
                 <Link

@@ -1,15 +1,15 @@
 import { ReturnLoginCLientDto } from '@/types/login';
 
 export const authenticate = (login: ReturnLoginCLientDto) => {
-  localStorage.setItem('login', JSON.stringify(login));
+  localStorage.setItem('client', JSON.stringify(login));
 };
 
 export const logout = () => {
-  localStorage.removeItem('login');
+  localStorage.removeItem('client');
 };
 
 export const getAuth = () => {
-  const login = localStorage.getItem('login');
+  const login = localStorage.getItem('client');
   if (login) {
     const auth: ReturnLoginCLientDto = JSON.parse(login);
     return auth;
@@ -17,4 +17,3 @@ export const getAuth = () => {
 
   return null;
 };
-

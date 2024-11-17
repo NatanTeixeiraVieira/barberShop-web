@@ -10,6 +10,8 @@ export type Client = {
   photoUrl: string;
 };
 
+export type ClientLogin = Omit<Client, 'email'>;
+
 export type ClientRegisterData = z.infer<typeof formClientSchema>;
 
 export type CreateClientDto = {
