@@ -39,7 +39,7 @@ export default function BarberShopDetails() {
               <span className="ml-1 text-sm text-gray-600">
                 {barberShop.rating.toFixed(1)}
               </span>
-              {auth?.token && (
+              {auth?.client && (
                 <button
                   onClick={
                     isFavorite ? handleRemoveFavoriteClick : handleFavoriteClick
@@ -82,7 +82,7 @@ export default function BarberShopDetails() {
                 Duração: {service.duration} min
               </p>
             </div>
-            {auth?.token && barberShop ? (
+            {auth?.client && barberShop ? (
               <div>
                 <Schedule
                   barberShopName={barberShop.name}

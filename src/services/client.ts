@@ -44,5 +44,5 @@ export const updateClientProfile = async ({
 };
 
 export const deleteClient = async () => {
-  await api.delete<Client>(`/client/v1`);
+  await api.delete<void>(`/client/v1`);
 };

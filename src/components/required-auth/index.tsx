@@ -10,16 +10,16 @@ export default function RequireAuth({ children }: RequireAuthProps) {
   const { isAuthenticate, setIsAuthenticate } = useAppContext();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('client');
 
     if (token) {
       setIsAuthenticate(true);
-      console.log(isAuthenticate)
+      console.log(isAuthenticate);
     } else {
       setIsAuthenticate(false);
-      redirectUser("/auth/login", 0)
+      redirectUser('/auth/login', 0);
     }
-  }, [redirectUser, setIsAuthenticate]);
+  }, [isAuthenticate, setIsAuthenticate]);
 
   if (!isAuthenticate) return null;
 

@@ -1,7 +1,11 @@
 import { clientByIdCache } from '@/constants/requestCacheNames';
 import { useAppContext } from '@/context/appContext';
 import { toast } from '@/hooks/useToast';
-import { deleteClient, getLoggedClient, updateClientProfile } from '@/services/client';
+import {
+  deleteClient,
+  getLoggedClient,
+  updateClientProfile,
+} from '@/services/client';
 import {
   Client,
   ClientProfileFormData,
@@ -20,9 +24,9 @@ export const useClientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [isConfirmDeleteClientDialogOpen, setIsConfirmDeleteClientDialogOpen] =
-  useState(false);
+    useState(false);
 
-  const {setIsAuthenticate} = useAppContext()
+  const { setIsAuthenticate } = useAppContext();
 
   const [avatarImage, setAvatarImage] = useState('');
 
@@ -74,7 +78,6 @@ export const useClientProfile = () => {
 
     onError: () => {},
   });
-
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -146,42 +149,36 @@ export const useClientProfile = () => {
   };
 
   const formatPhone = (phone: string) => {
-    console.log('🚀 ~ formatPhone ~ phone:', phone);
     return phone?.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   };
 
   const handleClickLogout = () => {
-    localStorage.removeItem('token');
     logout();
     setIsAuthenticate(false);
   };
 
-  const {
-    mutate: deleteClientMutate,
-    isPending: isDeleteClientPending,
-  } = useMutation({
-    mutationFn: async () => {
-      await deleteClient();
-    },
+  const { mutate: deleteClientMutate, isPending: isDeleteClientPending } =
+    useMutation({
+      mutationFn: deleteClient,
 
-    onSuccess: () => {
-      toast({
-        title: 'Deletando conta',
-        className: 'h-20',
-        variant: 'error',
-      });
-      handleClickLogout()
-      redirectUser('/', 1);
-    },
+      onSuccess: () => {
+        toast({
+          title: 'Conta deletada',
+          className: 'h-20',
+          variant: 'error',
+        });
+        handleClickLogout();
+        redirectUser('/', 1);
+      },
 
-    onError: () => {
-      toast({
-        title: 'Falha ao deletar conta',
-        className: 'h-20',
-        variant: 'error',
-      });
-    },
-  });
+      onError: () => {
+        toast({
+          title: 'Falha ao deletar conta',
+          className: 'h-20',
+          variant: 'error',
+        });
+      },
+    });
 
   const handleDeleteClientButtonClick = () => {
     setIsConfirmDeleteClientDialogOpen(true);
@@ -217,6 +214,5 @@ export const useClientProfile = () => {
     handleCloseDeleteDialog,
     handleConfirmClientDelete,
     handleDeleteClientButtonClick,
-
   };
 };
