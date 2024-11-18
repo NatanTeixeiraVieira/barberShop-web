@@ -42,3 +42,7 @@ export const updateClientProfile = async ({
 
   return updatedClient;
 };
+
+export const deleteClient = async () => {
+  await api.delete<Client>(`/client/v1`);
+};

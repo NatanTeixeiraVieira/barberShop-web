@@ -1,11 +1,15 @@
 import { clientByIdCache } from '@/constants/requestCacheNames';
-import { getLoggedClient, updateClientProfile } from '@/services/client';
+import { useAppContext } from '@/context/appContext';
+import { toast } from '@/hooks/useToast';
+import { deleteClient, getLoggedClient, updateClientProfile } from '@/services/client';
 import {
   Client,
   ClientProfileFormData,
   UpdateClientProfileDto,
 } from '@/types/client';
+import { logout } from '@/utils/auth';
 import { phoneMask, removeMask } from '@/utils/mask';
+import { redirectUser } from '@/utils/redirect';
 import { clientProfileSchema } from '@/validations/schemas/clientProfile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -14,6 +18,11 @@ import { useForm } from 'react-hook-form';
 
 export const useClientProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const [isConfirmDeleteClientDialogOpen, setIsConfirmDeleteClientDialogOpen] =
+  useState(false);
+
+  const {setIsAuthenticate} = useAppContext()
 
   const [avatarImage, setAvatarImage] = useState('');
 
@@ -65,6 +74,7 @@ export const useClientProfile = () => {
 
     onError: () => {},
   });
+
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -140,6 +150,53 @@ export const useClientProfile = () => {
     return phone?.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
   };
 
+  const handleClickLogout = () => {
+    localStorage.removeItem('token');
+    logout();
+    setIsAuthenticate(false);
+  };
+
+  const {
+    mutate: deleteClientMutate,
+    isPending: isDeleteClientPending,
+  } = useMutation({
+    mutationFn: async () => {
+      await deleteClient();
+    },
+
+    onSuccess: () => {
+      toast({
+        title: 'Deletando conta',
+        className: 'h-20',
+        variant: 'error',
+      });
+      handleClickLogout()
+      redirectUser('/', 1);
+    },
+
+    onError: () => {
+      toast({
+        title: 'Falha ao deletar conta',
+        className: 'h-20',
+        variant: 'error',
+      });
+    },
+  });
+
+  const handleDeleteClientButtonClick = () => {
+    setIsConfirmDeleteClientDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsConfirmDeleteClientDialogOpen(false);
+  };
+
+  const handleConfirmClientDelete = () => {
+    if (client?.id) {
+      deleteClientMutate();
+    }
+  };
+
   return {
     client,
     errors,
@@ -148,6 +205,8 @@ export const useClientProfile = () => {
     avatarImage,
     fileInputRef,
     isPending,
+    isConfirmDeleteClientDialogOpen,
+    isDeleteClientPending,
     register,
     formatPhone,
     handlePhoneMask,
@@ -155,5 +214,9 @@ export const useClientProfile = () => {
     handleCancelEdit,
     handleToggleEdit,
     handleImageUpload,
+    handleCloseDeleteDialog,
+    handleConfirmClientDelete,
+    handleDeleteClientButtonClick,
+
   };
 };

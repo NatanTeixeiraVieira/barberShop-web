@@ -14,12 +14,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Arrow from '@/components/arrow';
 import { phoneMask } from '@/utils/mask';
 import Spinner from '@/components/Spinner';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function ClientProfile() {
   const profile = useClientProfile();
 
   return (
-    <div className="bg-primary flex justify-center p-4 mt-24 h-[25rem]">
+    <div className="flex justify-center p-4 mt-24 ">
       <div className="bg-paper rounded-lg shadow-lg max-w-md w-full overflow-hidden">
         {profile.client && (
           <div className="p-6 space-y-10">
@@ -127,10 +130,49 @@ export default function ClientProfile() {
                   </p>
                 )}
               </div>
+
             </div>
+
+            <div className="text-left">
+              <button
+                type="button"
+                onClick={profile.handleDeleteClientButtonClick}
+                className={`inline-flex mt-8 items-center bg-error hover:bg-error text-paper justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50  border border-error h-10 px-4 py-2`}
+              >
+                Deletar Barbearia
+              </button>
+            </div>
+
+
           </div>
         )}
       </div>
+      <Dialog open={profile.isConfirmDeleteClientDialogOpen}>
+        <DialogContent className="bg-paper">
+          <DialogHeader>
+            <DialogTitle className="text-error">Confirmar Exclusão</DialogTitle>
+            <DialogDescription>
+              Tem certeza que deseja excluir essa barbearia
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={profile.handleCloseDeleteDialog}>
+              Cancelar
+            </Button>
+            <Button
+              className="bg-error hover:bg-error text-paper"
+              onClick={profile.handleConfirmClientDelete}
+            >
+              {profile.isDeleteClientPending ? (
+                <Spinner size="sm" />
+              ) : (
+                'Confirmar'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Toaster />
     </div>
   );
 }

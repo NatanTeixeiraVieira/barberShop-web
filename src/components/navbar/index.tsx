@@ -61,10 +61,7 @@ export default function Navbar() {
                     <Link
                       onClick={handleClickBarberShop}
                       to="/auth/register-barber-shop"
-                      className={`inline-flex items-center justify-center rounded-md text-sm font-medium border border-primary transition-colors ${activeTab === 'barber'
-                        ? 'bg-primary text-white'
-                        : 'bg-white hover:bg-primary text-primary'
-                        } h-10 px-4 py-2`}
+                      className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" `}
                     >
                       Cadastrar barbearia
                     </Link>
@@ -206,7 +203,7 @@ export default function Navbar() {
                         Serviços
                       </Link>
                       <Link
-                        to={`/`}
+                        to={`/barber-shop-appointments/${barberShop.id}`}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         Agendamentos
@@ -245,7 +242,7 @@ export default function Navbar() {
                       Histórico Agendamentos
                     </Link>
                     <Link
-                      to={`/barber-shop-profile/edit`}
+                      to={`/`}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Favoritos

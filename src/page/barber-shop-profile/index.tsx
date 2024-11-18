@@ -29,7 +29,7 @@ export default function BarberShopProfile() {
   const profile = useBarberShopProfile();
 
   return (
-    <div className="flex justify-center p-4 sm:p-4">
+    <div className="flex justify-center p-4">
       <div className="bg-white flex rounded-lg shadow-lg sm:max-w-[90vw] w-full overflow-hidden">
         {profile.barberShop && (
           <div className="px-6 py-12 space-y-4 w-full">
