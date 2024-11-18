@@ -7,7 +7,7 @@ export default function BarberAppointments() {
   const { barberShopAppointments } = useBarberAppointments();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:w-[40rem] mx-auto">
+    <div className="flex flex-col items-center min-h-screen p-4 md:w-[40rem] mx-auto">
       <div className="w-full space-y-4">
         {barberShopAppointments?.data.map((appointment, index) => (
           <div key={index} className="bg-paper rounded-lg shadow-md p-4">
@@ -20,7 +20,7 @@ export default function BarberAppointments() {
               </Avatar>
               <div className="flex-grow">
                 <h3 className="font-semibold text-lg">
-                  {appointment.service.name}
+                  {appointment.client.name}
                 </h3>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>{appointment.service.name}</span>

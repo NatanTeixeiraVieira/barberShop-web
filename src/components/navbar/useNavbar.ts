@@ -1,13 +1,14 @@
 import { barberShopClient } from '@/constants/requestCacheNames';
 import { useAppContext } from '@/context/appContext';
+import { logout } from '@/services/auth';
 import { getBarberShopClientById } from '@/services/barberShop';
 import { BarberShop } from '@/types/barberShop';
-import { getAuth, logout } from '@/utils/auth';
+import { getAuth } from '@/utils/auth';
 import { redirectUser } from '@/utils/redirect';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
-const useNavbar = () => {
+export const useNavbar = () => {
   const { activeTab, setActiveTab, isAuthenticate, setIsAuthenticate } =
     useAppContext();
 
@@ -41,27 +42,25 @@ const useNavbar = () => {
   };
 
   const handleClickLogout = () => {
-    localStorage.removeItem('token');
     logout();
     setIsAuthenticate(false);
     redirectUser('/', 0);
   };
 
   const auth = useMemo(() => getAuth(), []);
+  console.log('🚀 ~ useNavbar ~ auth:', auth);
 
   return {
     activeTab,
     isAuthenticate,
     openMenu,
-    toggleMenu,
     auth,
     barberShop,
     activeDropdown,
+    toggleMenu,
     handleMouseEnter,
     handleMouseLeave,
     handleClickBarberShop,
     handleClickLogout,
   };
 };
-
-export default useNavbar;

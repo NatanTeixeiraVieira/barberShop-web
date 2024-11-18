@@ -5,7 +5,7 @@ import { getClientAppointment } from '@/services/appointment';
 import { ListClientAppointments } from '@/types/appointment';
 import { useQuery } from '@tanstack/react-query';
 
-export const useClientAppoitments = () => {
+export const useClientAppointments = () => {
   useTitle('Agendamentos cliente');
 
   const { data: clientAppointments, refetch: refetchClientAppointments } =

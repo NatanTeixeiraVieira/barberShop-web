@@ -1,3 +1,5 @@
+import { daysOfWeek } from '@/constants/days';
+
 type OpeningHourOutput = {
   start: string;
   end: string;
@@ -5,7 +7,7 @@ type OpeningHourOutput = {
 };
 
 export type WeekdayOutput = {
-  name: string;
+  name: (typeof daysOfWeek)[number];
   openingHours: OpeningHourOutput[];
 };
 

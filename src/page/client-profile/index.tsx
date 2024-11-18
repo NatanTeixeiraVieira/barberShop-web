@@ -13,7 +13,7 @@ import { useClientProfile } from './useClientProfile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Arrow from '@/components/arrow';
 import { phoneMask } from '@/utils/mask';
-import Spinner from '@/components/Spinner';
+import Spinner from '@/components/spinner';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { Toaster } from '@/components/ui/toaster';

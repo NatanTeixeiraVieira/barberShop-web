@@ -1,3 +1,4 @@
+import { weekdaysMap } from '@/constants/days';
 import { barberOpeningHoursCache } from '@/constants/requestCacheNames';
 import { useToast } from '@/hooks/useToast';
 import { createAppointment } from '@/services/appointment';
@@ -6,13 +7,16 @@ import { CreateAppointmentDto } from '@/types/appointment';
 import { BarberOpeningHours, WeekdayOutput } from '@/types/barberOpeningHours';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import dayjs, { Dayjs } from 'dayjs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
-export const useSchedule = () => {
+export const useSchedule = (serviceId: string) => {
   dayjs.locale('pt-br');
 
+  const { barberShopId } = useParams();
+
   const {
-    mutate: createAppointmentMutatate,
+    mutate: createAppointmentMutate,
     isPending: isCreateAppointmentPending,
   } = useMutation({
     mutationFn: async (dto: CreateAppointmentDto) => {
@@ -50,13 +54,12 @@ export const useSchedule = () => {
 
   const { data: barberOpeningHours } = useQuery<BarberOpeningHours>({
     queryKey: [barberOpeningHoursCache],
-    queryFn: async () =>
-      (await getBarberOpeningHours('45a0f749-9f59-475f-80c9-91121b8073fb'))
-        .data,
+    queryFn: async () => (await getBarberOpeningHours(barberShopId!)).data,
     retry: false,
     refetchOnWindowFocus: false,
   });
 
+  console.log('🚀 ~ useSchedule ~ barberOpeningHours:', barberOpeningHours);
   useEffect(() => {
     if (selectedDate) {
       const sunday = new Date(selectedDate);
@@ -72,7 +75,6 @@ export const useSchedule = () => {
   };
 
   const handleDateSelect = (date: Date) => {
-    console.log('🚀 ~ handleDateSelect ~ date:', date);
     setSelectedDate(new Date(date));
   };
 
@@ -87,7 +89,7 @@ export const useSchedule = () => {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [selectedMinute, setSelectedMinute] = useState<number | null>(null);
 
-  const clearSelecteds = () => {
+  const clearSelected = () => {
     setSelectedDay(null);
     setSelectedHour(null);
     setSelectedMinute(null);
@@ -97,13 +99,13 @@ export const useSchedule = () => {
 
   const handleNextWeek = () => {
     setCurrentWeek(currentWeek.add(1, 'week'));
-    clearSelecteds();
+    clearSelected();
   };
 
   const handlePreviousWeek = () => {
     if (currentWeek.isAfter(today.startOf('week'))) {
       setCurrentWeek(currentWeek.subtract(1, 'week'));
-      clearSelecteds();
+      clearSelected();
     }
   };
 
@@ -113,7 +115,7 @@ export const useSchedule = () => {
   };
 
   const handleCloseModal = () => {
-    clearSelecteds();
+    clearSelected();
     setCurrentWeek(today.startOf('week'));
     setIsOpen(false);
   };
@@ -124,39 +126,40 @@ export const useSchedule = () => {
       selectedHour !== null &&
       selectedMinute !== null
     ) {
-      selectedDate.setHours(selectedHour, selectedMinute);
-      createAppointmentMutatate({
-        date: selectedDate,
-        barberServiceId: '002ff1ff-6353-4e89-b90f-23ec5ecf9696',
-        barberShopId: '45a0f749-9f59-475f-80c9-91121b8073fb',
-      });
+      if (barberShopId) {
+        selectedDate.setHours(selectedHour, selectedMinute);
+        createAppointmentMutate({
+          date: selectedDate,
+          barberServiceId: serviceId,
+          barberShopId: barberShopId,
+        });
+      }
     }
   };
 
-  const daysOfWeek = getDaysOfWeek();
+  const daysOfWeek = useMemo(() => getDaysOfWeek(), []);
 
-  const weekdaysMap: Record<string, number> = {
-    seg: 1,
-    ter: 2,
-    qua: 3,
-    qui: 4,
-    sex: 5,
-    sáb: 6,
-    dom: 0,
-  };
+  const isCurrentWeek = useMemo(
+    () => currentWeek.isSame(today.startOf('week'), 'week'),
+    [currentWeek, today],
+  );
 
-  const isCurrentWeek = currentWeek.isSame(today.startOf('week'), 'week');
   const todayDayOfWeek = today.day();
 
-  const availableDays = barberOpeningHours?.weekdays
-    .filter(
-      (weekday) =>
-        !isCurrentWeek || weekdaysMap[weekday.name] >= todayDayOfWeek,
-    ) // Mostra apenas os dias a partir de hoje
-    .map((weekday) => {
-      const matchedDate = currentWeek.day(weekdaysMap[weekday.name]);
-      return { ...weekday, date: matchedDate };
-    });
+  const availableDays = useMemo(
+    () =>
+      barberOpeningHours?.weekdays
+        // Mostra apenas os dias a partir de hoje
+        .filter(
+          (weekday) =>
+            !isCurrentWeek || weekdaysMap[weekday.name] >= todayDayOfWeek,
+        )
+        .map((weekday) => {
+          const matchedDate = currentWeek.day(weekdaysMap[weekday.name]);
+          return { ...weekday, date: matchedDate };
+        }),
+    [barberOpeningHours?.weekdays, currentWeek, isCurrentWeek, todayDayOfWeek],
+  );
 
   return {
     isOpen,

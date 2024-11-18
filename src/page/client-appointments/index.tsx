@@ -1,13 +1,13 @@
 import { UserCircle2 } from 'lucide-react';
-import { useClientAppoitments } from './useClientAppointments';
+import { useClientAppointments } from './useClientAppointments';
 import dayjs from 'dayjs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function ClientAppointments() {
-  const { clientAppointments } = useClientAppoitments();
+  const { clientAppointments } = useClientAppointments();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 md:w-[40rem] mx-auto">
+    <div className="flex flex-col items-center min-h-screen p-4 md:w-[40rem] mx-auto">
       <div className="w-full space-y-4">
         {clientAppointments?.data.map((appointment, index) => (
           <div key={index} className="bg-paper rounded-lg shadow-md p-4">

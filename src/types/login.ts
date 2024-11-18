@@ -1,10 +1,9 @@
 import { verifyLoginSchema } from '@/validations/schemas/login';
 import { z } from 'zod';
-import { Client } from './client';
+import { ClientLogin } from './client';
 
 export type ReturnLoginCLientDto = {
-  client: Client;
-  token: string;
+  client: ClientLogin;
 };
 
 export type VerifyLogin = {

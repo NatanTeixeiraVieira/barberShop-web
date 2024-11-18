@@ -1,6 +1,6 @@
 import { useAppContext } from '@/context/appContext';
 import { toast } from '@/hooks/useToast';
-import { verifyLogin } from '@/services/login';
+import { login } from '@/services/auth';
 import { VerifyLoginData, VerifyLogin } from '@/types/login';
 import { authenticate } from '@/utils/auth';
 import { redirectUser } from '@/utils/redirect';
@@ -10,7 +10,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
 export const useLogin = () => {
-
   const { showPassword, togglePasswordVisibility, setIsAuthenticate } =
     useAppContext();
 
@@ -30,17 +29,12 @@ export const useLogin = () => {
   const { mutate: verifyLoginMutate, isPending: isVerifyLoginPending } =
     useMutation({
       mutationFn: async (dto: VerifyLogin) => {
-        const data = await verifyLogin(dto);
+        const data = await login(dto);
         console.log(data);
         return data;
       },
 
-      onSuccess: (data) => {
-        const token = data.data.token;
-        authenticate(data.data);
-
-        localStorage.setItem('token', token);
-
+      onSuccess: () => {
         toast({
           title: 'Login realizado com sucesso',
           className: 'h-20',
@@ -52,7 +46,7 @@ export const useLogin = () => {
 
       onError: () => {
         toast({
-          title: 'Email ou senha invalidos',
+          title: 'Email ou senha inválidos',
           className: 'h-20',
           variant: 'error',
         });
