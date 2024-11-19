@@ -11,6 +11,7 @@ import BarberShopService from '@/page/barber-service';
 import Home from '@/page/home';
 import RequireAuth from '@/components/required-auth';
 import BarberOpeningHours from '@/page/barber-opening-hours';
+import Favorite from '@/components/barber-favorite/favorite';
 
 const routes = () => {
   return (
@@ -29,7 +30,7 @@ const routes = () => {
           path="/details-barber-shop/:barberShopId"
           element={<DetailBarberShop />}
         />
-        {/* <Route path="/favorite" element={<Favorite/>} /> */}
+        <Route path="/favorite" element={<Favorite/>} />
 
         <Route
           path="/client-appointments"

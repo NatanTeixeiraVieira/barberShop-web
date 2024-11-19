@@ -1,6 +1,6 @@
 import { favoriteListClient } from '@/constants/requestCacheNames';
 import { getFavoriteList } from '@/services/favorite';
-import { BarberShop } from '@/types/barberShop';
+import { ClientFavoriteListPaginated } from '@/types/favorite-barber-shop';
 import { getAuth } from '@/utils/auth';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,7 +13,7 @@ const useFavorite = () => {
     data: favoriteList,
     refetch: refetchFavoriteList,
     isFetching,
-  } = useQuery<BarberShop>({
+  } = useQuery<ClientFavoriteListPaginated>({
     queryKey: [favoriteListClient, currentPage],
     queryFn: async () =>
       (

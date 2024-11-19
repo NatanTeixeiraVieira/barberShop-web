@@ -1,4 +1,5 @@
-import { PaginationDto } from "./pagination";
+import { BarberShop } from "./barberShop";
+import { Pagination, PaginationDto } from "./pagination";
 
 export type CreateFavoriteBarberShopDto = {
   barberShopId: string;
@@ -12,3 +13,10 @@ export type FavoriteList = {
 }
 
 export type getFavoriteClientById = PaginationDto
+
+export type ClientFavoriteListPaginated = Pagination<ClientFavoriteList>
+
+export type ClientFavoriteList = {
+  barberShop: BarberShop;
+  clientId: string
+}

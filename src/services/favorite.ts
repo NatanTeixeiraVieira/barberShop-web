@@ -1,4 +1,4 @@
-import { CreateFavoriteBarberShopDto, getFavoriteClientById } from "@/types/favorite-barber-shop";
+import { ClientFavoriteList, ClientFavoriteListPaginated, CreateFavoriteBarberShopDto, getFavoriteClientById } from "@/types/favorite-barber-shop";
 import { api } from "./api";
 import { BarberShop } from "@/types/barberShop";
 
@@ -12,7 +12,7 @@ export const getFavoriteList = async (dto: getFavoriteClientById) => {
   const pagination = dto ?? { limit: 20, page: 1 };
 
 
-  const clientFavorite = await api.get<BarberShop>(
+  const clientFavorite = await api.get<ClientFavoriteListPaginated>(
     `/favorite/v1`,
   );
 
