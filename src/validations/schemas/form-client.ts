@@ -6,6 +6,7 @@ export const formClientSchema = z
     name: z
       .string()
       .min(4, 'o nome é obrigatório')
+      .max(20, 'o maximo de caracteres é 20')
       .refine((value) => /\S/.test(value), 'Nome não pode ser apenas espaços'),
     email: z
       .string()
