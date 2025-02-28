@@ -12,6 +12,7 @@ import Home from '@/page/home';
 import RequireAuth from '@/components/required-auth';
 import BarberOpeningHours from '@/page/barber-opening-hours';
 import Favorite from '@/components/barber-favorite/favorite';
+import NotFound from '@/components/404';
 
 const routes = () => {
   return (
@@ -78,6 +79,12 @@ const routes = () => {
             <RequireAuth>
               <ClientProfile />
             </RequireAuth>
+          }
+        />
+        <Route
+          path="*"
+          element={
+              <NotFound />
           }
         />
       </Routes>

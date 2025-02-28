@@ -5,10 +5,7 @@ import { Link } from "react-router-dom";
 import Spinner from "../spinner";
 
 const Favorite = () => {
-  const {
-    favoriteList,
-    isFetching,
-  } = useFavorite();
+  const { favoriteList, isFetching } = useFavorite();
 
   return (
     <div className="space-y-4 md:w-[40rem] mx-auto mt-4">
@@ -17,9 +14,16 @@ const Favorite = () => {
           <Spinner size="lg" />
         </div>
       )}
+
+      {!isFetching && (!favoriteList || favoriteList.data.length === 0) && (
+        <div className="text-center text-black text-xl">
+          Não há favoritos registrados
+        </div>
+      )}
+
       {!isFetching &&
         favoriteList &&
-        favoriteList.data.map(({barberShop}) => (
+        favoriteList.data.map(({ barberShop }) => (
           <div
             key={barberShop.id}
             className="bg-paper rounded-lg p-4 flex gap-4 items-center text-gray-800"

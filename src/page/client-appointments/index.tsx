@@ -20,7 +20,7 @@ export default function ClientAppointments() {
               </Avatar>
               <div className="flex-grow">
                 <h3 className="font-semibold text-lg">
-                  {appointment.service.name}
+                  {appointment.barber.name}
                 </h3>
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>{appointment.service.name}</span>
